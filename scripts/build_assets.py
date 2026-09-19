@@ -705,12 +705,12 @@ ICONS = Path(__file__).resolve().parent / "icons"
 TOOLBOX = [
     ("Cloud & virtualisation", [
         ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "dev-googlecloud-original"),
-        ("VMware", "si-vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "dev-docker-original"),
-        ("Kubernetes", "dev-kubernetes-original"), ("Terraform", "dev-terraform-original"),
+        ("VMware", "si-vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "si-docker"),
+        ("Kubernetes", "dev-kubernetes-original"), ("Terraform", "terraform"),
     ]),
     ("Operating systems", [
-        ("Windows", "dev-windows11-original"), ("Linux", "dev-linux-original"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "dev-redhat-original"),
-        ("CentOS", "dev-centos-original"), ("macOS", "dev-apple-original"), ("iOS", "si-ios"), ("Android", "dev-android-original"),
+        ("Windows", "dev-windows11-original"), ("Linux", "dev-linux-original"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "redhat"),
+        ("CentOS", "dev-centos-original"), ("macOS", "dev-apple-original"), ("iOS", "si-ios"), ("Android", "si-android"),
     ]),
     ("Identity & endpoints", [
         ("Entra ID", "ms-entra-id"), ("Active Directory", "ms-active-directory"), ("Intune", "ms-intune"), ("Defender", "ms-defender"),
@@ -721,15 +721,15 @@ TOOLBOX = [
         ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"),
     ]),
     ("Automation & delivery", [
-        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "si-gnubash"), ("Ansible", "si-ansible"),
+        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "bash"), ("Ansible", "si-ansible"),
         ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "dev-githubactions-original"), ("Git", "dev-git-original"),
     ]),
     ("Monitoring & backup", [
-        ("Splunk", "si-splunk"), ("Datadog", "dev-datadog-original"), ("New Relic", "si-newrelic"), ("Grafana", "dev-grafana-original"),
+        ("Splunk", "si-splunk"), ("Datadog", "datadog"), ("New Relic", "si-newrelic"), ("Grafana", "dev-grafana-original"),
         ("Prometheus", "dev-prometheus-original"), ("Wireshark", "si-wireshark"), ("Veeam", "si-veeam"),
     ]),
     ("Service & collaboration", [
-        ("ServiceNow", "servicenow"), ("Jira", "dev-jira-original"), ("Confluence", "dev-confluence-original"), ("Zendesk", "si-zendesk"),
+        ("ServiceNow", "servicenow"), ("Jira", "dev-jira-original"), ("Confluence", "confluence"), ("Zendesk", "si-zendesk"),
         ("Microsoft 365", "ms-365"), ("Google Workspace", "dev-google-original"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
     ]),
 ]
@@ -737,13 +737,13 @@ TOOLBOX = [
 # Simple Icons wordmarks sit small in their square; draw them larger.
 WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
 WIDE = {"cisco", "crowdstrike", "okta"}  # supplied logos that are wider than tall
-KEEP_COLOURS = {"dev-powershell-original"}  # already designed for dark backgrounds
+KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark backgrounds
 
 # Official brand colours for the single-colour Simple Icons marks.
 SI_COLOURS = {
     "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#FF791A",
     "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": "#000000", "newrelic": "#1CE783", "veeam": "#00B336",
-    "zendesk": "#03363D", "zoom": "#0B5CFF", "gnubash": "#4EAA25", "chocolatey": "#80B5E3", "yaml": "#CB171E",
+    "zendesk": "#03363D", "zoom": "#0B5CFF", "docker": "#1D63ED", "android": "#34A853", "chocolatey": "#80B5E3", "yaml": "#CB171E",
     "teamviewer": "#050A52", "ubuntu": "#E95420", "ansible": "#EE0000",
 }
 
@@ -809,7 +809,9 @@ def toolbox() -> None:
             for c, (label, icon) in enumerate(items):
                 cx = label_w + c * step + step / 2
                 d = 0.2 + r * 0.08 + c * 0.04
-                if icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
+                if icon == "servicenow":  # long wordmark
+                    size = 72
+                elif icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
                     size = 44
                 else:
                     size = 32
@@ -847,7 +849,7 @@ def toolbox() -> None:
   <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
   {"".join(rows)}
 </svg>"""
-        write(f"toolbox-{mode}.svg", svg)
+        write(f"logos-{mode}.svg", svg)
 
 
 if __name__ == "__main__":
