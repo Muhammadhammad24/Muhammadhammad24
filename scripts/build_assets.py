@@ -385,110 +385,140 @@ def impact() -> None:
 # Certifications
 # --------------------------------------------------------------------------
 
-# (name, issuer, year, badge letters, credential id or None)
-CERTS = [
-    ("System Administration and IT Infrastructure Services", "Google · Coursera", 2025, "G", "29N5ZLK6BVWW"),
-    ("Full Stack Software Developer Assessment", "IBM · Coursera", 2023, "IBM", "74NSF2JALFZV"),
-    ("Discovering Computer Networks: hands-on in the Open Networking Lab", "The Open University", 2023, "OU", None),
-    ("Successful IT Systems", "The Open University", 2023, "OU", None),
-    ("Information Security Basics for IT Support Technicians", "Udemy", 2022, "U", None),
+OU = "https://www.open.edu/openlearn/"
+UDEMY = "https://www.udemy.com/certificate/"
+COURSERA = "https://www.coursera.org/account/accomplishments/verify/"
+
+# Featured credentials, grouped into tracks. (name, issuer, mark, year, hours, link, link label)
+TRACKS = [
+    ("infrastructure · networking · security", [
+        ("System Administration and IT Infrastructure Services", "Google · Coursera", "G", 2025, "23 h", COURSERA + "29N5ZLK6BVWW", "verify"),
+        ("Discovering Computer Networks: hands-on in the Open Networking Lab", "The Open University", "OU", 2023, "24 h",
+         OU + "digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview", "course"),
+        ("Information Security Basics for IT Support Technicians", "Udemy", "U", 2022, "", UDEMY + "UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/", "verify"),
+        ("Successful IT Systems", "The Open University", "OU", 2023, "", OU + "digital-computing/successful-it-systems/content-section-0", "course"),
+    ]),
+    ("software engineering", [
+        ("Full Stack Software Developer Assessment", "IBM · Coursera", "IBM", 2023, "", COURSERA + "74NSF2JALFZV", "verify"),
+        ("The Complete React, Redux, Node, Express and MySQL Developer Course", "Udemy", "U", 2022, "8 h", UDEMY + "UC-0b67e267-2b09-40d7-a980-d2f5b62876fe/", "verify"),
+        ("The Database Development Life Cycle", "The Open University", "OU", 2023, "12 h", OU + "digital-computing/the-database-development-life-cycle/content-section-0", "course"),
+        ("SQL: The Complete Introduction to SQL Programming", "Udemy", "U", 2022, "3.5 h", UDEMY + "UC-be70fe74-aa67-4e6c-afad-5cacc8d371ae/", "verify"),
+    ]),
+    ("data · machine learning · ai", [
+        ("The Data Science Course: Complete Data Science Bootcamp", "Udemy", "U", 2022, "30 h", UDEMY + "UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/", "verify"),
+        ("Python for Machine Learning with NumPy, Pandas and Matplotlib", "Udemy", "U", 2022, "7 h", UDEMY + "UC-b6509a21-528b-43bf-b0ae-f7458612d212/", "verify"),
+        ("Python: Introduction to Data Science and Machine Learning A–Z", "Udemy", "U", 2022, "7.5 h", UDEMY + "UC-4c5d2d2a-dade-4cee-a7c4-0fd2ad689c90/", "verify"),
+        ("Exploring Data: Graphs and Numerical Summaries", "The Open University", "OU", 2023, "20 h",
+         OU + "science-maths-technology/mathematics-statistics/exploring-data-graphs-and-numerical-summaries/content-section-0", "course"),
+    ]),
 ]
+TOTAL_CREDENTIALS = 29
+MORE = "Java · C++ · PHP · R · HTML & CSS · Android · big data · Python ×2 · AI & the future of work · mathematics · modelling"
 
 
-def certs() -> None:
-    """One themed card per credential, so the verified ones can be links in the README."""
+def _wrap(text: str, limit: int) -> list[str]:
+    lines, cur = [], ""
+    for word in text.split():
+        if cur and len(cur) + 1 + len(word) > limit:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = f"{cur} {word}".strip()
+    lines.append(cur)
+    return lines
+
+
+def _hexagon(cx: float, cy: float, r: float) -> str:
     import math
 
-    w = 880
-    verified = sum(1 for c in CERTS if c[4])
-    style = f"""
+    return " ".join(
+        f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
+    )
+
+
+_CERT_STYLE = f"""
   <style>
     text {{ font-family: {SANS}; }}
-    .cmd, .meta, .mk, .st, .id {{ font-family: {MONO}; }}
+    .m, .cmd, .meta, .tag, .tr, .mk {{ font-family: {MONO}; }}
     .cmd {{ font-size: 13px; fill: {TEXT}; }}
     .meta {{ font-size: 11px; fill: {MUTED}; }}
-    .nm {{ font-size: 14px; font-weight: 600; fill: {TEXT}; }}
-    .is {{ font-size: 12px; fill: {MUTED}; }}
-    .mk {{ font-size: 10.5px; font-weight: 700; }}
-    .st {{ font-size: 10.5px; }}
-    .id {{ font-size: 10.5px; }}
-    .r {{ animation: rin .55s ease-out both; }}
+    .nm {{ font-size: 13px; font-weight: 600; fill: {TEXT}; }}
+    .is {{ font-size: 11px; fill: {MUTED}; }}
+    .mk {{ font-size: 10px; font-weight: 700; fill: {ACCENT}; }}
+    .tag {{ font-size: 10px; fill: {MUTED}; }}
+    .tr {{ font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
+    .in {{ animation: rin .5s ease-out both; }}
     .hx {{ transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }}
-    .tick {{ stroke-dasharray: 10; animation: tick .5s ease-out both; }}
     .cur {{ animation: blink 1.05s steps(1) infinite; }}
-    .btn {{ font-family: {MONO}; font-size: 12px; font-weight: 700; }}
-    .cta {{ transform-box: fill-box; transform-origin: center; animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }}
-    .ring {{ transform-box: fill-box; transform-origin: center; animation: ring 2.2s ease-out 1.2s infinite; }}
-    .shine {{ animation: shine 2.8s ease-in-out 1s infinite; }}
-    @keyframes pop {{ from {{ opacity: 0; transform: scale(.7); }} }}
-    @keyframes ring {{ from {{ opacity: .8; transform: scale(1); }} to {{ opacity: 0; transform: scale(1.12, 1.45); }} }}
-    @keyframes shine {{ 0% {{ transform: translateX(0); }} 60%, 100% {{ transform: translateX(300px); }} }}
-    @keyframes rin {{ from {{ opacity: 0; transform: translateX(-12px); }} }}
+    @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
     @keyframes spin {{ from {{ opacity: 0; transform: rotate(-90deg) scale(.4); }} }}
-    @keyframes tick {{ from {{ stroke-dashoffset: 10; }} to {{ stroke-dashoffset: 0; }} }}
     @keyframes blink {{ 50% {{ opacity: 0; }} }}
     @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
   </style>"""
 
-    def frame(h: int, uid: str) -> str:
-        return f"""
-  <defs>
-    <pattern id="{uid}-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
-    <radialGradient id="{uid}-halo" cx="0.04" cy="0.2" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".06"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-    <filter id="{uid}-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>{style}
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="{BG}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#{uid}-dots)"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#{uid}-halo)"/>"""
 
-    # header card
-    h = 60
-    write("certs/header.svg", f"""
+def _cert_frame(w: int, h: int, uid: str) -> str:
+    return f"""
+  <defs>
+    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
+    <radialGradient id="{uid}-halo" cx="0" cy="0" r="0.9"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".06"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+  </defs>{_CERT_STYLE}
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="{BG}" stroke="{LINE}"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-dots)"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-halo)"/>"""
+
+
+def certs() -> None:
+    """Header, track labels and one small card per credential, laid out as a table in the README."""
+    shown = sum(len(items) for _, items in TRACKS)
+
+    w, h = 880, 60
+    write("certifications/header.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
-  <title>Certifications</title>{frame(h, "ch")}
-  <text x="28" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>verify --all</text>
-  <rect x="{28 + 22 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 28}" y="35" text-anchor="end" class="meta">{len(CERTS)} credentials · {verified} verifiable</text>
+  <title>Certifications</title>{_cert_frame(w, h, "hd")}
+  <text x="26" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>ls --featured</text>
+  <rect x="{26 + 24 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
+  <text x="{w - 26}" y="35" text-anchor="end" class="meta">{TOTAL_CREDENTIALS} credentials · Google · IBM · Open University · Udemy · {shown} shown</text>
 </svg>""")
 
-    def hexagon(cx: float, cy: float, r: float) -> str:
-        return " ".join(
-            f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
-        )
+    for t, (track, items) in enumerate(TRACKS, 1):
+        w, h = 880, 40
+        write(f"certifications/track-{t}.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(track)}">
+  <title>{escape(track)}</title>{_cert_frame(w, h, f"tr{t}")}
+  <text x="20" y="25" class="tr in"><tspan fill="{ACCENT}">{t:02d}</tspan>  {escape(track.upper())}</text>
+  <line x1="{20 + (len(track) + 4) * 8.3:.0f}" y1="21" x2="{w - 150}" y2="21" stroke="{LINE}"/>
+  <text x="{w - 20}" y="25" text-anchor="end" class="tr">{len(items)} credentials</text>
+</svg>""")
 
-    h, yc, hx = 64, 32, 50
-    for i, (name, issuer, year, mark, cred) in enumerate(CERTS):
-        uid = f"c{i}"
-        d = 0.15 + i * 0.12
-        # Every credential gets the same card and badge; a public link is an extra.
-        badge = (
-            f'<g class="hx" style="animation-delay:{d:.2f}s">'
-            f'<polygon points="{hexagon(hx, yc, 19)}" fill="{ACCENT}" fill-opacity=".1" stroke="{ACCENT}" stroke-width="1.6"/>'
-            f'<text x="{hx}" y="{yc + 4}" text-anchor="middle" class="mk" fill="{ACCENT}">{mark}</text></g>'
-        )
-        if cred:
-            bw, bx = 96, w - 28 - 96
-            side = (
-                f'<rect x="{bx}" y="{yc - 14}" width="{bw}" height="28" rx="14" fill="none" stroke="{LINE}"/>'
-                f'<text x="{bx + bw / 2}" y="{yc + 4}" text-anchor="middle" class="id" fill="{MUTED}">verify ↗</text>'
-            )
-            extra = ""
-        else:
-            side = (
-                f'<text x="{w - 28}" y="{yc + 4}" text-anchor="end" class="id" fill="{MUTED}">'
-                f'{"statement of participation" if "Open" in issuer else "certificate of completion"}</text>'
-            )
-            extra = ""
-        write(f"certs/{i + 1}.svg", f"""
+        for k, (name, issuer, mark, year, hours, _link, label) in enumerate(items, 1):
+            w, h = 430, 92
+            uid = f"t{t}c{k}"
+            d = 0.1 + (k - 1) * 0.1
+            lines = _wrap(name, 46)[:2]
+            meta = " · ".join(x for x in (issuer, str(year), hours) if x)
+            title = "".join(f'<text x="70" y="{34 + j * 18}" class="nm">{escape(line)}</text>' for j, line in enumerate(lines))
+            tag_w = len(label) * 6.2 + 34
+            write(f"certifications/{t}-{k}.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
-  <title>{escape(name)}</title>{frame(h, uid)}
-  <defs>{extra}</defs>
-  {badge}
-  <g class="r" style="animation-delay:{d:.2f}s">
-    <text x="{hx + 36}" y="{yc - 3}" class="nm">{escape(name)}</text>
-    <text x="{hx + 36}" y="{yc + 15}" class="is">{escape(issuer)} · {year}</text>
+  <title>{escape(name)}</title>{_cert_frame(w, h, uid)}
+  <g class="hx" style="animation-delay:{d:.2f}s">
+    <polygon points="{_hexagon(38, 46, 18)}" fill="{ACCENT}" fill-opacity=".1" stroke="{ACCENT}" stroke-width="1.5"/>
+    <text x="38" y="50" text-anchor="middle" class="mk">{mark}</text>
   </g>
-  {side}
+  <g class="in" style="animation-delay:{d:.2f}s">
+    {title}
+    <text x="70" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
+  </g>
+  <rect x="{w - 16 - tag_w:.1f}" y="{h - 30}" width="{tag_w:.1f}" height="20" rx="10" fill="none" stroke="{LINE}"/>
+  <text x="{w - 16 - tag_w / 2:.1f}" y="{h - 16}" text-anchor="middle" class="tag">{label} ↗</text>
+</svg>""")
+
+    w, h = 880, 46
+    write("certifications/more.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="More courses">
+  <title>More courses</title>{_cert_frame(w, h, "mo")}
+  <text x="26" y="28" class="meta"><tspan fill="{ACCENT}">+ {TOTAL_CREDENTIALS - shown} more</tspan>   {escape(MORE)}</text>
 </svg>""")
 
 

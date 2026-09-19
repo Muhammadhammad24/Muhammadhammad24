@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="92" viewBox="0 0 430 92" role="img" aria-label="Information Security Basics for IT Support Technicians">
+  <title>Information Security Basics for IT Support Technicians</title>
+  <defs>
+    <pattern id="t1c3-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#30363d" opacity=".5"/></pattern>
+    <radialGradient id="t1c3-halo" cx="0" cy="0" r="0.9"><stop offset="0" stop-color="#b1eb21" stop-opacity=".06"/><stop offset="1" stop-color="#b1eb21" stop-opacity="0"/></radialGradient>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+    .m, .cmd, .meta, .tag, .tr, .mk { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    .cmd { font-size: 13px; fill: #e6edf3; }
+    .meta { font-size: 11px; fill: #8b949e; }
+    .nm { font-size: 13px; font-weight: 600; fill: #e6edf3; }
+    .is { font-size: 11px; fill: #8b949e; }
+    .mk { font-size: 10px; font-weight: 700; fill: #b1eb21; }
+    .tag { font-size: 10px; fill: #8b949e; }
+    .tr { font-size: 11px; letter-spacing: 1.6px; fill: #8b949e; }
+    .in { animation: rin .5s ease-out both; }
+    .hx { transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }
+    .cur { animation: blink 1.05s steps(1) infinite; }
+    @keyframes rin { from { opacity: 0; transform: translateX(-10px); } }
+    @keyframes spin { from { opacity: 0; transform: rotate(-90deg) scale(.4); } }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <rect x="0.5" y="0.5" width="429" height="91" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <rect x="0.5" y="0.5" width="429" height="91" rx="10" fill="url(#t1c3-dots)"/>
+  <rect x="0.5" y="0.5" width="429" height="91" rx="10" fill="url(#t1c3-halo)"/>
+  <g class="hx" style="animation-delay:0.30s">
+    <polygon points="38.0,28.0 53.6,37.0 53.6,55.0 38.0,64.0 22.4,55.0 22.4,37.0" fill="#b1eb21" fill-opacity=".1" stroke="#b1eb21" stroke-width="1.5"/>
+    <text x="38" y="50" text-anchor="middle" class="mk">U</text>
+  </g>
+  <g class="in" style="animation-delay:0.30s">
+    <text x="70" y="34" class="nm">Information Security Basics for IT Support</text><text x="70" y="52" class="nm">Technicians</text>
+    <text x="70" y="74" class="is">Udemy · 2022</text>
+  </g>
+  <rect x="342.8" y="62" width="71.2" height="20" rx="10" fill="none" stroke="#30363d"/>
+  <text x="378.4" y="76" text-anchor="middle" class="tag">verify ↗</text>
+</svg>

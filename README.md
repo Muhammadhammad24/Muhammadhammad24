@@ -88,15 +88,21 @@ Every public repository is tested in CI, and each README states what exists and 
 ## Certifications
 
 <p align="center">
-  <img src="assets/certs/header.svg" alt="Certifications: 2 publicly verifiable, 5 credentials" width="100%"/><br/>
-  <a href="https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW"><img src="assets/certs/1.svg" alt="System Administration and IT Infrastructure Services, Google on Coursera, 2025. Verify." width="100%"/></a><br/>
-  <a href="https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV"><img src="assets/certs/2.svg" alt="Full Stack Software Developer Assessment, IBM on Coursera, 2023. Verify." width="100%"/></a><br/>
-  <img src="assets/certs/3.svg" alt="Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023." width="100%"/><br/>
-  <img src="assets/certs/4.svg" alt="Successful IT Systems, The Open University, 2023." width="100%"/><br/>
-  <img src="assets/certs/5.svg" alt="Information Security Basics for IT Support Technicians, Udemy, 2022." width="100%"/>
+  <img src="assets/certifications/header.svg" alt="Certifications: 29 credentials from Google, IBM, The Open University and Udemy; 12 featured below" width="100%"/>
 </p>
 
-<sub>Also 20+ completed courses in Python, data science, machine learning, SQL and software development.</sub>
+<table>
+  <tr><td colspan="2"><img src="assets/certifications/track-1.svg" alt="infrastructure · networking · security" width="100%"/></td></tr>
+  <tr><td width="50%"><a href="https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW"><img src="assets/certifications/1-1.svg" alt="System Administration and IT Infrastructure Services, Google · Coursera, 2025. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview"><img src="assets/certifications/1-2.svg" alt="Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023. Course page." width="100%"/></a></td></tr>
+  <tr><td width="50%"><a href="https://www.udemy.com/certificate/UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/"><img src="assets/certifications/1-3.svg" alt="Information Security Basics for IT Support Technicians, Udemy, 2022. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/successful-it-systems/content-section-0"><img src="assets/certifications/1-4.svg" alt="Successful IT Systems, The Open University, 2023. Course page." width="100%"/></a></td></tr>
+  <tr><td colspan="2"><img src="assets/certifications/track-2.svg" alt="software engineering" width="100%"/></td></tr>
+  <tr><td width="50%"><a href="https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV"><img src="assets/certifications/2-1.svg" alt="Full Stack Software Developer Assessment, IBM · Coursera, 2023. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.udemy.com/certificate/UC-0b67e267-2b09-40d7-a980-d2f5b62876fe/"><img src="assets/certifications/2-2.svg" alt="The Complete React, Redux, Node, Express and MySQL Developer Course, Udemy, 2022. Verify." width="100%"/></a></td></tr>
+  <tr><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/the-database-development-life-cycle/content-section-0"><img src="assets/certifications/2-3.svg" alt="The Database Development Life Cycle, The Open University, 2023. Course page." width="100%"/></a></td><td width="50%"><a href="https://www.udemy.com/certificate/UC-be70fe74-aa67-4e6c-afad-5cacc8d371ae/"><img src="assets/certifications/2-4.svg" alt="SQL: The Complete Introduction to SQL Programming, Udemy, 2022. Verify." width="100%"/></a></td></tr>
+  <tr><td colspan="2"><img src="assets/certifications/track-3.svg" alt="data · machine learning · ai" width="100%"/></td></tr>
+  <tr><td width="50%"><a href="https://www.udemy.com/certificate/UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/"><img src="assets/certifications/3-1.svg" alt="The Data Science Course: Complete Data Science Bootcamp, Udemy, 2022. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.udemy.com/certificate/UC-b6509a21-528b-43bf-b0ae-f7458612d212/"><img src="assets/certifications/3-2.svg" alt="Python for Machine Learning with NumPy, Pandas and Matplotlib, Udemy, 2022. Verify." width="100%"/></a></td></tr>
+  <tr><td width="50%"><a href="https://www.udemy.com/certificate/UC-4c5d2d2a-dade-4cee-a7c4-0fd2ad689c90/"><img src="assets/certifications/3-3.svg" alt="Python: Introduction to Data Science and Machine Learning A–Z, Udemy, 2022. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.open.edu/openlearn/science-maths-technology/mathematics-statistics/exploring-data-graphs-and-numerical-summaries/content-section-0"><img src="assets/certifications/3-4.svg" alt="Exploring Data: Graphs and Numerical Summaries, The Open University, 2023. Course page." width="100%"/></a></td></tr>
+  <tr><td colspan="2"><img src="assets/certifications/more.svg" alt="Plus 17 more courses" width="100%"/></td></tr>
+</table>
 
 ---
 
