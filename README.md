@@ -88,7 +88,7 @@ Every public repository is tested in CI, and each README states what exists and 
 ## Career
 
 <p align="center">
-  <img src="assets/timeline.svg" alt="Career timeline: IT Engineer at Kontinental Establishment since 2023; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevSecOps at University of Göttingen 2024; IT Specialist at Liberty Books, KTDMC and Target Logistics 2020–2022; IT Engineer at The Active Solutions 2019–2020; M.Sc. Data Science, University of Göttingen." width="100%"/>
+  <img src="assets/timeline.svg" alt="Career timeline, newest first: DevSecOps at University of Göttingen 2024; IT Engineer at Kontinental Establishment since April 2023; IT Engineer (contract) at TestSolutions GmbH 2023–2024; M.Sc. Data Science, University of Göttingen 2023–2025; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
 </p>
 
 ## Certifications

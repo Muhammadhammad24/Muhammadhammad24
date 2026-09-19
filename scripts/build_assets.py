@@ -237,15 +237,16 @@ START, END = 2019.0, 2027.0
 PAST = "#6e7681"
 EDU = "#484f58"
 
+# Newest first, as on LinkedIn. Dates are year + (month - 1) / 12.
 TIMELINE = [
-    ("IT Engineer", "The Active Solutions", 2019.25, 2020.2, PAST),
-    ("IT Specialist", "Target Logistics International", 2020.5, 2021.7, PAST),
-    ("IT Specialist", "KTDMC", 2021.75, 2022.4, PAST),
-    ("IT Specialist", "Liberty Books", 2022.42, 2022.8, PAST),
-    ("IT Engineer · contract", "TestSolutions GmbH", 2023.08, 2024.95, PAST),
-    ("M.Sc. Data Science", "University of Göttingen", 2023.0, 2025.95, EDU),
+    ("DevSecOps · Scientific Computing", "University of Göttingen", 2024.25, 2024.67, PAST),
     ("IT Engineer", "Kontinental Establishment", 2023.25, None, ACCENT),
-    ("DevSecOps · Scientific Computing", "University of Göttingen", 2024.25, 2024.7, PAST),
+    ("IT Engineer · contract", "TestSolutions GmbH", 2023.08, 2024.92, PAST),
+    ("M.Sc. Data Science", "University of Göttingen", 2023.0, 2025.92, EDU),
+    ("IT Specialist", "Liberty Books", 2022.42, 2022.75, PAST),
+    ("IT Specialist", "KTDMC", 2021.75, 2022.33, PAST),
+    ("IT Specialist", "Target Logistics International", 2020.5, 2021.67, PAST),
+    ("IT Engineer", "The Active Solutions", 2019.25, 2020.17, PAST),
 ]
 
 
