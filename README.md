@@ -87,11 +87,15 @@ Every public repository is tested in CI, and each README states what exists and 
 
 ## Certifications
 
-<p align="center">
-  <img src="assets/certs.svg" alt="Certifications: System Administration and IT Infrastructure Services, Google on Coursera, 2025, verified; Full Stack Software Developer Assessment, IBM on Coursera, 2023, verified; Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023; Successful IT Systems, The Open University, 2023; Information Security Basics for IT Support Technicians, Udemy, 2022; plus 20 completed courses." width="100%"/>
-</p>
+| Credential | Issuer | Verify |
+| --- | --- | --- |
+| **System Administration and IT Infrastructure Services** | Google · Coursera, 2025 | <a href="https://coursera.org/verify/29N5ZLK6BVWW"><img src="https://img.shields.io/badge/✓_Verify-161b22?style=flat-square&logoColor=b1eb21&labelColor=0d1117&color=161b22" alt="Verify on Coursera"/></a> |
+| **Full Stack Software Developer Assessment** | IBM · Coursera, 2023 | <a href="https://coursera.org/verify/74NSF2JALFZV"><img src="https://img.shields.io/badge/✓_Verify-161b22?style=flat-square&logoColor=b1eb21&labelColor=0d1117&color=161b22" alt="Verify on Coursera"/></a> |
+| Discovering Computer Networks: hands-on in the Open Networking Lab | The Open University, 2023 | Statement of participation |
+| Successful IT Systems | The Open University, 2023 | Statement of participation |
+| Information Security Basics for IT Support Technicians | Udemy, 2022 | Certificate of completion |
 
-<p align="center"><sub>Verify: <a href="https://coursera.org/verify/29N5ZLK6BVWW">Google · System Administration</a> · <a href="https://coursera.org/verify/74NSF2JALFZV">IBM · Full Stack</a></sub></p>
+<sub>Also 20+ completed courses in Python, data science, machine learning, SQL and software development.</sub>
 
 ---
 
