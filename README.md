@@ -2,7 +2,7 @@
   <img src="assets/banner.png" alt="Automating IT operations with AI-driven precision" width="100%" />
 </p>
 
-<h2 align="center">Muhammad Hammad · AIOps Engineer</h2>
+<h2 align="center">Muhammad Hammad · IT Infrastructure Engineer</h2>
 
 <p align="center">
   Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration<br/>
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/terminal.svg" alt="whoami: Muhammad Hammad, AIOps Engineer in Göttingen. Focus: cloud infrastructure, DevOps and automation, network engineering, systems administration, security." width="100%" />
+  <img src="assets/terminal.svg" alt="whoami: Muhammad Hammad, IT Infrastructure Engineer in Göttingen. Focus: cloud infrastructure, DevOps and automation, network engineering, systems administration, security." width="100%" />
 </p>
 
 ## What I do
@@ -88,7 +88,7 @@ Every repository is tested in CI, and every README states what exists and what i
 ## Career
 
 <p align="center">
-  <img src="assets/timeline.svg" alt="Career timeline: IT Engineer at Kontinental Establishment since 2023; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevSecOps at University of Göttingen 2024; IT Specialist at Liberty Books, KTDMC and Target Logistics 2020–2022; IT Engineer at The Active Solutions 2019–2020; M.Sc. Data Science, University of Göttingen; B.Sc. Computational Mathematics, University of Karachi." width="100%"/>
+  <img src="assets/timeline.svg" alt="Career timeline: IT Engineer at Kontinental Establishment since 2023; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevSecOps at University of Göttingen 2024; IT Specialist at Liberty Books, KTDMC and Target Logistics 2020–2022; IT Engineer at The Active Solutions 2019–2020; M.Sc. Data Science, University of Göttingen." width="100%"/>
 </p>
 
 ## Certifications
@@ -106,5 +106,5 @@ Every repository is tested in CI, and every README states what exists and what i
 ---
 
 <p align="center">
-  <sub>Open to AIOps, cloud infrastructure and DevOps roles in Germany and remote · English (C1) · German (B1, improving)</sub>
+  <sub>Open to IT infrastructure, cloud and DevOps roles in Germany and remote · English (C1) · German (B1, improving)</sub>
 </p>

@@ -58,7 +58,7 @@ def gradient_defs(uid: str) -> str:
 
 TERMINAL = [
     ("cmd", "whoami"),
-    ("out", "Muhammad Hammad · AIOps Engineer · Göttingen, Germany"),
+    ("out", "Muhammad Hammad · IT Infrastructure Engineer · Göttingen, Germany"),
     ("cmd", "cat focus.txt"),
     ("out", "Cloud infrastructure (Azure / AWS) · DevOps & automation"),
     ("out", "Network engineering · Systems administration · Security"),
@@ -92,7 +92,7 @@ def terminal() -> None:
     cursor_y = top + line_h * len(TERMINAL)
     cursor_delay = 0.35 + len(TERMINAL) * 0.45
     svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="whoami: Muhammad Hammad, AIOps Engineer">
+<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="whoami: Muhammad Hammad, IT Infrastructure Engineer">
   <title>whoami</title>
   {gradient_defs("t")}
   <style>
@@ -233,11 +233,10 @@ def card(p: dict) -> None:
 # Career timeline
 # --------------------------------------------------------------------------
 
-START, END = 2016.0, 2027.0
+START, END = 2019.0, 2027.0
 
 # (role, organisation, start, end or None for current, colour)
 TIMELINE = [
-    ("B.Sc. Computational Mathematics", "University of Karachi", 2016.0, 2018.9, MUTED),
     ("IT Engineer", "The Active Solutions", 2019.25, 2020.2, BLUE),
     ("IT Specialist", "Target Logistics International", 2020.5, 2021.7, BLUE),
     ("IT Specialist", "KTDMC", 2021.75, 2022.4, BLUE),
@@ -281,7 +280,7 @@ def timeline() -> None:
             f"{live}</g>"
         )
     svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Career timeline from 2016 to today">
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Career timeline from 2019 to today">
   <title>Career timeline</title>
   {gradient_defs("tl")}
   <style>
@@ -299,7 +298,7 @@ def timeline() -> None:
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="url(#tl-edge)" stroke-opacity=".5"/>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#tl-glow)"/>
-  <text x="28" y="34" class="h">CAREER · 2016 → TODAY</text>
+  <text x="28" y="34" class="h">CAREER · 2019 → TODAY</text>
   <text x="{w - right}" y="34" text-anchor="end" class="lg"><tspan fill="{AMBER}">● current</tspan><tspan fill="{BLUE_SOFT}">   ● industry</tspan><tspan fill="{GREEN}">   ● research</tspan><tspan fill="{MUTED}">   ● education</tspan></text>
   {"".join(grid)}
   {"".join(rows)}
