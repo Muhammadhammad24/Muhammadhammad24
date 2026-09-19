@@ -37,5 +37,5 @@
   <rect x="1" y="1" width="878" height="58" rx="12" fill="url(#ch-halo)"/>
   <text x="28" y="35" class="cmd"><tspan fill="#b1eb21">~/certs</tspan><tspan fill="#8b949e"> $ </tspan>verify --all</text>
   <rect x="206" y="24" width="8" height="14" fill="#b1eb21" class="cur"/>
-  <text x="852" y="35" text-anchor="end" class="meta">5 credentials · <tspan fill="#b1eb21">2 verifiable on Coursera</tspan></text>
+  <text x="852" y="35" text-anchor="end" class="meta">5 credentials · 2 verifiable</text>
 </svg>

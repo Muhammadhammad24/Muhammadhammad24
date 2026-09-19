@@ -35,11 +35,11 @@
   <rect x="1" y="1" width="878" height="62" rx="12" fill="#0d1117" stroke="#30363d"/>
   <rect x="1" y="1" width="878" height="62" rx="12" fill="url(#c1-dots)"/>
   <rect x="1" y="1" width="878" height="62" rx="12" fill="url(#c1-halo)"/>
-  <defs><clipPath id="c1-btn"><rect x="656" y="15" width="196" height="34" rx="17"/></clipPath><linearGradient id="c1-shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+  <defs></defs>
   <g class="hx" style="animation-delay:0.27s"><polygon points="50.0,13.0 66.5,22.5 66.5,41.5 50.0,51.0 33.5,41.5 33.5,22.5" fill="#b1eb21" fill-opacity=".1" stroke="#b1eb21" stroke-width="1.6"/><text x="50" y="36" text-anchor="middle" class="mk" fill="#b1eb21">IBM</text></g>
   <g class="r" style="animation-delay:0.27s">
     <text x="86" y="29" class="nm">Full Stack Software Developer Assessment</text>
     <text x="86" y="47" class="is">IBM · Coursera · 2023</text>
   </g>
-  <g class="cta" style="animation-delay:0.62s"><rect x="656" y="15" width="196" height="34" rx="17" fill="none" stroke="#b1eb21" stroke-width="1.5" class="ring"/><rect x="656" y="15" width="196" height="34" rx="17" fill="#b1eb21"/><g clip-path="url(#c1-btn)"><rect x="596" y="15" width="40" height="34" fill="url(#c1-shine)" class="shine"/></g><text x="754.0" y="36.5" text-anchor="middle" class="btn" fill="#0d1117">View on Coursera ↗</text></g>
+  <rect x="756" y="18" width="96" height="28" rx="14" fill="none" stroke="#30363d"/><text x="804.0" y="36" text-anchor="middle" class="id" fill="#8b949e">verify ↗</text>
 </svg>

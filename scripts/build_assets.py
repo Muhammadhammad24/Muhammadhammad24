@@ -443,12 +443,12 @@ def certs() -> None:
 
     # header card
     h = 60
-    write("credentials/header.svg", f"""
+    write("certs/header.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
   <title>Certifications</title>{frame(h, "ch")}
   <text x="28" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>verify --all</text>
   <rect x="{28 + 22 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 28}" y="35" text-anchor="end" class="meta">{len(CERTS)} credentials · <tspan fill="{ACCENT}">{verified} verifiable on Coursera</tspan></text>
+  <text x="{w - 28}" y="35" text-anchor="end" class="meta">{len(CERTS)} credentials · {verified} verifiable</text>
 </svg>""")
 
     def hexagon(cx: float, cy: float, r: float) -> str:
@@ -467,26 +467,19 @@ def certs() -> None:
             f'<text x="{hx}" y="{yc + 4}" text-anchor="middle" class="mk" fill="{ACCENT}">{mark}</text></g>'
         )
         if cred:
-            bw, bx = 196, w - 28 - 196
+            bw, bx = 96, w - 28 - 96
             side = (
-                f'<g class="cta" style="animation-delay:{d + 0.35:.2f}s">'
-                f'<rect x="{bx}" y="{yc - 17}" width="{bw}" height="34" rx="17" fill="none" stroke="{ACCENT}" stroke-width="1.5" class="ring"/>'
-                f'<rect x="{bx}" y="{yc - 17}" width="{bw}" height="34" rx="17" fill="{ACCENT}"/>'
-                f'<g clip-path="url(#{uid}-btn)"><rect x="{bx - 60}" y="{yc - 17}" width="40" height="34" fill="url(#{uid}-shine)" class="shine"/></g>'
-                f'<text x="{bx + bw / 2}" y="{yc + 4.5}" text-anchor="middle" class="btn" fill="{BG}">View on Coursera ↗</text></g>'
+                f'<rect x="{bx}" y="{yc - 14}" width="{bw}" height="28" rx="14" fill="none" stroke="{LINE}"/>'
+                f'<text x="{bx + bw / 2}" y="{yc + 4}" text-anchor="middle" class="id" fill="{MUTED}">verify ↗</text>'
             )
-            extra = (
-                f'<clipPath id="{uid}-btn"><rect x="{bx}" y="{yc - 17}" width="{bw}" height="34" rx="17"/></clipPath>'
-                f'<linearGradient id="{uid}-shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
-                f'<stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
-            )
+            extra = ""
         else:
             side = (
                 f'<text x="{w - 28}" y="{yc + 4}" text-anchor="end" class="id" fill="{MUTED}">'
                 f'{"statement of participation" if "Open" in issuer else "certificate of completion"}</text>'
             )
             extra = ""
-        write(f"credentials/{i + 1}.svg", f"""
+        write(f"certs/{i + 1}.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
   <title>{escape(name)}</title>{frame(h, uid)}
   <defs>{extra}</defs>
