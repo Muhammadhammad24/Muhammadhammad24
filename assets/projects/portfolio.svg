@@ -22,8 +22,8 @@
   <rect x="1" y="1" width="428" height="174" rx="14" fill="#0a0d14" stroke="url(#portfolio-edge)" stroke-opacity=".6"/>
   <rect x="1" y="1" width="428" height="174" rx="14" fill="url(#portfolio-glow)"/>
   <text x="22" y="32" class="k">PERSONAL SITE</text>
-  <text x="408" y="32" text-anchor="end" class="p">● live · CI</text>
+  <text x="408" y="32" text-anchor="end" class="p">● live</text>
   <text x="22" y="58" class="t">Portfolio</text>
-  <text x="22" y="82" class="d">Animated specialisation diagrams, skills matrix,</text><text x="22" y="102" class="d">OG image and structured data.</text>
+  <text x="22" y="82" class="d">Animated specialisation diagrams, skills matrix</text><text x="22" y="102" class="d">and a work timeline, deployed on Vercel.</text>
   <rect x="22" y="128" width="91" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="67.5" y="144" text-anchor="middle" class="chip">Next.js 15</text><rect x="121" y="128" width="76" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="159.0" y="144" text-anchor="middle" class="chip">React 19</text><rect x="205" y="128" width="112" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="261.0" y="144" text-anchor="middle" class="chip">Framer Motion</text>
 </svg>

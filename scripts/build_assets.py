@@ -179,11 +179,11 @@ PROJECTS = [
         "kind": "PERSONAL SITE",
         "title": "Portfolio",
         "lines": [
-            "Animated specialisation diagrams, skills matrix,",
-            "OG image and structured data.",
+            "Animated specialisation diagrams, skills matrix",
+            "and a work timeline, deployed on Vercel.",
         ],
         "stack": ["Next.js 15", "React 19", "Framer Motion"],
-        "proof": "live · CI",
+        "proof": "live",
     },
 ]
 

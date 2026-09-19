@@ -54,7 +54,7 @@ desk on top. The repetitive parts become code: PowerShell, Python, Terraform and
   </tr>
 </table>
 
-Every repository is tested in CI, and every README states what exists and what is on the roadmap.
+Engineering repositories are tested in CI, and each README states what exists and what is on the roadmap.
 
 ## Toolbox
 
