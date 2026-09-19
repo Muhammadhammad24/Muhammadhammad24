@@ -53,7 +53,7 @@ Every public repository is tested in CI, and each README states what exists and 
 ## Toolbox
 
 <p align="center">
-  <img src="assets/tools.svg" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Hyper-V, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Entra ID, Active Directory, Intune, Autopilot, Jamf Pro, Okta, Workspace ONE, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
+  <img src="assets/stack.svg" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
 </p>
 
 ## Career

@@ -694,56 +694,55 @@ def timeline() -> None:
 # Toolbox
 # --------------------------------------------------------------------------
 # Brand logos are vendored in scripts/icons: Simple Icons (CC0) as "si-*.svg",
-# Devicon (MIT) as "dev-*.svg", and a few supplied as-is. Trademarks belong
-# to their owners. "ms" draws the Microsoft four-square mark.
+# Devicon (MIT) as "dev-*.svg", Microsoft's official Azure and Entra
+# architecture icons as "ms-*.svg", and a few supplied as-is. Trademarks belong
+# to their owners. Tiles are white so every logo keeps its own colours.
 
 ICONS = Path(__file__).resolve().parent / "icons"
 
 # (category, [(label, icon)])
 TOOLBOX = [
     ("Cloud & virtualisation", [
-        ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "si-googlecloud"),
-        ("VMware", "si-vmware"), ("Hyper-V", "ms"), ("Docker", "si-docker"), ("Kubernetes", "si-kubernetes"), ("Terraform", "si-terraform"),
+        ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "dev-googlecloud-original"),
+        ("VMware", "si-vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "dev-docker-original"),
+        ("Kubernetes", "dev-kubernetes-original"), ("Terraform", "dev-terraform-original"),
     ]),
     ("Operating systems", [
-        ("Windows", "dev-windows11-original"), ("Linux", "si-linux"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "si-redhat"),
-        ("CentOS", "si-centos"), ("macOS", "si-apple"), ("iOS", "si-ios"), ("Android", "si-android"),
+        ("Windows", "dev-windows11-original"), ("Linux", "dev-linux-original"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "dev-redhat-original"),
+        ("CentOS", "dev-centos-original"), ("macOS", "dev-apple-original"), ("iOS", "si-ios"), ("Android", "dev-android-original"),
     ]),
     ("Identity & endpoints", [
-        ("Entra ID", "ms"), ("Active Directory", "ms"), ("Intune", "ms"), ("Autopilot", "ms"),
-        ("Jamf Pro", "jamf"), ("Okta", "okta"), ("Workspace ONE", "si-vmware"), ("TeamViewer", "si-teamviewer"),
+        ("Entra ID", "ms-entra-id"), ("Active Directory", "ms-active-directory"), ("Intune", "ms-intune"), ("Defender", "ms-defender"),
+        ("Jamf Pro", "jamf"), ("Okta", "okta"), ("TeamViewer", "si-teamviewer"),
     ]),
     ("Network & security", [
         ("Cisco", "cisco"), ("Juniper", "si-junipernetworks"), ("Fortinet", "si-fortinet"), ("pfSense", "pfsense"),
         ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"),
     ]),
     ("Automation & delivery", [
-        ("PowerShell", "dev-powershell-original"), ("Python", "si-python"), ("Bash", "si-gnubash"), ("Ansible", "si-ansible"),
-        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "si-githubactions"), ("Git", "si-git"),
+        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "si-gnubash"), ("Ansible", "dev-ansible-original"),
+        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "dev-githubactions-original"), ("Git", "dev-git-original"),
     ]),
     ("Monitoring & backup", [
-        ("Splunk", "si-splunk"), ("Datadog", "si-datadog"), ("New Relic", "si-newrelic"), ("Grafana", "si-grafana"),
-        ("Prometheus", "si-prometheus"), ("Wireshark", "si-wireshark"), ("Veeam", "si-veeam"),
+        ("Splunk", "si-splunk"), ("Datadog", "dev-datadog-original"), ("New Relic", "si-newrelic"), ("Grafana", "dev-grafana-original"),
+        ("Prometheus", "dev-prometheus-original"), ("Wireshark", "si-wireshark"), ("Veeam", "si-veeam"),
     ]),
     ("Service & collaboration", [
-        ("ServiceNow", "servicenow"), ("Jira", "si-jira"), ("Confluence", "si-confluence"), ("Zendesk", "si-zendesk"),
-        ("Microsoft 365", "ms"), ("Google Workspace", "dev-google-original"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
+        ("ServiceNow", "servicenow"), ("Jira", "dev-jira-original"), ("Confluence", "dev-confluence-original"), ("Zendesk", "si-zendesk"),
+        ("Microsoft 365", "ms-365"), ("Google Workspace", "dev-google-original"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
     ]),
 ]
 
 # Simple Icons wordmarks sit small in their square; draw them larger.
 WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
-WIDE = {"cisco", "crowdstrike"}  # supplied logos that are wider than tall
+WIDE = {"cisco", "crowdstrike", "okta"}  # supplied logos that are wider than tall
 
-# Simple Icons ship one brand colour; a few are too dark for a dark card.
+# Official brand colours for the single-colour Simple Icons marks.
 SI_COLOURS = {
-    "googlecloud": "#4285F4", "terraform": "#844FBA", "ansible": "#EE0000", "docker": "#2496ED", "kubernetes": "#326CE5",
-    "vmware": "#607078", "linux": "#FCC624", "ubuntu": "#E95420", "redhat": "#EE0000", "centos": "#9CCD2A", "apple": TEXT,
-    "ios": TEXT, "android": "#3DDC84", "junipernetworks": "#84B135", "fortinet": "#EE3124",
-    "sonicwall": "#FF791A", "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": TEXT,
-    "datadog": "#8F5BD6", "newrelic": "#1CE783", "grafana": "#F46800", "prometheus": "#E6522C", "veeam": "#00B336",
-    "jira": "#2684FF", "confluence": "#2684FF", "zendesk": TEXT, "zoom": "#0B5CFF", "python": "#3776AB", "gnubash": "#4EAA25",
-    "chocolatey": "#80B5E3", "githubactions": "#2088FF", "git": "#F03C2E", "yaml": "#CB171E", "teamviewer": "#0E8EE9",
+    "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#FF791A",
+    "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": "#000000", "newrelic": "#1CE783", "veeam": "#00B336",
+    "zendesk": "#03363D", "zoom": "#0B5CFF", "gnubash": "#4EAA25", "chocolatey": "#80B5E3", "yaml": "#CB171E",
+    "teamviewer": "#050A52", "ubuntu": "#E95420",
 }
 
 
@@ -803,7 +802,7 @@ def toolbox() -> None:
                 logo = f'<text x="{tx + tile / 2:.1f}" y="{y + 28}" text-anchor="middle" class="mono">{escape(label[:2])}</text>'
             rows.append(
                 f'<g class="tile" style="animation-delay:{d:.2f}s">'
-                f'<rect x="{tx:.1f}" y="{y}" width="{tile}" height="{tile - 4}" rx="10" fill="{PANEL}" stroke="{LINE}"/>'
+                f'<rect x="{tx:.1f}" y="{y}" width="{tile}" height="{tile - 4}" rx="10" fill="#ffffff" stroke="{LINE}"/>'
                 f"{logo}"
                 + "".join(
                     f'<text x="{tx + tile / 2:.1f}" y="{y + tile + 12 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
@@ -846,7 +845,7 @@ def toolbox() -> None:
   <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{LINE}"/>
   {"".join(rows)}
 </svg>"""
-    write("tools.svg", svg)
+    write("stack.svg", svg)
 
 
 if __name__ == "__main__":
