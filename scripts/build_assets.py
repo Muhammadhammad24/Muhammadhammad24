@@ -711,11 +711,11 @@ TOOLBOX = [
     ]),
     ("Identity & endpoints", [
         ("Entra ID", "ms"), ("Active Directory", "ms"), ("Intune", "ms"), ("Autopilot", "ms"),
-        ("Jamf Pro", "jamf"), ("Okta", "si-okta"), ("Workspace ONE", "si-vmware"), ("TeamViewer", "si-teamviewer"),
+        ("Jamf Pro", "jamf"), ("Okta", "okta"), ("Workspace ONE", "si-vmware"), ("TeamViewer", "si-teamviewer"),
     ]),
     ("Network & security", [
-        ("Cisco", "si-cisco"), ("Juniper", "si-junipernetworks"), ("Fortinet", "si-fortinet"), ("pfSense", "si-pfsense"),
-        ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"), ("Wireshark", "si-wireshark"),
+        ("Cisco", "cisco"), ("Juniper", "si-junipernetworks"), ("Fortinet", "si-fortinet"), ("pfSense", "pfsense"),
+        ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"),
     ]),
     ("Automation & delivery", [
         ("PowerShell", "dev-powershell-original"), ("Python", "si-python"), ("Bash", "si-gnubash"), ("Ansible", "si-ansible"),
@@ -723,23 +723,24 @@ TOOLBOX = [
     ]),
     ("Monitoring & backup", [
         ("Splunk", "si-splunk"), ("Datadog", "si-datadog"), ("New Relic", "si-newrelic"), ("Grafana", "si-grafana"),
-        ("Prometheus", "si-prometheus"), ("SolarWinds", "solarwinds"), ("Veeam", "si-veeam"), ("Acronis", "acronis"),
+        ("Prometheus", "si-prometheus"), ("Wireshark", "si-wireshark"), ("Veeam", "si-veeam"),
     ]),
     ("Service & collaboration", [
         ("ServiceNow", "servicenow"), ("Jira", "si-jira"), ("Confluence", "si-confluence"), ("Zendesk", "si-zendesk"),
-        ("Microsoft 365", "ms"), ("Google Workspace", "googleworkspace"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
+        ("Microsoft 365", "ms"), ("Google Workspace", "dev-google-original"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
     ]),
 ]
 
 # Simple Icons wordmarks sit small in their square; draw them larger.
-WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom", "cisco"}
+WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
+WIDE = {"cisco", "crowdstrike"}  # supplied logos that are wider than tall
 
 # Simple Icons ship one brand colour; a few are too dark for a dark card.
 SI_COLOURS = {
     "googlecloud": "#4285F4", "terraform": "#844FBA", "ansible": "#EE0000", "docker": "#2496ED", "kubernetes": "#326CE5",
     "vmware": "#607078", "linux": "#FCC624", "ubuntu": "#E95420", "redhat": "#EE0000", "centos": "#9CCD2A", "apple": TEXT,
-    "ios": TEXT, "android": "#3DDC84", "okta": "#007DC1", "cisco": "#1BA0D7", "junipernetworks": "#84B135", "fortinet": "#EE3124",
-    "pfsense": TEXT, "sonicwall": "#FF791A", "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": TEXT,
+    "ios": TEXT, "android": "#3DDC84", "junipernetworks": "#84B135", "fortinet": "#EE3124",
+    "sonicwall": "#FF791A", "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": TEXT,
     "datadog": "#8F5BD6", "newrelic": "#1CE783", "grafana": "#F46800", "prometheus": "#E6522C", "veeam": "#00B336",
     "jira": "#2684FF", "confluence": "#2684FF", "zendesk": TEXT, "zoom": "#0B5CFF", "python": "#3776AB", "gnubash": "#4EAA25",
     "chocolatey": "#80B5E3", "githubactions": "#2088FF", "git": "#F03C2E", "yaml": "#CB171E", "teamviewer": "#0E8EE9",
@@ -794,7 +795,7 @@ def toolbox() -> None:
         for c, (label, icon) in enumerate(items):
             tx = label_w + c * step + (step - tile) / 2
             d = 0.2 + r * 0.08 + c * 0.04
-            if icon[3:] in WORDMARKS or icon.endswith("wordmark"):
+            if icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
                 logo = _logo(icon, tx + 4, y + 2, 38, f"i{r}{c}")
             else:
                 logo = _logo(icon, tx + 11, y + 9, 24, f"i{r}{c}")
