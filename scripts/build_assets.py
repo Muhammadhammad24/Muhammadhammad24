@@ -705,7 +705,7 @@ ICONS = Path(__file__).resolve().parent / "icons"
 TOOLBOX = [
     ("Cloud & virtualisation", [
         ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "dev-googlecloud-original"),
-        ("VMware", "si-vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "si-docker"),
+        ("VMware", "vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "si-docker"),
         ("Kubernetes", "dev-kubernetes-original"), ("Terraform", "terraform"),
     ]),
     ("Operating systems", [
@@ -722,11 +722,11 @@ TOOLBOX = [
     ]),
     ("Automation & delivery", [
         ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "bash"), ("Ansible", "si-ansible"),
-        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "dev-githubactions-original"), ("Git", "dev-git-original"),
+        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "si-githubactions"), ("Git", "dev-git-original"),
     ]),
     ("Monitoring & backup", [
         ("Splunk", "si-splunk"), ("Datadog", "datadog"), ("New Relic", "si-newrelic"), ("Grafana", "dev-grafana-original"),
-        ("Prometheus", "dev-prometheus-original"), ("Wireshark", "si-wireshark"), ("Veeam", "si-veeam"),
+        ("Prometheus", "dev-prometheus-original"), ("Wireshark", "wireshark"), ("Veeam", "veeam"),
     ]),
     ("Service & collaboration", [
         ("ServiceNow", "servicenow"), ("Jira", "dev-jira-original"), ("Confluence", "confluence"), ("Zendesk", "si-zendesk"),
@@ -741,7 +741,7 @@ KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark 
 
 # Official brand colours for the single-colour Simple Icons marks.
 SI_COLOURS = {
-    "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#FF791A",
+    "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#000000", "githubactions": "#2088FF",
     "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": "#000000", "newrelic": "#1CE783", "veeam": "#00B336",
     "zendesk": "#03363D", "zoom": "#0B5CFF", "docker": "#1D63ED", "android": "#34A853", "chocolatey": "#80B5E3", "yaml": "#CB171E",
     "teamviewer": "#050A52", "ubuntu": "#E95420", "ansible": "#EE0000",
@@ -849,7 +849,7 @@ def toolbox() -> None:
   <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
   {"".join(rows)}
 </svg>"""
-        write(f"logos-{mode}.svg", svg)
+        write(f"brands-{mode}.svg", svg)
 
 
 if __name__ == "__main__":
