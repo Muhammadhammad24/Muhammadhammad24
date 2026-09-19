@@ -88,13 +88,13 @@ Every public repository is tested in CI, and each README states what exists and 
 ## Certifications
 
 <p align="center">
-  <img src="assets/certs.svg" alt="Certifications: System Administration and IT Infrastructure Services, Google on Coursera, 2025, verified; Full Stack Software Developer Assessment, IBM on Coursera, 2023, verified; Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023; Successful IT Systems, The Open University, 2023; Information Security Basics for IT Support Technicians, Udemy, 2022; plus 20 completed courses." width="100%"/>
+  <img src="assets/certificates.svg" alt="Certifications: System Administration and IT Infrastructure Services, Google on Coursera, 2025, verified; Full Stack Software Developer Assessment, IBM on Coursera, 2023, verified; Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023; Successful IT Systems, The Open University, 2023; Information Security Basics for IT Support Technicians, Udemy, 2022; plus 20 completed courses." width="100%"/>
 </p>
 
-<p align="center">
-  <a href="https://coursera.org/verify/29N5ZLK6BVWW"><img src="https://img.shields.io/badge/✓_Verify-Google_·_System_Administration-161b22?style=for-the-badge&logo=coursera&logoColor=b1eb21&labelColor=0d1117&color=161b22" alt="Verify Google System Administration on Coursera"/></a>
-  <a href="https://coursera.org/verify/74NSF2JALFZV"><img src="https://img.shields.io/badge/✓_Verify-IBM_·_Full_Stack-161b22?style=for-the-badge&logo=coursera&logoColor=b1eb21&labelColor=0d1117&color=161b22" alt="Verify IBM Full Stack on Coursera"/></a>
-</p>
+| Verify online | Credential |
+| --- | --- |
+| **[coursera.org/verify/29N5ZLK6BVWW](https://coursera.org/verify/29N5ZLK6BVWW)** | System Administration and IT Infrastructure Services · Google |
+| **[coursera.org/verify/74NSF2JALFZV](https://coursera.org/verify/74NSF2JALFZV)** | Full Stack Software Developer Assessment · IBM |
 
 ---
 

@@ -440,7 +440,6 @@ def certs() -> None:
             f"{status}</g>"
         )
 
-    band_top, band_bot = top - 30, top + row_h * (n - 1) + 30
     fy = h - 28
     svg = f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
@@ -448,8 +447,6 @@ def certs() -> None:
   <defs>
     <pattern id="c-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
     <radialGradient id="c-halo" cx="0.04" cy="0.1" r="0.6"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".08"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-    <linearGradient id="c-scan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{ACCENT}" stop-opacity="0"/><stop offset=".85" stop-color="{ACCENT}" stop-opacity=".07"/><stop offset="1" stop-color="{ACCENT}" stop-opacity=".45"/></linearGradient>
-    <clipPath id="c-clip"><rect x="20" y="{band_top}" width="{w - 40}" height="{band_bot - band_top}"/></clipPath>
     <filter id="c-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
   <style>
@@ -466,14 +463,12 @@ def certs() -> None:
     .r {{ animation: rin .55s ease-out both; }}
     .hx {{ transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }}
     .tick {{ stroke-dasharray: 10; animation: tick .5s ease-out both; }}
-    .scan {{ animation: scan 4.5s ease-in-out 1.4s infinite; }}
     .cur {{ animation: blink 1.05s steps(1) infinite; }}
     @keyframes rin {{ from {{ opacity: 0; transform: translateX(-12px); }} }}
     @keyframes spin {{ from {{ opacity: 0; transform: rotate(-90deg) scale(.4); }} }}
     @keyframes tick {{ from {{ stroke-dashoffset: 10; }} to {{ stroke-dashoffset: 0; }} }}
-    @keyframes scan {{ from {{ transform: translateY(-80px); }} to {{ transform: translateY({band_bot - band_top}px); }} }}
     @keyframes blink {{ 50% {{ opacity: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} .scan {{ display: none; }} }}
+    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#c-dots)"/>
@@ -482,12 +477,11 @@ def certs() -> None:
   <rect x="{28 + 22 * 7.8 + 6:.0f}" y="29" width="8" height="14" fill="{ACCENT}" class="cur"/>
   <text x="{w - 30}" y="40" text-anchor="end" class="meta"><tspan fill="{ACCENT}">{verified} publicly verifiable</tspan> · {n} credentials</text>
   <line x1="28" y1="58" x2="{w - 28}" y2="58" stroke="{LINE}"/>
-  <g clip-path="url(#c-clip)"><rect x="20" y="{band_top}" width="{w - 40}" height="80" fill="url(#c-scan)" class="scan" opacity="0"><set attributeName="opacity" to="1" begin="1.4s"/></rect></g>
   {"".join(rows)}
   <line x1="28" y1="{fy - 22}" x2="{w - 28}" y2="{fy - 22}" stroke="{LINE}" stroke-dasharray="3 5"/>
   <text x="28" y="{fy}" class="foot"><tspan fill="{ACCENT}">+ 20</tspan> completed courses in Python, data science, machine learning, SQL and software development</text>
 </svg>"""
-    write("certs.svg", svg)
+    write("certificates.svg", svg)
 
 
 # --------------------------------------------------------------------------
