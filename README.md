@@ -88,12 +88,12 @@ Every public repository is tested in CI, and each README states what exists and 
 ## Certifications
 
 <p align="center">
-  <img src="assets/certificates/header.svg" alt="Certifications: 2 publicly verifiable, 5 credentials" width="100%"/><br/>
-  <a href="https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW"><img src="assets/certificates/1.svg" alt="System Administration and IT Infrastructure Services, Google on Coursera, 2025. Click to verify." width="100%"/></a><br/>
-  <a href="https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV"><img src="assets/certificates/2.svg" alt="Full Stack Software Developer Assessment, IBM on Coursera, 2023. Click to verify." width="100%"/></a><br/>
-  <img src="assets/certificates/3.svg" alt="Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023." width="100%"/><br/>
-  <img src="assets/certificates/4.svg" alt="Successful IT Systems, The Open University, 2023." width="100%"/><br/>
-  <img src="assets/certificates/5.svg" alt="Information Security Basics for IT Support Technicians, Udemy, 2022." width="100%"/>
+  <img src="assets/credentials/header.svg" alt="Certifications: 2 publicly verifiable, 5 credentials" width="100%"/><br/>
+  <a href="https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW"><img src="assets/credentials/1.svg" alt="System Administration and IT Infrastructure Services, Google on Coursera, 2025. View on Coursera." width="100%"/></a><br/>
+  <a href="https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV"><img src="assets/credentials/2.svg" alt="Full Stack Software Developer Assessment, IBM on Coursera, 2023. View on Coursera." width="100%"/></a><br/>
+  <img src="assets/credentials/3.svg" alt="Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023." width="100%"/><br/>
+  <img src="assets/credentials/4.svg" alt="Successful IT Systems, The Open University, 2023." width="100%"/><br/>
+  <img src="assets/credentials/5.svg" alt="Information Security Basics for IT Support Technicians, Udemy, 2022." width="100%"/>
 </p>
 
 <sub>Also 20+ completed courses in Python, data science, machine learning, SQL and software development.</sub>

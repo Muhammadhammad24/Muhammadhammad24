@@ -416,6 +416,13 @@ def certs() -> None:
     .hx {{ transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }}
     .tick {{ stroke-dasharray: 10; animation: tick .5s ease-out both; }}
     .cur {{ animation: blink 1.05s steps(1) infinite; }}
+    .btn {{ font-family: {MONO}; font-size: 12px; font-weight: 700; }}
+    .cta {{ transform-box: fill-box; transform-origin: center; animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }}
+    .ring {{ transform-box: fill-box; transform-origin: center; animation: ring 2.2s ease-out 1.2s infinite; }}
+    .shine {{ animation: shine 2.8s ease-in-out 1s infinite; }}
+    @keyframes pop {{ from {{ opacity: 0; transform: scale(.7); }} }}
+    @keyframes ring {{ from {{ opacity: .8; transform: scale(1); }} to {{ opacity: 0; transform: scale(1.12, 1.45); }} }}
+    @keyframes shine {{ 0% {{ transform: translateX(0); }} 60%, 100% {{ transform: translateX(300px); }} }}
     @keyframes rin {{ from {{ opacity: 0; transform: translateX(-12px); }} }}
     @keyframes spin {{ from {{ opacity: 0; transform: rotate(-90deg) scale(.4); }} }}
     @keyframes tick {{ from {{ stroke-dashoffset: 10; }} to {{ stroke-dashoffset: 0; }} }}
@@ -423,25 +430,25 @@ def certs() -> None:
     @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
   </style>"""
 
-    def frame(h: int, uid: str, glow: bool = False) -> str:
+    def frame(h: int, uid: str) -> str:
         return f"""
   <defs>
     <pattern id="{uid}-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
-    <radialGradient id="{uid}-halo" cx="0.04" cy="0.2" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity="{'.09' if glow else '.05'}"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+    <radialGradient id="{uid}-halo" cx="0.04" cy="0.2" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".06"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
     <filter id="{uid}-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>{style}
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="{BG}" stroke="{ACCENT if glow else LINE}" stroke-opacity="{'.45' if glow else '1'}"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="{BG}" stroke="{LINE}"/>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#{uid}-dots)"/>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#{uid}-halo)"/>"""
 
     # header card
     h = 60
-    write("certificates/header.svg", f"""
+    write("credentials/header.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
   <title>Certifications</title>{frame(h, "ch")}
   <text x="28" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>verify --all</text>
   <rect x="{28 + 22 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 28}" y="35" text-anchor="end" class="meta"><tspan fill="{ACCENT}">{verified} publicly verifiable · click to verify</tspan> · {len(CERTS)} credentials</text>
+  <text x="{w - 28}" y="35" text-anchor="end" class="meta">{len(CERTS)} credentials · <tspan fill="{ACCENT}">{verified} verifiable on Coursera</tspan></text>
 </svg>""")
 
     def hexagon(cx: float, cy: float, r: float) -> str:
@@ -452,36 +459,43 @@ def certs() -> None:
     h, yc, hx = 64, 32, 50
     for i, (name, issuer, year, mark, cred) in enumerate(CERTS):
         uid = f"c{i}"
-        ok = cred is not None
         d = 0.15 + i * 0.12
-        glow = f' filter="url(#{uid}-glow)"' if ok else ""
+        # Every credential gets the same card and badge; a public link is an extra.
         badge = (
             f'<g class="hx" style="animation-delay:{d:.2f}s">'
-            f'<polygon points="{hexagon(hx, yc, 19)}" fill="{ACCENT if ok else BG}" fill-opacity="{".14" if ok else "1"}" stroke="{ACCENT if ok else LINE}" stroke-width="1.6"{glow}/>'
-            f'<text x="{hx}" y="{yc + 4}" text-anchor="middle" class="mk" fill="{ACCENT if ok else MUTED}">{mark}</text></g>'
+            f'<polygon points="{hexagon(hx, yc, 19)}" fill="{ACCENT}" fill-opacity=".1" stroke="{ACCENT}" stroke-width="1.6"/>'
+            f'<text x="{hx}" y="{yc + 4}" text-anchor="middle" class="mk" fill="{ACCENT}">{mark}</text></g>'
         )
-        if ok:
-            status = (
-                f'<rect x="{w - 28 - 118}" y="{yc - 20}" width="118" height="22" rx="11" fill="{ACCENT}" fill-opacity=".12" stroke="{ACCENT}" stroke-opacity=".7"/>'
-                f'<path d="M{w - 28 - 104},{yc - 9} l4,4 l8,-8" fill="none" stroke="{ACCENT}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="10" class="tick" style="animation-delay:{d + 0.4:.2f}s"/>'
-                f'<text x="{w - 28 - 50}" y="{yc - 5}" text-anchor="middle" class="st" fill="{ACCENT}">verify ↗</text>'
-                f'<text x="{w - 28}" y="{yc + 17}" text-anchor="end" class="id" fill="{ACCENT}" fill-opacity=".8">coursera.org/verify/{cred}</text>'
+        if cred:
+            bw, bx = 196, w - 28 - 196
+            side = (
+                f'<g class="cta" style="animation-delay:{d + 0.35:.2f}s">'
+                f'<rect x="{bx}" y="{yc - 17}" width="{bw}" height="34" rx="17" fill="none" stroke="{ACCENT}" stroke-width="1.5" class="ring"/>'
+                f'<rect x="{bx}" y="{yc - 17}" width="{bw}" height="34" rx="17" fill="{ACCENT}"/>'
+                f'<g clip-path="url(#{uid}-btn)"><rect x="{bx - 60}" y="{yc - 17}" width="40" height="34" fill="url(#{uid}-shine)" class="shine"/></g>'
+                f'<text x="{bx + bw / 2}" y="{yc + 4.5}" text-anchor="middle" class="btn" fill="{BG}">View on Coursera ↗</text></g>'
+            )
+            extra = (
+                f'<clipPath id="{uid}-btn"><rect x="{bx}" y="{yc - 17}" width="{bw}" height="34" rx="17"/></clipPath>'
+                f'<linearGradient id="{uid}-shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/>'
+                f'<stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
             )
         else:
-            status = (
-                f'<rect x="{w - 28 - 118}" y="{yc - 20}" width="118" height="22" rx="11" fill="none" stroke="{LINE}"/>'
-                f'<text x="{w - 28 - 59}" y="{yc - 5}" text-anchor="middle" class="st" fill="{MUTED}">on file</text>'
-                f'<text x="{w - 28}" y="{yc + 17}" text-anchor="end" class="id" fill="{MUTED}">{"statement of participation" if "Open" in issuer else "certificate of completion"}</text>'
+            side = (
+                f'<text x="{w - 28}" y="{yc + 4}" text-anchor="end" class="id" fill="{MUTED}">'
+                f'{"statement of participation" if "Open" in issuer else "certificate of completion"}</text>'
             )
-        write(f"certificates/{i + 1}.svg", f"""
+            extra = ""
+        write(f"credentials/{i + 1}.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
-  <title>{escape(name)}</title>{frame(h, uid, ok)}
+  <title>{escape(name)}</title>{frame(h, uid)}
+  <defs>{extra}</defs>
   {badge}
   <g class="r" style="animation-delay:{d:.2f}s">
     <text x="{hx + 36}" y="{yc - 3}" class="nm">{escape(name)}</text>
     <text x="{hx + 36}" y="{yc + 15}" class="is">{escape(issuer)} · {year}</text>
-    {status}
   </g>
+  {side}
 </svg>""")
 
 
