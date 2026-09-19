@@ -93,8 +93,8 @@ Every public repository is tested in CI, and each README states what exists and 
 
 | Verify online | Credential |
 | --- | --- |
-| **[coursera.org/verify/29N5ZLK6BVWW](https://coursera.org/verify/29N5ZLK6BVWW)** | System Administration and IT Infrastructure Services · Google |
-| **[coursera.org/verify/74NSF2JALFZV](https://coursera.org/verify/74NSF2JALFZV)** | Full Stack Software Developer Assessment · IBM |
+| **[coursera.org/verify/29N5ZLK6BVWW](https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW)** | System Administration and IT Infrastructure Services · Google |
+| **[coursera.org/verify/74NSF2JALFZV](https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV)** | Full Stack Software Developer Assessment · IBM |
 
 ---
 
