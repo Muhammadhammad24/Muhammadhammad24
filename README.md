@@ -27,15 +27,9 @@ stack: identity (Active Directory, Entra ID, Okta), endpoints (Intune, Autopilot
 networks (Cisco, Juniper, pfSense, VPN), cloud (Azure, AWS) and the service
 desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines.
 
-**Selected impact**
-
-| Outcome | Where |
-| --- | --- |
-| **25 hours a week** of onboarding, provisioning and patching automated (PowerShell, Python, Power Automate) | Kontinental Establishment |
-| **75% faster** device setup for 180+ macOS, Windows and iOS endpoints across 12 locations (Intune, Autopilot, Jamf) | Kontinental Establishment |
-| **4 hours → 35 minutes** deployment time for ML infrastructure with Docker and CI/CD | University of Göttingen |
-| **85% fewer vulnerabilities** through automated security scanning and pre-commit gates | University of Göttingen |
-| **265+ government endpoints** at 100% patch compliance; provisioning cut from 2 h to 20 min | KTDMC |
+<p align="center">
+  <img src="assets/impact.svg" alt="Selected impact: 25 hours a week of onboarding, provisioning and patching automated at Kontinental Establishment; 75% faster device setup for 180+ endpoints across 12 locations at Kontinental Establishment; ML infrastructure deployment cut from 4 hours to 35 minutes at the University of Göttingen; 85% fewer vulnerabilities through automated scanning gates at the University of Göttingen; 265+ government endpoints at 100% patch compliance at KTDMC." width="100%"/>
+</p>
 
 ## Featured work
 
@@ -88,7 +82,7 @@ Every public repository is tested in CI, and each README states what exists and 
 ## Career
 
 <p align="center">
-  <img src="assets/timeline.svg" alt="Career, newest first: IT Engineer at Kontinental Establishment since 2023; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevSecOps Intern, Scientific Computing, University of Göttingen 2022–2023; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
+  <img src="assets/timeline.svg" alt="Career, newest first, all roles full-time except the internship: IT Engineer at Kontinental Establishment since 2023; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer at TestSolutions GmbH 2023–2024; DevSecOps and Scientific Computing internship, University of Göttingen 2022–2023; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
 </p>
 
 ## Certifications

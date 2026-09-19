@@ -1,24 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="430" height="176" viewBox="0 0 430 176" role="img" aria-label="nnapprox">
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="236" viewBox="0 0 430 236" role="img" aria-label="nnapprox">
   <title>nnapprox</title>
   
   <defs>
-    <linearGradient id="nnapprox-edge"><stop offset="0" stop-color="#30363d"/></linearGradient>
-    <linearGradient id="nnapprox-glow"><stop offset="0" stop-color="#0d1117" stop-opacity="0"/></linearGradient>
+    <pattern id="nnapprox-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#30363d" opacity=".5"/></pattern>
+    <radialGradient id="nnapprox-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="#b1eb21" stop-opacity=".08"/><stop offset="1" stop-color="#b1eb21" stop-opacity="0"/></radialGradient>
+    <filter id="nnapprox-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
   <style>
     text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
-    .k { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; letter-spacing: 1.4px; fill: #8b949e; }
+    .k, .t, .chip, .p, .nd { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    .k { font-size: 10.5px; letter-spacing: 1.4px; fill: #8b949e; }
     .t { font-size: 20px; fill: #e6edf3; font-weight: 700; }
-    .d { font-size: 13px; fill: #8b949e; }
-    .t { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
-    .chip { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11.5px; fill: #e6edf3; }
-    .p { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #b1eb21; }
+    .d { font-size: 12.5px; fill: #8b949e; }
+    .chip { font-size: 11px; fill: #e6edf3; }
+    .p { font-size: 11px; fill: #b1eb21; }
+    .nd { font-size: 10.5px; }
+    .led { animation: led 1.8s ease-in-out infinite; }
+    .node, .chipg { animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }
+    .wire { stroke-dasharray: 4 5; animation: flow .9s linear infinite; }
+    .drawn { stroke-dasharray: 100; animation: draw 1.6s ease-out .3s both; }
+    @keyframes led { 50% { opacity: .25; } }
+    @keyframes pop { from { opacity: 0; transform: scale(.6); } }
+    @keyframes flow { to { stroke-dashoffset: -9; } }
+    @keyframes draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
-  <rect x="0.5" y="0.5" width="429" height="175" rx="10" fill="#0d1117" stroke="#30363d"/>
-  <rect x="0.5" y="22" width="3" height="40" fill="#b1eb21"/>
-  <text x="22" y="32" class="k">AI RESEARCH</text>
-  <text x="408" y="32" text-anchor="end" class="p">33 tests</text>
-  <text x="22" y="58" class="t">nnapprox</text>
-  <text x="22" y="82" class="d">Deep ReLU network approximation: closed-form</text><text x="22" y="102" class="d">constructions against greedy growing axons.</text>
-  <rect x="22" y="128" width="69" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="56.5" y="144" text-anchor="middle" class="chip">PyTorch</text><rect x="99" y="128" width="55" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="126.5" y="144" text-anchor="middle" class="chip">NumPy</text><rect x="162" y="128" width="62" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="193.0" y="144" text-anchor="middle" class="chip">Python</text>
+  <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="#0d1117" stroke="#30363d"/>
+  <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#nnapprox-dots)"/>
+  <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#nnapprox-halo)"/>
+  <circle cx="26" cy="28" r="3.5" fill="#b1eb21" class="led"/>
+  <text x="38" y="32" class="k">AI RESEARCH</text>
+  <text x="408" y="32" text-anchor="end" class="p">33 tests · O(n⁻²)</text>
+  <text x="22" y="64" class="t">nnapprox</text>
+  <text x="22" y="88" class="d">Deep ReLU network approximation: closed-form</text><text x="22" y="107" class="d">constructions against greedy growing axons.</text>
+  <rect x="16" y="124" width="398" height="58" rx="9" fill="#161b22" fill-opacity=".55" stroke="#30363d" stroke-dasharray="2 4"/>
+  <path d="M34.0,148.0 L37.6,145.9 L41.3,143.8 L45.0,141.9 L48.6,140.3 L52.2,138.9 L55.9,137.9 L59.5,137.2 L63.2,136.9 L66.8,136.9 L70.5,137.3 L74.2,137.9 L77.8,138.8 L81.5,139.8 L85.1,141.0 L88.8,142.3 L92.4,143.5 L96.0,144.7 L99.7,145.8 L103.3,146.7 L107.0,147.5 L110.7,148.1 L114.3,148.5 L117.9,148.8 L121.6,148.9 L125.2,148.9 L128.9,148.8 L132.6,148.8 L136.2,148.8 L139.8,148.9 L143.5,149.2 L147.2,149.7 L150.8,150.3 L154.4,151.2 L158.1,152.4 L161.8,153.8 L165.4,155.4 L169.1,157.1 L172.7,159.0 L176.3,160.9 L180.0,162.8 L183.6,164.6 L187.3,166.3 L190.9,167.8 L194.6,169.0 L198.2,169.8 L201.9,170.4 L205.6,170.6 L209.2,170.4 L212.9,169.8 L216.5,168.9 L220.1,167.8 L223.8,166.3 L227.4,164.8 L231.1,163.1 L234.8,161.3 L238.4,159.6 L242.1,157.9 L245.7,156.4 L249.4,155.1 L253.0,153.9 L256.6,153.0 L260.3,152.3 L263.9,151.8 L267.6,151.5 L271.2,151.3 L274.9,151.3 L278.6,151.2 L282.2,151.2 L285.9,151.1 L289.5,151.0 L293.1,150.6 L296.8,150.1 L300.4,149.4 L304.1,148.6 L307.8,147.5 L311.4,146.2 L315.1,144.9 L318.7,143.4 L322.4,142.0 L326.0,140.5" fill="none" stroke="#8b949e" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="2 3"/><path d="M34.0,148.0 L70.5,137.3 L107.0,147.5 L143.5,149.2 L180.0,162.8 L216.5,168.9 L253.0,153.9 L289.5,151.0 L326.0,140.5" fill="none" stroke="#b1eb21" stroke-width="2" pathLength="100" class="drawn" filter="url(#nnapprox-glow)"/><circle cx="34.0" cy="148.0" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:0.90s"/><circle cx="70.5" cy="137.3" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:0.98s"/><circle cx="107.0" cy="147.5" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.06s"/><circle cx="143.5" cy="149.2" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.14s"/><circle cx="180.0" cy="162.8" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.22s"/><circle cx="216.5" cy="168.9" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.30s"/><circle cx="253.0" cy="153.9" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.38s"/><circle cx="289.5" cy="151.0" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.46s"/><circle cx="326.0" cy="140.5" r="2.6" fill="#0d1117" stroke="#b1eb21" stroke-width="1.5" class="node" style="animation-delay:1.54s"/><text x="396" y="147" text-anchor="end" class="nd" fill="#8b949e">f(x)</text><text x="396" y="165" text-anchor="end" class="nd" fill="#b1eb21">ReLU net</text>
+  <g class="chipg" style="animation-delay:0.60s"><rect x="22" y="194" width="69" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="56.5" y="210" text-anchor="middle" class="chip">PyTorch</text></g><g class="chipg" style="animation-delay:0.68s"><rect x="99" y="194" width="55" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="126.5" y="210" text-anchor="middle" class="chip">NumPy</text></g><g class="chipg" style="animation-delay:0.76s"><rect x="162" y="194" width="62" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="193.0" y="210" text-anchor="middle" class="chip">Python</text></g>
 </svg>

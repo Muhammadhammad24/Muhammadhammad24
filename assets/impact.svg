@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="214" viewBox="0 0 880 214" role="img" aria-label="Selected impact">
+  <title>Selected impact</title>
+  <defs>
+    <pattern id="i-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#30363d" opacity=".55"/></pattern>
+    <radialGradient id="i-halo" cx="0.5" cy="0" r="0.7"><stop offset="0" stop-color="#b1eb21" stop-opacity=".07"/><stop offset="1" stop-color="#b1eb21" stop-opacity="0"/></radialGradient>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+    .cmd, .m, .wh, .meta { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    .cmd { font-size: 13px; fill: #e6edf3; }
+    .meta { font-size: 11px; fill: #8b949e; }
+    .m { font-size: 25px; font-weight: 700; fill: #b1eb21; }
+    .lb { font-size: 11.5px; fill: #e6edf3; opacity: .85; }
+    .wh { font-size: 9.5px; letter-spacing: 1.3px; fill: #8b949e; }
+    .tile { animation: up .55s ease-out both; }
+    .bar { transform-box: fill-box; transform-origin: left; animation: grow .8s ease-out both; }
+    .cur { animation: blink 1.05s steps(1) infinite; }
+    @keyframes up { from { opacity: 0; transform: translateY(10px); } }
+    @keyframes grow { from { transform: scaleX(0); } }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <rect x="1" y="1" width="878" height="212" rx="14" fill="#0d1117" stroke="#30363d"/>
+  <rect x="1" y="1" width="878" height="212" rx="14" fill="url(#i-dots)"/>
+  <rect x="1" y="1" width="878" height="212" rx="14" fill="url(#i-halo)"/>
+  <text x="28" y="38" class="cmd"><tspan fill="#b1eb21">~/impact</tspan><tspan fill="#8b949e"> $ </tspan>cat outcomes.log</text>
+  <rect x="245" y="27" width="8" height="14" fill="#b1eb21" class="cur"/>
+  <text x="850" y="38" text-anchor="end" class="meta">measured in production</text>
+  <g class="tile" style="animation-delay:0.20s"><rect x="28.0" y="64" width="156.8" height="126" rx="10" fill="#161b22" fill-opacity=".7" stroke="#30363d"/><rect x="42.0" y="64" width="128.8" height="2" fill="#b1eb21" class="bar" style="animation-delay:0.45s"/><text x="42.0" y="108" class="m">25 h/wk</text><text x="42.0" y="134" class="lb">onboarding, provisioning</text><text x="42.0" y="150" class="lb">and patching automated</text><text x="42.0" y="176" class="wh">KONTINENTAL</text></g><g class="tile" style="animation-delay:0.33s"><rect x="194.8" y="64" width="156.8" height="126" rx="10" fill="#161b22" fill-opacity=".7" stroke="#30363d"/><rect x="208.8" y="64" width="128.8" height="2" fill="#b1eb21" class="bar" style="animation-delay:0.58s"/><text x="208.8" y="108" class="m">−75%</text><text x="208.8" y="134" class="lb">device setup time on</text><text x="208.8" y="150" class="lb">180+ endpoints, 12 sites</text><text x="208.8" y="176" class="wh">KONTINENTAL</text></g><g class="tile" style="animation-delay:0.46s"><rect x="361.6" y="64" width="156.8" height="126" rx="10" fill="#161b22" fill-opacity=".7" stroke="#30363d"/><rect x="375.6" y="64" width="128.8" height="2" fill="#b1eb21" class="bar" style="animation-delay:0.71s"/><text x="375.6" y="108" class="m">4h→35m</text><text x="375.6" y="134" class="lb">ML infrastructure</text><text x="375.6" y="150" class="lb">deploys through CI/CD</text><text x="375.6" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile" style="animation-delay:0.59s"><rect x="528.4" y="64" width="156.8" height="126" rx="10" fill="#161b22" fill-opacity=".7" stroke="#30363d"/><rect x="542.4" y="64" width="128.8" height="2" fill="#b1eb21" class="bar" style="animation-delay:0.84s"/><text x="542.4" y="108" class="m">−85%</text><text x="542.4" y="134" class="lb">vulnerabilities, through</text><text x="542.4" y="150" class="lb">automated scan gates</text><text x="542.4" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile" style="animation-delay:0.72s"><rect x="695.2" y="64" width="156.8" height="126" rx="10" fill="#161b22" fill-opacity=".7" stroke="#30363d"/><rect x="709.2" y="64" width="128.8" height="2" fill="#b1eb21" class="bar" style="animation-delay:0.97s"/><text x="709.2" y="108" class="m">265+</text><text x="709.2" y="134" class="lb">government endpoints at</text><text x="709.2" y="150" class="lb">100% patch compliance</text><text x="709.2" y="176" class="wh">KTDMC</text></g>
+</svg>

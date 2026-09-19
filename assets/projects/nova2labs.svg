@@ -1,24 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="430" height="176" viewBox="0 0 430 176" role="img" aria-label="nova2labs">
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="236" viewBox="0 0 430 236" role="img" aria-label="nova2labs">
   <title>nova2labs</title>
   
   <defs>
-    <linearGradient id="nova2labs-edge"><stop offset="0" stop-color="#30363d"/></linearGradient>
-    <linearGradient id="nova2labs-glow"><stop offset="0" stop-color="#0d1117" stop-opacity="0"/></linearGradient>
+    <pattern id="nova2labs-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#30363d" opacity=".5"/></pattern>
+    <radialGradient id="nova2labs-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="#b1eb21" stop-opacity=".08"/><stop offset="1" stop-color="#b1eb21" stop-opacity="0"/></radialGradient>
+    <filter id="nova2labs-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
   <style>
     text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
-    .k { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; letter-spacing: 1.4px; fill: #8b949e; }
+    .k, .t, .chip, .p, .nd { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    .k { font-size: 10.5px; letter-spacing: 1.4px; fill: #8b949e; }
     .t { font-size: 20px; fill: #e6edf3; font-weight: 700; }
-    .d { font-size: 13px; fill: #8b949e; }
-    .t { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
-    .chip { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11.5px; fill: #e6edf3; }
-    .p { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #b1eb21; }
+    .d { font-size: 12.5px; fill: #8b949e; }
+    .chip { font-size: 11px; fill: #e6edf3; }
+    .p { font-size: 11px; fill: #b1eb21; }
+    .nd { font-size: 10.5px; }
+    .led { animation: led 1.8s ease-in-out infinite; }
+    .node, .chipg { animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }
+    .wire { stroke-dasharray: 4 5; animation: flow .9s linear infinite; }
+    .drawn { stroke-dasharray: 100; animation: draw 1.6s ease-out .3s both; }
+    @keyframes led { 50% { opacity: .25; } }
+    @keyframes pop { from { opacity: 0; transform: scale(.6); } }
+    @keyframes flow { to { stroke-dashoffset: -9; } }
+    @keyframes draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
-  <rect x="0.5" y="0.5" width="429" height="175" rx="10" fill="#0d1117" stroke="#30363d"/>
-  <rect x="0.5" y="22" width="3" height="40" fill="#b1eb21"/>
-  <text x="22" y="32" class="k">FULL-STACK · CLOUD</text>
-  <text x="408" y="32" text-anchor="end" class="p">live</text>
-  <text x="22" y="58" class="t">nova2labs</text>
-  <text x="22" y="82" class="d">AI and cloud engineering studio: server-rendered</text><text x="22" y="102" class="d">React, generative artwork, SMTP lead pipeline.</text>
-  <rect x="22" y="128" width="76" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="60.0" y="144" text-anchor="middle" class="chip">React 19</text><rect x="106" y="128" width="119" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="165.5" y="144" text-anchor="middle" class="chip">TanStack Start</text><rect x="233" y="128" width="41" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="253.5" y="144" text-anchor="middle" class="chip">SSR</text><rect x="282" y="128" width="62" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="313.0" y="144" text-anchor="middle" class="chip">Vercel</text>
+  <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="#0d1117" stroke="#30363d"/>
+  <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#nova2labs-dots)"/>
+  <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#nova2labs-halo)"/>
+  <circle cx="26" cy="28" r="3.5" fill="#b1eb21" class="led"/>
+  <text x="38" y="32" class="k">FULL-STACK · CLOUD</text>
+  <text x="408" y="32" text-anchor="end" class="p">live · nova2labs.com</text>
+  <text x="22" y="64" class="t">nova2labs</text>
+  <text x="22" y="88" class="d">AI and cloud engineering studio: server-rendered</text><text x="22" y="107" class="d">React, generative artwork, SMTP lead pipeline.</text>
+  <rect x="16" y="124" width="398" height="58" rx="9" fill="#161b22" fill-opacity=".55" stroke="#30363d" stroke-dasharray="2 4"/>
+  <line x1="65.8" y1="153" x2="370.8" y2="153" stroke="#8b949e" stroke-opacity=".55" stroke-width="1.5" class="wire"/><circle r="3.2" fill="#b1eb21" filter="url(#nova2labs-glow)" opacity="0"><animateMotion path="M65.8,153 L370.8,153" dur="3s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".4 0 .6 1"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.9;1" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle><g class="node" style="animation-delay:0.20s"><rect x="34.0" y="140" width="63.5" height="26" rx="6" fill="#0d1117" stroke="#30363d"/><text x="65.8" y="157" text-anchor="middle" class="nd" fill="#e6edf3">visitor</text></g><g class="node" style="animation-delay:0.34s"><rect x="116.8" y="140" width="37.5" height="26" rx="6" fill="#0d1117" stroke="#30363d"/><text x="135.5" y="157" text-anchor="middle" class="nd" fill="#e6edf3">SSR</text></g><g class="node" style="animation-delay:0.48s"><rect x="173.5" y="140" width="89.5" height="26" rx="6" fill="#0d1117" stroke="#30363d"/><text x="218.2" y="157" text-anchor="middle" class="nd" fill="#e6edf3">Vercel edge</text></g><g class="node" style="animation-delay:0.62s"><rect x="282.2" y="140" width="44.0" height="26" rx="6" fill="#0d1117" stroke="#30363d"/><text x="304.2" y="157" text-anchor="middle" class="nd" fill="#e6edf3">SMTP</text></g><g class="node" style="animation-delay:0.76s"><rect x="345.5" y="140" width="50.5" height="26" rx="6" fill="#0d1117" stroke="#b1eb21"/><text x="370.8" y="157" text-anchor="middle" class="nd" fill="#b1eb21">inbox</text></g>
+  <g class="chipg" style="animation-delay:0.60s"><rect x="22" y="194" width="76" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="60.0" y="210" text-anchor="middle" class="chip">React 19</text></g><g class="chipg" style="animation-delay:0.68s"><rect x="106" y="194" width="119" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="165.5" y="210" text-anchor="middle" class="chip">TanStack Start</text></g><g class="chipg" style="animation-delay:0.76s"><rect x="233" y="194" width="41" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="253.5" y="210" text-anchor="middle" class="chip">SSR</text></g><g class="chipg" style="animation-delay:0.84s"><rect x="282" y="194" width="62" height="24" rx="12" fill="#161b22" stroke="#30363d"/><text x="313.0" y="210" text-anchor="middle" class="chip">Vercel</text></g>
 </svg>
