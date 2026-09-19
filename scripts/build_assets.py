@@ -396,70 +396,22 @@ CERTS = [
 
 
 def certs() -> None:
+    """One themed card per credential, so the verified ones can be links in the README."""
     import math
 
-    w, row_h, top = 880, 54, 104
-    n = len(CERTS)
-    h = top + row_h * (n - 1) + 88
-    hx = 60
+    w = 880
     verified = sum(1 for c in CERTS if c[4])
-
-    def hexagon(cx: float, cy: float, r: float) -> str:
-        return " ".join(
-            f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
-        )
-
-    rows = []
-    for i, (name, issuer, year, mark, cred) in enumerate(CERTS):
-        yc = top + i * row_h
-        d = 0.25 + i * 0.14
-        ok = cred is not None
-        badge = (
-            f'<g class="hx" style="animation-delay:{d:.2f}s">'
-            f'<polygon points="{hexagon(hx, yc, 19)}" fill="{ACCENT if ok else BG}" fill-opacity="{".14" if ok else "1"}" '
-            f'stroke="{ACCENT if ok else LINE}" stroke-width="1.6"{f" filter={chr(34)}url(#c-glow){chr(34)}" if ok else ""}/>'
-            f'<text x="{hx}" y="{yc + 4}" text-anchor="middle" class="mk" fill="{ACCENT if ok else MUTED}">{mark}</text></g>'
-        )
-        if ok:
-            status = (
-                f'<rect x="{w - 30 - 104}" y="{yc - 19}" width="104" height="20" rx="10" fill="{ACCENT}" fill-opacity=".1" stroke="{ACCENT}" stroke-opacity=".6"/>'
-                f'<path d="M{w - 30 - 90},{yc - 9} l4,4 l8,-8" fill="none" stroke="{ACCENT}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="10" class="tick" style="animation-delay:{d + 0.4:.2f}s"/>'
-                f'<text x="{w - 30 - 44}" y="{yc - 5}" text-anchor="middle" class="st" fill="{ACCENT}">verified</text>'
-                f'<text x="{w - 30}" y="{yc + 15}" text-anchor="end" class="id">coursera.org/verify/{cred}</text>'
-            )
-        else:
-            status = (
-                f'<rect x="{w - 30 - 104}" y="{yc - 19}" width="104" height="20" rx="10" fill="none" stroke="{LINE}"/>'
-                f'<text x="{w - 30 - 52}" y="{yc - 5}" text-anchor="middle" class="st" fill="{MUTED}">on file</text>'
-                f'<text x="{w - 30}" y="{yc + 15}" text-anchor="end" class="id">{"statement of participation" if "Open" in issuer else "certificate of completion"}</text>'
-            )
-        rows.append(
-            f'{badge}<g class="r" style="animation-delay:{d:.2f}s">'
-            f'<text x="{hx + 36}" y="{yc - 3}" class="nm">{escape(name)}</text>'
-            f'<text x="{hx + 36}" y="{yc + 15}" class="is">{escape(issuer)} · {year}</text>'
-            f"{status}</g>"
-        )
-
-    fy = h - 28
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
-  <title>Certifications</title>
-  <defs>
-    <pattern id="c-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
-    <radialGradient id="c-halo" cx="0.04" cy="0.1" r="0.6"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".08"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-    <filter id="c-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>
+    style = f"""
   <style>
     text {{ font-family: {SANS}; }}
-    .cmd, .meta, .mk, .st, .id, .foot {{ font-family: {MONO}; }}
+    .cmd, .meta, .mk, .st, .id {{ font-family: {MONO}; }}
     .cmd {{ font-size: 13px; fill: {TEXT}; }}
     .meta {{ font-size: 11px; fill: {MUTED}; }}
     .nm {{ font-size: 14px; font-weight: 600; fill: {TEXT}; }}
     .is {{ font-size: 12px; fill: {MUTED}; }}
     .mk {{ font-size: 10.5px; font-weight: 700; }}
     .st {{ font-size: 10.5px; }}
-    .id {{ font-size: 10.5px; fill: {MUTED}; }}
-    .foot {{ font-size: 11px; fill: {MUTED}; }}
+    .id {{ font-size: 10.5px; }}
     .r {{ animation: rin .55s ease-out both; }}
     .hx {{ transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }}
     .tick {{ stroke-dasharray: 10; animation: tick .5s ease-out both; }}
@@ -469,19 +421,68 @@ def certs() -> None:
     @keyframes tick {{ from {{ stroke-dashoffset: 10; }} to {{ stroke-dashoffset: 0; }} }}
     @keyframes blink {{ 50% {{ opacity: 0; }} }}
     @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
-  </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#c-dots)"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#c-halo)"/>
-  <text x="28" y="40" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>verify --all</text>
-  <rect x="{28 + 22 * 7.8 + 6:.0f}" y="29" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 30}" y="40" text-anchor="end" class="meta"><tspan fill="{ACCENT}">{verified} publicly verifiable</tspan> · {n} credentials</text>
-  <line x1="28" y1="58" x2="{w - 28}" y2="58" stroke="{LINE}"/>
-  {"".join(rows)}
-  <line x1="28" y1="{fy - 22}" x2="{w - 28}" y2="{fy - 22}" stroke="{LINE}" stroke-dasharray="3 5"/>
-  <text x="28" y="{fy}" class="foot"><tspan fill="{ACCENT}">+ 20</tspan> completed courses in Python, data science, machine learning, SQL and software development</text>
-</svg>"""
-    write("certificates.svg", svg)
+  </style>"""
+
+    def frame(h: int, uid: str, glow: bool = False) -> str:
+        return f"""
+  <defs>
+    <pattern id="{uid}-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
+    <radialGradient id="{uid}-halo" cx="0.04" cy="0.2" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity="{'.09' if glow else '.05'}"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+    <filter id="{uid}-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>{style}
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="{BG}" stroke="{ACCENT if glow else LINE}" stroke-opacity="{'.45' if glow else '1'}"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#{uid}-dots)"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="12" fill="url(#{uid}-halo)"/>"""
+
+    # header card
+    h = 60
+    write("certificates/header.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
+  <title>Certifications</title>{frame(h, "ch")}
+  <text x="28" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>verify --all</text>
+  <rect x="{28 + 22 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
+  <text x="{w - 28}" y="35" text-anchor="end" class="meta"><tspan fill="{ACCENT}">{verified} publicly verifiable · click to verify</tspan> · {len(CERTS)} credentials</text>
+</svg>""")
+
+    def hexagon(cx: float, cy: float, r: float) -> str:
+        return " ".join(
+            f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
+        )
+
+    h, yc, hx = 64, 32, 50
+    for i, (name, issuer, year, mark, cred) in enumerate(CERTS):
+        uid = f"c{i}"
+        ok = cred is not None
+        d = 0.15 + i * 0.12
+        glow = f' filter="url(#{uid}-glow)"' if ok else ""
+        badge = (
+            f'<g class="hx" style="animation-delay:{d:.2f}s">'
+            f'<polygon points="{hexagon(hx, yc, 19)}" fill="{ACCENT if ok else BG}" fill-opacity="{".14" if ok else "1"}" stroke="{ACCENT if ok else LINE}" stroke-width="1.6"{glow}/>'
+            f'<text x="{hx}" y="{yc + 4}" text-anchor="middle" class="mk" fill="{ACCENT if ok else MUTED}">{mark}</text></g>'
+        )
+        if ok:
+            status = (
+                f'<rect x="{w - 28 - 118}" y="{yc - 20}" width="118" height="22" rx="11" fill="{ACCENT}" fill-opacity=".12" stroke="{ACCENT}" stroke-opacity=".7"/>'
+                f'<path d="M{w - 28 - 104},{yc - 9} l4,4 l8,-8" fill="none" stroke="{ACCENT}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="10" class="tick" style="animation-delay:{d + 0.4:.2f}s"/>'
+                f'<text x="{w - 28 - 50}" y="{yc - 5}" text-anchor="middle" class="st" fill="{ACCENT}">verify ↗</text>'
+                f'<text x="{w - 28}" y="{yc + 17}" text-anchor="end" class="id" fill="{ACCENT}" fill-opacity=".8">coursera.org/verify/{cred}</text>'
+            )
+        else:
+            status = (
+                f'<rect x="{w - 28 - 118}" y="{yc - 20}" width="118" height="22" rx="11" fill="none" stroke="{LINE}"/>'
+                f'<text x="{w - 28 - 59}" y="{yc - 5}" text-anchor="middle" class="st" fill="{MUTED}">on file</text>'
+                f'<text x="{w - 28}" y="{yc + 17}" text-anchor="end" class="id" fill="{MUTED}">{"statement of participation" if "Open" in issuer else "certificate of completion"}</text>'
+            )
+        write(f"certificates/{i + 1}.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
+  <title>{escape(name)}</title>{frame(h, uid, ok)}
+  {badge}
+  <g class="r" style="animation-delay:{d:.2f}s">
+    <text x="{hx + 36}" y="{yc - 3}" class="nm">{escape(name)}</text>
+    <text x="{hx + 36}" y="{yc + 15}" class="is">{escape(issuer)} · {year}</text>
+    {status}
+  </g>
+</svg>""")
 
 
 # --------------------------------------------------------------------------
