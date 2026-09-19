@@ -241,7 +241,7 @@ EDU = "#484f58"
 TIMELINE = [
     ("IT Engineer", "Kontinental Establishment", 2023.25, None, ACCENT),
     ("IT Engineer · contract", "TestSolutions GmbH", 2023.08, 2024.92, PAST),
-    ("DevSecOps · Scientific Computing", "University of Göttingen", 2024.25, 2024.67, PAST),
+    ("DevSecOps · Scientific Computing", "University of Göttingen", 2022.83, 2023.08, PAST),
     ("M.Sc. Data Science", "University of Göttingen", 2023.0, 2025.92, EDU),
     ("IT Specialist", "Liberty Books", 2022.42, 2022.75, PAST),
     ("IT Specialist", "KTDMC", 2021.75, 2022.33, PAST),
