@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="312" viewBox="0 0 880 312" role="img" aria-label="whoami: Muhammad Hammad, AIOps Engineer">
+  <title>whoami</title>
+  
+  <defs>
+    <linearGradient id="t-edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#f0a04b"/>
+    </linearGradient>
+    <radialGradient id="t-glow" cx="0.85" cy="0" r="0.9">
+      <stop offset="0" stop-color="#3b82f6" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 14px; }
+    .l { opacity: 0; animation: in .35s ease-out forwards; }
+    .cur { opacity: 0; animation: in .1s linear 4.40s forwards, blink 1s steps(1) 4.40s infinite; }
+    @keyframes in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .l, .cur { animation: none; opacity: 1; } }
+  </style>
+  <rect x="1" y="1" width="878" height="310" rx="14" fill="#0a0d14" stroke="url(#t-edge)" stroke-opacity=".55"/>
+  <rect x="1" y="1" width="878" height="310" rx="14" fill="url(#t-glow)"/>
+  <circle cx="26" cy="24" r="6" fill="#ff5f57"/><circle cx="46" cy="24" r="6" fill="#febc2e"/><circle cx="66" cy="24" r="6" fill="#28c840"/>
+  <text x="440.0" y="29" text-anchor="middle" fill="#8b97ad" style="font-size:12px">hammad@ops — zsh</text>
+  <line x1="1" y1="44" x2="879" y2="44" stroke="#1d2a40"/>
+  <text class="l" style="animation-delay:0.35s" x="28" y="62"><tspan fill="#34d399">hammad</tspan><tspan fill="#8b97ad">@</tspan><tspan fill="#60a5fa">ops</tspan><tspan fill="#8b97ad"> ~ $ </tspan><tspan fill="#e6ebf5">whoami</tspan></text><text class="l" style="animation-delay:0.80s" x="28" y="86"><tspan fill="#8b97ad">Muhammad Hammad · AIOps Engineer · Göttingen, Germany</tspan></text><text class="l" style="animation-delay:1.25s" x="28" y="110"><tspan fill="#34d399">hammad</tspan><tspan fill="#8b97ad">@</tspan><tspan fill="#60a5fa">ops</tspan><tspan fill="#8b97ad"> ~ $ </tspan><tspan fill="#e6ebf5">cat focus.txt</tspan></text><text class="l" style="animation-delay:1.70s" x="28" y="134"><tspan fill="#8b97ad">Cloud infrastructure (Azure / AWS) · DevOps &amp; automation</tspan></text><text class="l" style="animation-delay:2.15s" x="28" y="158"><tspan fill="#8b97ad">Network engineering · Systems administration · Security</tspan></text><text class="l" style="animation-delay:2.60s" x="28" y="182"><tspan fill="#34d399">hammad</tspan><tspan fill="#8b97ad">@</tspan><tspan fill="#60a5fa">ops</tspan><tspan fill="#8b97ad"> ~ $ </tspan><tspan fill="#e6ebf5">cat principles.md</tspan></text><text class="l" style="animation-delay:3.05s" x="28" y="206"><tspan fill="#8b97ad">Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook</tspan></text><text class="l" style="animation-delay:3.50s" x="28" y="230"><tspan fill="#34d399">hammad</tspan><tspan fill="#8b97ad">@</tspan><tspan fill="#60a5fa">ops</tspan><tspan fill="#8b97ad"> ~ $ </tspan><tspan fill="#e6ebf5">ls ~/now</tspan></text><text class="l" style="animation-delay:3.95s" x="28" y="254"><tspan fill="#f0a04b">it-engineer@kontinental   msc-data-science@uni-goettingen   aws-terraform-platform/</tspan></text>
+  <text class="cur" x="28" y="278"><tspan fill="#34d399">hammad</tspan><tspan fill="#8b97ad">@</tspan><tspan fill="#60a5fa">ops</tspan><tspan fill="#8b97ad"> ~ $ </tspan><tspan fill="#e6ebf5">▌</tspan></text>
+</svg>

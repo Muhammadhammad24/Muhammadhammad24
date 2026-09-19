@@ -1,86 +1,110 @@
-<h1 align="center">Muhammad Hammad</h1>
+<p align="center">
+  <img src="assets/banner.png" alt="Automating IT operations with AI-driven precision" width="100%" />
+</p>
+
+<h2 align="center">Muhammad Hammad · AIOps Engineer</h2>
 
 <p align="center">
-  <b>IT Infrastructure &amp; Security Engineer</b> · Göttingen, Germany<br/>
-  Identity, endpoints, networks and cloud. Automated with code, secured by default.
+  Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration<br/>
+  <sub>Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen</sub>
 </p>
 
 <p align="center">
-  <a href="https://muhammadhammad.vercel.app"><img src="https://img.shields.io/badge/Portfolio-muhammadhammad.vercel.app-B1EB21?style=flat-square&logo=vercel&logoColor=black" alt="Portfolio"/></a>
-  <a href="https://www.linkedin.com/in/mhammad24/"><img src="https://img.shields.io/badge/LinkedIn-mhammad24-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
-  <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-muhammad24997%40gmail.com-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email"/></a>
+  <a href="https://www.linkedin.com/in/mhammad24/"><img src="https://img.shields.io/badge/LinkedIn-mhammad24-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
+  <a href="https://muhammadhammad.vercel.app"><img src="https://img.shields.io/badge/Portfolio-muhammadhammad.vercel.app-f0a04b?style=for-the-badge&logo=vercel&logoColor=black" alt="Portfolio"/></a>
+  <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-Get%20in%20touch-0a0d14?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
 </p>
 
----
+<p align="center">
+  <img src="assets/terminal.svg" alt="whoami: Muhammad Hammad, AIOps Engineer in Göttingen. Focus: cloud infrastructure, DevOps and automation, network engineering, systems administration, security." width="100%" />
+</p>
 
-I run IT for organisations end to end: Active Directory and Entra ID, Intune
-and Jamf fleets, firewalls and VPNs, and the service desk on top. I've done it
-for six years across logistics, publishing, research and consulting. Lately I
-build the tooling around that work: Terraform for AWS, firewall policy as
-code, CI pipelines, and retrieval-augmented assistants for the help desk.
+## What I do
 
-- 🏢 **Now:** IT Specialist at Kontinental Establishment
-- 🎓 **Studying:** M.Sc. Data Science &amp; Computer Science, University of Göttingen
-- 🔬 **Previously:** DevSecOps in scientific computing at the University of Göttingen
+I keep infrastructure boring, meaning secure, observable and automated, so the
+people who depend on it never have to think about it. I work across the whole
+stack: identity (Active Directory, Entra ID, Okta), endpoints (Intune, Autopilot, Jamf),
+networks (Cisco, Juniper, pfSense, VPN), cloud (Azure, AWS) and the service
+desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines.
+
+**Selected impact**
+
+| | Outcome | Where |
+| --- | --- | --- |
+| ⚙️ | **25 hours a week** of onboarding, provisioning and patching automated (PowerShell, Python, Power Automate) | Kontinental Establishment |
+| 💻 | **75% faster** device setup for 180+ macOS, Windows and iOS endpoints across 12 locations (Intune, Autopilot, Jamf) | Kontinental Establishment |
+| 🚀 | **4 hours → 35 minutes** deployment time for ML infrastructure with Docker and CI/CD | University of Göttingen |
+| 🛡️ | **85% fewer vulnerabilities** through automated security scanning and pre-commit gates | University of Göttingen |
+| 🏛️ | **265+ government endpoints** at 100% patch compliance; provisioning cut from 2 h to 20 min | KTDMC |
 
 ## Featured work
 
-| Project | What it is | Stack |
-| --- | --- | --- |
-| [**AWS Terraform Platform**](https://github.com/Muhammadhammad24/aws-terraform-platform) | Production-style AWS platform: HA across two AZs, self-healing Auto Scaling, OIDC CI/CD with no stored keys, monitoring, KMS, GuardDuty and CloudTrail, mapped to ISO 27001 | Terraform · AWS · GitHub Actions · Checkov |
-| [**Infotech Wizard**](https://github.com/Muhammadhammad24/Infotech-Wizard) | RAG helpdesk assistant: multilingual retrieval over 3.5k resolved tickets and answers from a local LLM | FastAPI · FAISS · Sentence-Transformers · TinyLlama · React · Docker |
-| [**pfSense Firewall Lab**](https://github.com/Muhammadhammad24/pfSense-Firewall-Lab) | Virtualised perimeter firewall with a firewall policy written as code, rendered to pfSense XML and audited in CI | pfSense · Python · OpenVPN · GitHub Actions |
-| [**nnapprox**](https://github.com/Muhammadhammad24/nnapprox) | Research on function approximation with deep ReLU networks: greedy “growing axons” vs random initialisation | PyTorch · NumPy · Nevergrad |
-| [**Velqa Technologies**](https://github.com/Muhammadhammad24/velqatechnologies) | Production marketing site for a BPO company, 33 statically exported routes | Next.js · TypeScript · Tailwind · Vercel |
-| [**Portfolio**](https://github.com/Muhammadhammad24/portfolio) | Personal site with animated specialisation diagrams and a skills matrix | Next.js 15 · React 19 · Framer Motion |
+<table>
+  <tr>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/aws-terraform-platform"><img src="assets/projects/aws-terraform-platform.svg" alt="AWS Terraform Platform: highly available, self-healing AWS infrastructure with OIDC CI/CD" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/Infotech-Wizard"><img src="assets/projects/Infotech-Wizard.svg" alt="Infotech Wizard: multilingual RAG helpdesk assistant" width="100%"/></a></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/pfSense-Firewall-Lab"><img src="assets/projects/pfSense-Firewall-Lab.svg" alt="pfSense Firewall Lab: firewall policy as code, audited in CI" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/nnapprox"><img src="assets/projects/nnapprox.svg" alt="nnapprox: function approximation with ReLU networks" width="100%"/></a></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/velqatechnologies"><img src="assets/projects/velqatechnologies.svg" alt="Velqa Technologies: production marketing site" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/portfolio"><img src="assets/projects/portfolio.svg" alt="Portfolio: personal site" width="100%"/></a></td>
+  </tr>
+</table>
+
+Every repository is tested in CI, and every README states what exists and what is on the roadmap.
 
 ## Toolbox
 
-**Identity &amp; endpoints**<br/>
-![Active Directory](https://img.shields.io/badge/Active%20Directory-0078D4?style=flat-square&logo=microsoft&logoColor=white)
-![Entra ID](https://img.shields.io/badge/Entra%20ID-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
-![Intune](https://img.shields.io/badge/Intune-0078D4?style=flat-square&logo=microsoft&logoColor=white)
-![Jamf](https://img.shields.io/badge/Jamf%20Pro-000000?style=flat-square&logo=apple&logoColor=white)
-![Okta](https://img.shields.io/badge/Okta-007DC1?style=flat-square&logo=okta&logoColor=white)
-![Windows Server](https://img.shields.io/badge/Windows%20Server-0078D6?style=flat-square&logo=windows&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux%20%2F%20RHEL-EE0000?style=flat-square&logo=redhat&logoColor=white)
+<p>
+  <b>Cloud &amp; IaC</b><br/>
+  <img src="https://skillicons.dev/icons?i=azure,aws,gcp,terraform,ansible,docker,kubernetes&theme=dark" alt="Azure, AWS, GCP, Terraform, Ansible, Docker, Kubernetes"/>
+</p>
+<p>
+  <b>Systems &amp; scripting</b><br/>
+  <img src="https://skillicons.dev/icons?i=windows,linux,ubuntu,redhat,apple,powershell,bash,python&theme=dark" alt="Windows, Linux, Ubuntu, Red Hat, macOS, PowerShell, Bash, Python"/>
+</p>
+<p>
+  <b>Delivery &amp; observability</b><br/>
+  <img src="https://skillicons.dev/icons?i=githubactions,git,grafana,prometheus,nginx,postgres&theme=dark" alt="GitHub Actions, Git, Grafana, Prometheus, nginx, PostgreSQL"/>
+</p>
+<p>
+  <b>Identity, endpoints &amp; networks</b><br/>
+  <img src="https://img.shields.io/badge/Entra_ID-0078D4?style=flat-square&logo=microsoftazure&logoColor=white" alt="Entra ID"/>
+  <img src="https://img.shields.io/badge/Active_Directory-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Active Directory"/>
+  <img src="https://img.shields.io/badge/Intune_·_Autopilot-0078D4?style=flat-square&logo=microsoft&logoColor=white" alt="Intune and Autopilot"/>
+  <img src="https://img.shields.io/badge/Jamf_Pro-1f2937?style=flat-square&logo=apple&logoColor=white" alt="Jamf Pro"/>
+  <img src="https://img.shields.io/badge/Okta-007DC1?style=flat-square&logo=okta&logoColor=white" alt="Okta"/>
+  <img src="https://img.shields.io/badge/Cisco_·_Juniper-1BA0D7?style=flat-square&logo=cisco&logoColor=white" alt="Cisco and Juniper"/>
+  <img src="https://img.shields.io/badge/pfSense_·_Fortinet-212121?style=flat-square&logo=pfsense&logoColor=white" alt="pfSense and Fortinet"/>
+  <img src="https://img.shields.io/badge/VMware_·_Hyper--V-607078?style=flat-square&logo=vmware&logoColor=white" alt="VMware and Hyper-V"/>
+  <img src="https://img.shields.io/badge/CrowdStrike-FC0000?style=flat-square&logo=crowdstrike&logoColor=white" alt="CrowdStrike"/>
+  <img src="https://img.shields.io/badge/Splunk-000000?style=flat-square&logo=splunk&logoColor=white" alt="Splunk"/>
+  <img src="https://img.shields.io/badge/ServiceNow_·_Jira_SM-62D84E?style=flat-square&logo=servicenow&logoColor=white" alt="ServiceNow and Jira Service Management"/>
+</p>
 
-**Networking &amp; security**<br/>
-![Cisco](https://img.shields.io/badge/Cisco-1BA0D7?style=flat-square&logo=cisco&logoColor=white)
-![pfSense](https://img.shields.io/badge/pfSense-212121?style=flat-square&logo=pfsense&logoColor=white)
-![Fortinet](https://img.shields.io/badge/Fortinet-EE3124?style=flat-square&logo=fortinet&logoColor=white)
-![CrowdStrike](https://img.shields.io/badge/CrowdStrike-FC0000?style=flat-square&logo=crowdstrike&logoColor=white)
-![Splunk](https://img.shields.io/badge/Splunk-000000?style=flat-square&logo=splunk&logoColor=white)
-![Wireshark](https://img.shields.io/badge/Wireshark-1679A7?style=flat-square&logo=wireshark&logoColor=white)
+## Career
 
-**Cloud &amp; automation**<br/>
-![Azure](https://img.shields.io/badge/Azure-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazonwebservices&logoColor=white)
-![Terraform](https://img.shields.io/badge/Terraform-844FBA?style=flat-square&logo=terraform&logoColor=white)
-![Ansible](https://img.shields.io/badge/Ansible-EE0000?style=flat-square&logo=ansible&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=flat-square&logo=powershell&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+<p align="center">
+  <img src="assets/timeline.svg" alt="Career timeline: IT Engineer at Kontinental Establishment since 2023; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevSecOps at University of Göttingen 2024; IT Specialist at Liberty Books, KTDMC and Target Logistics 2020–2022; IT Engineer at The Active Solutions 2019–2020; M.Sc. Data Science, University of Göttingen; B.Sc. Computational Mathematics, University of Karachi." width="100%"/>
+</p>
 
-**Service management**<br/>
-![ServiceNow](https://img.shields.io/badge/ServiceNow-62D84E?style=flat-square&logo=servicenow&logoColor=white)
-![Jira Service Management](https://img.shields.io/badge/Jira%20SM-0052CC?style=flat-square&logo=jira&logoColor=white)
-![Zendesk](https://img.shields.io/badge/Zendesk-03363D?style=flat-square&logo=zendesk&logoColor=white)
-![ITIL](https://img.shields.io/badge/ITIL%204-5C2D91?style=flat-square)
+## Certifications
 
-## Experience
-
-| Period | Role | Organisation |
+| Credential | Issuer | Verify |
 | --- | --- | --- |
-| 2023 – now | IT Specialist | Kontinental Establishment |
-| 2024 | Scientific Computing, DevSecOps | University of Göttingen |
-| 2022 | IT Specialist | Liberty Books |
-| 2021 – 2022 | IT Specialist | KTDMC |
-| 2020 – 2021 | IT Specialist | Target Logistics International |
-| 2019 – 2020 | IT Engineer | The Active Solutions |
+| System Administration and IT Infrastructure Services | Google · Coursera, 2025 | [coursera.org/verify/29N5ZLK6BVWW](https://coursera.org/verify/29N5ZLK6BVWW) |
+| Full Stack Software Developer Assessment | IBM · Coursera, 2023 | [coursera.org/verify/74NSF2JALFZV](https://coursera.org/verify/74NSF2JALFZV) |
+| Discovering Computer Networks: hands-on in the Open Networking Lab | The Open University, 2023 | Statement of participation |
+| Successful IT Systems | The Open University, 2023 | Statement of participation |
+| Information Security Basics for IT Support Technicians | Udemy, 2022 | Certificate of completion |
 
-**Certifications:** ITIL Foundation · Google System Administration &amp; IT
-Infrastructure · Microsoft Windows Server Fundamentals · LPI Linux Essentials ·
-HDI Support Center Analyst
+<sub>Also 20+ completed courses in Python, data science, machine learning, SQL and software development.</sub>
+
+---
+
+<p align="center">
+  <sub>Open to AIOps, cloud infrastructure and DevOps roles in Germany and remote · English (C1) · German (B1, improving)</sub>
+</p>
