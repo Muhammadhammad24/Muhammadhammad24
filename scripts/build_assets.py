@@ -846,7 +846,7 @@ def toolbox() -> None:
   <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{LINE}"/>
   {"".join(rows)}
 </svg>"""
-    write("toolbox.svg", svg)
+    write("tools.svg", svg)
 
 
 if __name__ == "__main__":
