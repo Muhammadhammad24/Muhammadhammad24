@@ -696,7 +696,8 @@ def timeline() -> None:
 # Brand logos are vendored in scripts/icons: Simple Icons (CC0) as "si-*.svg",
 # Devicon (MIT) as "dev-*.svg", Microsoft's official Azure and Entra
 # architecture icons as "ms-*.svg", and a few supplied as-is. Trademarks belong
-# to their owners. Near-black marks switch to their light, dark-mode form.
+# to their owners. The light build shows every logo exactly as published;
+# the dark build swaps near-black marks for their light, dark-mode form.
 
 ICONS = Path(__file__).resolve().parent / "icons"
 
@@ -748,7 +749,7 @@ SI_COLOURS = {
 
 
 def _on_dark(hex_colour: str) -> str:
-    """Near-black brand colours become light so they read on a dark tile."""
+    """Near-black brand colours become light so they read on a dark background."""
     h = hex_colour.lstrip("#")
     if len(h) == 3:
         h = "".join(c * 2 for c in h)
@@ -756,20 +757,15 @@ def _on_dark(hex_colour: str) -> str:
     return TEXT if max(r, g, b) < 0.35 else hex_colour
 
 
-def _logo(icon: str, x: float, y: float, size: float, uid: str) -> str:
-    """Inline one brand logo inside a size x size box at (x, y)."""
-    if icon == "ms":
-        g, s = size * 0.06, size * 0.44
-        return "".join(
-            f'<rect x="{x + dx * (s + g):.1f}" y="{y + dy * (s + g):.1f}" width="{s:.1f}" height="{s:.1f}" fill="{c}"/>'
-            for dx, dy, c in ((0, 0, "#F25022"), (1, 0, "#7FBA00"), (0, 1, "#00A4EF"), (1, 1, "#FFB900"))
-        )
-    path = ICONS / f"{icon}.svg"
-    if not path.exists():
-        return ""
-    raw = path.read_text(encoding="utf-8")
+def _logo(icon: str, x: float, y: float, size: float, uid: str, dark: bool) -> str:
+    """Inline one brand logo inside a size x size box at (x, y).
+
+    Light mode draws every logo exactly as published. Dark mode swaps only
+    near-black parts for their light, dark-mode form.
+    """
     import re
 
+    raw = (ICONS / f"{icon}.svg").read_text(encoding="utf-8")
     view = re.search(r'viewBox="([^"]+)"', raw)
     inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", raw, flags=re.S)
     inner = re.sub(r"<title>.*?</title>", "", inner, flags=re.S)
@@ -777,91 +773,81 @@ def _logo(icon: str, x: float, y: float, size: float, uid: str) -> str:
     inner = re.sub(r'id="([^"]+)"', lambda m: f'id="{uid}-{m.group(1)}"', inner)
     inner = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{uid}-{m.group(1)})", inner)
     inner = re.sub(r'href="#([^"]+)"', lambda m: f'href="#{uid}-{m.group(1)}"', inner)
-    # Dark-mode treatment, as the brands do on dark backgrounds: near-black
-    # parts of a logo (and logos with no fill at all) are drawn light.
-    if icon not in KEEP_COLOURS:
+    colour = SI_COLOURS.get(icon[3:], "#000000") if icon.startswith("si-") else "#000000"
+    if dark and icon not in KEEP_COLOURS:
         inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
-    fill = f' fill="{TEXT}"'
-    if icon.startswith("si-"):
-        fill = f' fill="{_on_dark(SI_COLOURS.get(icon[3:], TEXT))}"'
+        colour = _on_dark(colour)
     vb = view.group(1) if view else "0 0 24 24"
-    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}"{fill}>{inner}</svg>'
+    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}" fill="{colour}">{inner}</svg>'
+
+
+# Panel colours per GitHub theme; the logos themselves stay as published.
+THEMES = {
+    "dark": {"bg": BG, "line": LINE, "text": TEXT, "muted": MUTED, "accent": ACCENT, "prompt": ACCENT},
+    "light": {"bg": "#ffffff", "line": "#d0d7de", "text": "#1f2328", "muted": "#59636e", "accent": ACCENT, "prompt": "#4d7c0f"},
+}
 
 
 def toolbox() -> None:
-    w, top, row_h, label_w = 880, 70, 88, 196
-    tile, step = 46, 81
-    h = top + row_h * len(TOOLBOX) + 14
-    total = sum(len(items) for _, items in TOOLBOX)
-    rows = []
-    for r, (cat, items) in enumerate(TOOLBOX):
-        y = top + r * row_h
-        rows.append(
-            f'<line x1="26" y1="{y - 8}" x2="{w - 26}" y2="{y - 8}" stroke="{LINE}" stroke-dasharray="2 5"/>' if r else ""
-        )
-        rows.append(
-            f'<g class="in" style="animation-delay:{0.1 + r * 0.08:.2f}s">'
-            f'<circle cx="32" cy="{y + 28}" r="3" fill="{ACCENT}" class="led" style="animation-delay:{r * 0.3:.1f}s"/>'
-            f'<text x="44" y="{y + 32}" class="cat">{escape(cat)}</text>'
-            f'<text x="44" y="{y + 50}" class="cnt">{len(items):02d} tools</text></g>'
-        )
-        for c, (label, icon) in enumerate(items):
-            tx = label_w + c * step + (step - tile) / 2
-            d = 0.2 + r * 0.08 + c * 0.04
-            if icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
-                logo = _logo(icon, tx + 4, y + 2, 38, f"i{r}{c}")
-            else:
-                logo = _logo(icon, tx + 11, y + 9, 24, f"i{r}{c}")
-            if not logo:  # no logo file yet: a neat monogram
-                logo = f'<text x="{tx + tile / 2:.1f}" y="{y + 28}" text-anchor="middle" class="mono">{escape(label[:2])}</text>'
+    """Two builds of the same panel; the README picks one with prefers-color-scheme."""
+    for mode, t in THEMES.items():
+        dark = mode == "dark"
+        w, top, row_h, label_w, step = 880, 72, 84, 196, 81
+        h = top + row_h * len(TOOLBOX) + 10
+        total = sum(len(items) for _, items in TOOLBOX)
+        rows = []
+        for r, (cat, items) in enumerate(TOOLBOX):
+            y = top + r * row_h
+            if r:
+                rows.append(f'<line x1="26" y1="{y - 10}" x2="{w - 26}" y2="{y - 10}" stroke="{t["line"]}" stroke-dasharray="2 5"/>')
             rows.append(
-                f'<g class="tile" style="animation-delay:{d:.2f}s">'
-                f'<rect x="{tx:.1f}" y="{y}" width="{tile}" height="{tile - 4}" rx="8" fill="{PANEL}" stroke="{LINE}" class="edge" style="animation-delay:{d + 0.25:.2f}s"/>'
-                f"{logo}"
-                + "".join(
-                    f'<text x="{tx + tile / 2:.1f}" y="{y + tile + 12 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
+                f'<g class="in" style="animation-delay:{0.1 + r * 0.08:.2f}s">'
+                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led" style="animation-delay:{r * 0.3:.1f}s"/>'
+                f'<text x="44" y="{y + 26}" class="cat">{escape(cat)}</text>'
+                f'<text x="44" y="{y + 44}" class="cnt">{len(items):02d} tools</text></g>'
+            )
+            for c, (label, icon) in enumerate(items):
+                cx = label_w + c * step + step / 2
+                d = 0.2 + r * 0.08 + c * 0.04
+                if icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
+                    size = 44
+                else:
+                    size = 32
+                logo = _logo(icon, cx - size / 2, y + 20 - size / 2, size, f"{mode[0]}{r}{c}", dark)
+                labels = "".join(
+                    f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
                     for k, part in enumerate(_wrap(label, 12))
                 )
-                + "</g>"
-            )
-    svg = f"""
+                rows.append(f'<g class="logo" style="animation-delay:{d:.2f}s">{logo}{labels}</g>')
+        svg = f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Toolbox">
   <title>Toolbox</title>
-  <defs>
-    <pattern id="tb-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
-    <radialGradient id="tb-halo" cx="0.02" cy="0.02" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".07"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-  </defs>
   <style>
     text {{ font-family: {SANS}; }}
-    .cmd, .meta, .cnt, .lb, .mono {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {TEXT}; }}
-    .meta {{ font-size: 11px; fill: {MUTED}; }}
-    .cat {{ font-size: 13.5px; font-weight: 600; fill: {TEXT}; }}
-    .cnt {{ font-size: 10.5px; fill: {MUTED}; }}
-    .lb {{ font-size: 9.5px; fill: {MUTED}; }}
-    .mono {{ font-size: 13px; font-weight: 700; fill: {TEXT}; }}
+    .cmd, .meta, .cnt, .lb {{ font-family: {MONO}; }}
+    .cmd {{ font-size: 13px; fill: {t["text"]}; }}
+    .meta {{ font-size: 11px; fill: {t["muted"]}; }}
+    .cat {{ font-size: 13.5px; font-weight: 600; fill: {t["text"]}; }}
+    .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
+    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
     .in {{ animation: rin .5s ease-out both; }}
-    .tile {{ transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; }}
+    .logo {{ transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; }}
     .led {{ animation: led 2.4s ease-in-out infinite; }}
     .cur {{ animation: blink 1.05s steps(1) infinite; }}
-    .edge {{ animation: flash 1.4s ease-out both; }}
-    @keyframes flash {{ from {{ stroke: {ACCENT}; }} to {{ stroke: {LINE}; }} }}
     @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
     @keyframes pop {{ from {{ opacity: 0; transform: scale(.5); }} }}
     @keyframes led {{ 50% {{ opacity: .25; }} }}
     @keyframes blink {{ 50% {{ opacity: 0; }} }}
     @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
   </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#tb-dots)"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#tb-halo)"/>
-  <text x="26" y="38" class="cmd"><tspan fill="{ACCENT}">~/toolbox</tspan><tspan fill="{MUTED}"> $ </tspan>ls --all</text>
-  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{ACCENT}" class="cur"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
+  <text x="26" y="38" class="cmd"><tspan fill="{t["prompt"]}">~/toolbox</tspan><tspan fill="{t["muted"]}"> $ </tspan>ls --all</text>
+  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{t["accent"]}" class="cur"/>
   <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
-  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{LINE}"/>
+  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
   {"".join(rows)}
 </svg>"""
-    write("tech.svg", svg)
+        write(f"toolbox-{mode}.svg", svg)
 
 
 if __name__ == "__main__":
