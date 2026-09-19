@@ -394,7 +394,7 @@ def impact() -> None:
 CAREER = [
     ("IT Engineer", "Kontinental Establishment", "HEAD → main|full-time", "2023 — now", 2023.25, None),
     ("M.Sc. Data Science", "University of Göttingen", "merge", "2023 — 2025", 2023.0, 2025.92),
-    ("IT Engineer", "TestSolutions GmbH", "full-time", "2023 — 2024", 2023.08, 2024.92),
+    ("IT Engineer", "TestSolutions GmbH", "contract", "2023 — 2024", 2023.08, 2024.92),
     ("DevSecOps · Scientific Computing", "University of Göttingen", "internship", "2022 — 2023", 2022.83, 2023.08),
     ("IT Specialist", "Liberty Books", "full-time", "2022", 2022.42, 2022.75),
     ("IT Specialist", "KTDMC", "full-time", "2021 — 2022", 2021.75, 2022.33),
