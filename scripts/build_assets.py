@@ -546,7 +546,7 @@ def timeline() -> None:
   <text x="46" y="{fy}" class="foot">continuously deployed since 2019</text>
   <text x="{w - 30}" y="{fy}" text-anchor="end" class="foot">next commit: <tspan fill="{ACCENT}">open to roles worldwide</tspan> ▸</text>
 </svg>"""
-    write("timeline.svg", svg)
+    write("career.svg", svg)
 
 
 if __name__ == "__main__":
