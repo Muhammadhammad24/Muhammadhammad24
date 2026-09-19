@@ -1,29 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="430" height="176" viewBox="0 0 430 176" role="img" aria-label="Infotech Wizard">
-  <title>Infotech Wizard</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="176" viewBox="0 0 430 176" role="img" aria-label="Infotech-Wizard">
+  <title>Infotech-Wizard</title>
   
   <defs>
-    <linearGradient id="infotech-wizard-edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3b82f6"/>
-      <stop offset="1" stop-color="#f0a04b"/>
-    </linearGradient>
-    <radialGradient id="infotech-wizard-glow" cx="0.85" cy="0" r="0.9">
-      <stop offset="0" stop-color="#3b82f6" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#3b82f6" stop-opacity="0"/>
-    </radialGradient>
+    <linearGradient id="infotech-wizard-edge"><stop offset="0" stop-color="#30363d"/></linearGradient>
+    <linearGradient id="infotech-wizard-glow"><stop offset="0" stop-color="#0d1117" stop-opacity="0"/></linearGradient>
   </defs>
   <style>
     text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
-    .k { font-size: 10.5px; letter-spacing: 1.6px; fill: #f0a04b; font-weight: 600; }
-    .t { font-size: 20px; fill: #e6ebf5; font-weight: 700; }
-    .d { font-size: 13px; fill: #8b97ad; }
-    .chip { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11.5px; fill: #60a5fa; }
-    .p { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #34d399; }
+    .k { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; letter-spacing: 1.4px; fill: #8b949e; }
+    .t { font-size: 20px; fill: #e6edf3; font-weight: 700; }
+    .d { font-size: 13px; fill: #8b949e; }
+    .t { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    .chip { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11.5px; fill: #e6edf3; }
+    .p { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #b1eb21; }
   </style>
-  <rect x="1" y="1" width="428" height="174" rx="14" fill="#0a0d14" stroke="url(#infotech-wizard-edge)" stroke-opacity=".6"/>
-  <rect x="1" y="1" width="428" height="174" rx="14" fill="url(#infotech-wizard-glow)"/>
+  <rect x="0.5" y="0.5" width="429" height="175" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <rect x="0.5" y="22" width="3" height="40" fill="#b1eb21"/>
   <text x="22" y="32" class="k">AIOPS · RAG</text>
-  <text x="408" y="32" text-anchor="end" class="p">● 5 languages · tested API</text>
-  <text x="22" y="58" class="t">Infotech Wizard</text>
-  <text x="22" y="82" class="d">Helpdesk assistant: multilingual retrieval over 3.5k</text><text x="22" y="102" class="d">resolved tickets, answers from a local LLM.</text>
-  <rect x="22" y="128" width="69" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="56.5" y="144" text-anchor="middle" class="chip">FastAPI</text><rect x="99" y="128" width="55" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="126.5" y="144" text-anchor="middle" class="chip">FAISS</text><rect x="162" y="128" width="69" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="196.5" y="144" text-anchor="middle" class="chip">PyTorch</text><rect x="239" y="128" width="55" height="24" rx="12" fill="#0f1522" stroke="#1d2a40"/><text x="266.5" y="144" text-anchor="middle" class="chip">React</text>
+  <text x="408" y="32" text-anchor="end" class="p">tested API</text>
+  <text x="22" y="58" class="t">Infotech-Wizard</text>
+  <text x="22" y="82" class="d">Private GenAI helpdesk: retrieval over 3,531</text><text x="22" y="102" class="d">resolved tickets in 5 languages, local LLM.</text>
+  <rect x="22" y="128" width="69" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="56.5" y="144" text-anchor="middle" class="chip">FastAPI</text><rect x="99" y="128" width="55" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="126.5" y="144" text-anchor="middle" class="chip">FAISS</text><rect x="162" y="128" width="69" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="196.5" y="144" text-anchor="middle" class="chip">PyTorch</text><rect x="239" y="128" width="55" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="266.5" y="144" text-anchor="middle" class="chip">React</text>
 </svg>

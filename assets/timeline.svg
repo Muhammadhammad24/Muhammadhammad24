@@ -2,32 +2,26 @@
   <title>Career timeline</title>
   
   <defs>
-    <linearGradient id="tl-edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3b82f6"/>
-      <stop offset="1" stop-color="#f0a04b"/>
-    </linearGradient>
-    <radialGradient id="tl-glow" cx="0.85" cy="0" r="0.9">
-      <stop offset="0" stop-color="#3b82f6" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#3b82f6" stop-opacity="0"/>
-    </radialGradient>
+    <linearGradient id="tl-edge"><stop offset="0" stop-color="#30363d"/></linearGradient>
+    <linearGradient id="tl-glow"><stop offset="0" stop-color="#0d1117" stop-opacity="0"/></linearGradient>
   </defs>
   <style>
     text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
-    .h { font-size: 11px; letter-spacing: 1.8px; fill: #f0a04b; font-weight: 600; }
-    .yr { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; fill: #8b97ad; }
+    .h { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11px; letter-spacing: 1.6px; fill: #8b949e; }
+    .yr { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; fill: #8b949e; }
     .lg { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; }
-    .lb { font-size: 12.5px; fill: #e6ebf5; font-weight: 600; }
-    .sb { font-size: 11px; fill: #8b97ad; }
+    .lb { font-size: 12.5px; fill: #e6edf3; font-weight: 600; }
+    .sb { font-size: 11px; fill: #8b949e; }
     .row { opacity: 0; animation: in .45s ease-out forwards; }
     .pulse { animation: pulse 1.6s ease-in-out infinite; }
     @keyframes in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
     @keyframes pulse { 50% { opacity: .2; } }
     @media (prefers-reduced-motion: reduce) { .row, .pulse { animation: none; opacity: 1; } }
   </style>
-  <rect x="1" y="1" width="878" height="348" rx="14" fill="#0a0d14" stroke="url(#tl-edge)" stroke-opacity=".5"/>
+  <rect x="1" y="1" width="878" height="348" rx="14" fill="#0d1117" stroke="url(#tl-edge)"/>
   <rect x="1" y="1" width="878" height="348" rx="14" fill="url(#tl-glow)"/>
-  <text x="28" y="34" class="h">CAREER · 2019 → TODAY</text>
-  <text x="852" y="34" text-anchor="end" class="lg"><tspan fill="#f0a04b">● current</tspan><tspan fill="#60a5fa">   ● industry</tspan><tspan fill="#34d399">   ● research</tspan><tspan fill="#8b97ad">   ● education</tspan></text>
-  <line x1="300.0" y1="54" x2="300.0" y2="302" stroke="#1d2a40"/><text x="303.0" y="322" class="yr">19</text><line x1="369.0" y1="54" x2="369.0" y2="302" stroke="#1d2a40"/><text x="372.0" y="322" class="yr">20</text><line x1="438.0" y1="54" x2="438.0" y2="302" stroke="#1d2a40"/><text x="441.0" y="322" class="yr">21</text><line x1="507.0" y1="54" x2="507.0" y2="302" stroke="#1d2a40"/><text x="510.0" y="322" class="yr">22</text><line x1="576.0" y1="54" x2="576.0" y2="302" stroke="#1d2a40"/><text x="579.0" y="322" class="yr">23</text><line x1="645.0" y1="54" x2="645.0" y2="302" stroke="#1d2a40"/><text x="648.0" y="322" class="yr">24</text><line x1="714.0" y1="54" x2="714.0" y2="302" stroke="#1d2a40"/><text x="717.0" y="322" class="yr">25</text><line x1="783.0" y1="54" x2="783.0" y2="302" stroke="#1d2a40"/><text x="786.0" y="322" class="yr">26</text><line x1="852.0" y1="54" x2="852.0" y2="302" stroke="#1d2a40"/>
-  <g class="row" style="animation-delay:0.15s"><text x="28" y="70" class="lb">IT Engineer</text><text x="28" y="83" class="sb">The Active Solutions</text><rect x="317.2" y="60" width="65.6" height="12" rx="6" fill="#3b82f6"/></g><g class="row" style="animation-delay:0.27s"><text x="28" y="100" class="lb">IT Specialist</text><text x="28" y="113" class="sb">Target Logistics International</text><rect x="403.5" y="90" width="82.8" height="12" rx="6" fill="#3b82f6"/></g><g class="row" style="animation-delay:0.39s"><text x="28" y="130" class="lb">IT Specialist</text><text x="28" y="143" class="sb">KTDMC</text><rect x="489.8" y="120" width="44.9" height="12" rx="6" fill="#3b82f6"/></g><g class="row" style="animation-delay:0.51s"><text x="28" y="160" class="lb">IT Specialist</text><text x="28" y="173" class="sb">Liberty Books</text><rect x="536.0" y="150" width="26.2" height="12" rx="6" fill="#3b82f6"/></g><g class="row" style="animation-delay:0.63s"><text x="28" y="190" class="lb">IT Engineer · contract</text><text x="28" y="203" class="sb">TestSolutions GmbH</text><rect x="581.5" y="180" width="129.0" height="12" rx="6" fill="#60a5fa"/></g><g class="row" style="animation-delay:0.75s"><text x="28" y="220" class="lb">M.Sc. Data Science</text><text x="28" y="233" class="sb">University of Göttingen</text><rect x="576.0" y="210" width="203.6" height="12" rx="6" fill="#8b97ad"/></g><g class="row" style="animation-delay:0.87s"><text x="28" y="250" class="lb">IT Engineer</text><text x="28" y="263" class="sb">Kontinental Establishment</text><rect x="593.2" y="240" width="235.8" height="12" rx="6" fill="#f0a04b"/><circle cx="829.0" cy="246" r="4.5" fill="#f0a04b" class="pulse"/></g><g class="row" style="animation-delay:0.99s"><text x="28" y="280" class="lb">DevSecOps · Scientific Computing</text><text x="28" y="293" class="sb">University of Göttingen</text><rect x="662.2" y="270" width="31.1" height="12" rx="6" fill="#34d399"/></g>
+  <text x="28" y="34" class="h">CAREER 2019 → TODAY</text>
+  <text x="852" y="34" text-anchor="end" class="lg"><tspan fill="#b1eb21">■ current</tspan><tspan fill="#6e7681">   ■ past roles</tspan><tspan fill="#484f58">   ■ education</tspan></text>
+  <line x1="300.0" y1="54" x2="300.0" y2="302" stroke="#30363d"/><text x="303.0" y="322" class="yr">19</text><line x1="369.0" y1="54" x2="369.0" y2="302" stroke="#30363d"/><text x="372.0" y="322" class="yr">20</text><line x1="438.0" y1="54" x2="438.0" y2="302" stroke="#30363d"/><text x="441.0" y="322" class="yr">21</text><line x1="507.0" y1="54" x2="507.0" y2="302" stroke="#30363d"/><text x="510.0" y="322" class="yr">22</text><line x1="576.0" y1="54" x2="576.0" y2="302" stroke="#30363d"/><text x="579.0" y="322" class="yr">23</text><line x1="645.0" y1="54" x2="645.0" y2="302" stroke="#30363d"/><text x="648.0" y="322" class="yr">24</text><line x1="714.0" y1="54" x2="714.0" y2="302" stroke="#30363d"/><text x="717.0" y="322" class="yr">25</text><line x1="783.0" y1="54" x2="783.0" y2="302" stroke="#30363d"/><text x="786.0" y="322" class="yr">26</text><line x1="852.0" y1="54" x2="852.0" y2="302" stroke="#30363d"/>
+  <g class="row" style="animation-delay:0.15s"><text x="28" y="70" class="lb">IT Engineer</text><text x="28" y="83" class="sb">The Active Solutions</text><rect x="317.2" y="60" width="65.6" height="12" rx="2" fill="#6e7681"/></g><g class="row" style="animation-delay:0.27s"><text x="28" y="100" class="lb">IT Specialist</text><text x="28" y="113" class="sb">Target Logistics International</text><rect x="403.5" y="90" width="82.8" height="12" rx="2" fill="#6e7681"/></g><g class="row" style="animation-delay:0.39s"><text x="28" y="130" class="lb">IT Specialist</text><text x="28" y="143" class="sb">KTDMC</text><rect x="489.8" y="120" width="44.9" height="12" rx="2" fill="#6e7681"/></g><g class="row" style="animation-delay:0.51s"><text x="28" y="160" class="lb">IT Specialist</text><text x="28" y="173" class="sb">Liberty Books</text><rect x="536.0" y="150" width="26.2" height="12" rx="2" fill="#6e7681"/></g><g class="row" style="animation-delay:0.63s"><text x="28" y="190" class="lb">IT Engineer · contract</text><text x="28" y="203" class="sb">TestSolutions GmbH</text><rect x="581.5" y="180" width="129.0" height="12" rx="2" fill="#6e7681"/></g><g class="row" style="animation-delay:0.75s"><text x="28" y="220" class="lb">M.Sc. Data Science</text><text x="28" y="233" class="sb">University of Göttingen</text><rect x="576.0" y="210" width="203.6" height="12" rx="2" fill="#484f58"/></g><g class="row" style="animation-delay:0.87s"><text x="28" y="250" class="lb">IT Engineer</text><text x="28" y="263" class="sb">Kontinental Establishment</text><rect x="593.2" y="240" width="235.8" height="12" rx="2" fill="#b1eb21"/><circle cx="829.0" cy="246" r="4.5" fill="#b1eb21" class="pulse"/></g><g class="row" style="animation-delay:0.99s"><text x="28" y="280" class="lb">DevSecOps · Scientific Computing</text><text x="28" y="293" class="sb">University of Göttingen</text><rect x="662.2" y="270" width="31.1" height="12" rx="2" fill="#6e7681"/></g>
 </svg>

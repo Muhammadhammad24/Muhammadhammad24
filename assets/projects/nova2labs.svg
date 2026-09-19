@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="176" viewBox="0 0 430 176" role="img" aria-label="nova2labs">
+  <title>nova2labs</title>
+  
+  <defs>
+    <linearGradient id="nova2labs-edge"><stop offset="0" stop-color="#30363d"/></linearGradient>
+    <linearGradient id="nova2labs-glow"><stop offset="0" stop-color="#0d1117" stop-opacity="0"/></linearGradient>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+    .k { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 10.5px; letter-spacing: 1.4px; fill: #8b949e; }
+    .t { font-size: 20px; fill: #e6edf3; font-weight: 700; }
+    .d { font-size: 13px; fill: #8b949e; }
+    .t { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    .chip { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11.5px; fill: #e6edf3; }
+    .p { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; font-size: 11px; fill: #b1eb21; }
+  </style>
+  <rect x="0.5" y="0.5" width="429" height="175" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <rect x="0.5" y="22" width="3" height="40" fill="#b1eb21"/>
+  <text x="22" y="32" class="k">FULL-STACK · CLOUD</text>
+  <text x="408" y="32" text-anchor="end" class="p">live</text>
+  <text x="22" y="58" class="t">nova2labs</text>
+  <text x="22" y="82" class="d">AI and cloud engineering studio: server-rendered</text><text x="22" y="102" class="d">React, generative artwork, SMTP lead pipeline.</text>
+  <rect x="22" y="128" width="76" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="60.0" y="144" text-anchor="middle" class="chip">React 19</text><rect x="106" y="128" width="119" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="165.5" y="144" text-anchor="middle" class="chip">TanStack Start</text><rect x="233" y="128" width="41" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="253.5" y="144" text-anchor="middle" class="chip">SSR</text><rect x="282" y="128" width="62" height="24" rx="4" fill="#161b22" stroke="#30363d"/><text x="313.0" y="144" text-anchor="middle" class="chip">Vercel</text>
+</svg>

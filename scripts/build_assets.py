@@ -5,7 +5,8 @@ means editing one list and re-running:
 
     python scripts/build_assets.py
 
-The palette follows the banner: near-black, deep blue, and an amber accent.
+The palette is deliberately quiet: GitHub-dark neutrals and one accent,
+the lime used on the portfolio.
 SVGs use system fonts only, because GitHub serves them as images and blocks
 external font loading.
 """
@@ -18,15 +19,16 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[1] / "assets"
 
-BG = "#0a0d14"
-PANEL = "#0f1522"
-LINE = "#1d2a40"
-TEXT = "#e6ebf5"
-MUTED = "#8b97ad"
-BLUE = "#3b82f6"
-BLUE_SOFT = "#60a5fa"
-AMBER = "#f0a04b"
-GREEN = "#34d399"
+BG = "#0d1117"
+PANEL = "#161b22"
+LINE = "#30363d"
+TEXT = "#e6edf3"
+MUTED = "#8b949e"
+ACCENT = "#b1eb21"
+BLUE = MUTED
+BLUE_SOFT = TEXT
+AMBER = ACCENT
+GREEN = ACCENT
 
 SANS = "'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif"
 MONO = "ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace"
@@ -39,16 +41,11 @@ def write(name: str, svg: str) -> None:
 
 
 def gradient_defs(uid: str) -> str:
+    """Flat frame paints: a hairline border and no glow."""
     return f"""
   <defs>
-    <linearGradient id="{uid}-edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="{BLUE}"/>
-      <stop offset="1" stop-color="{AMBER}"/>
-    </linearGradient>
-    <radialGradient id="{uid}-glow" cx="0.85" cy="0" r="0.9">
-      <stop offset="0" stop-color="{BLUE}" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="{BLUE}" stop-opacity="0"/>
-    </radialGradient>
+    <linearGradient id="{uid}-edge"><stop offset="0" stop-color="{LINE}"/></linearGradient>
+    <linearGradient id="{uid}-glow"><stop offset="0" stop-color="{BG}" stop-opacity="0"/></linearGradient>
   </defs>"""
 
 
@@ -65,7 +62,7 @@ TERMINAL = [
     ("cmd", "cat principles.md"),
     ("out", "Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook"),
     ("cmd", "ls ~/now"),
-    ("now", "it-engineer@kontinental   msc-data-science@uni-goettingen   aws-terraform-platform/"),
+    ("now", "it-engineer@kontinental   msc-data-science@uni-goettingen   open-to-roles: worldwide"),
 ]
 
 
@@ -78,8 +75,7 @@ def terminal() -> None:
         delay = 0.35 + i * 0.45
         if kind == "cmd":
             body = (
-                f'<tspan fill="{GREEN}">hammad</tspan><tspan fill="{MUTED}">@</tspan>'
-                f'<tspan fill="{BLUE_SOFT}">ops</tspan><tspan fill="{MUTED}"> ~ $ </tspan>'
+                f'<tspan fill="{ACCENT}">$ </tspan>'
                 f'<tspan fill="{TEXT}">{escape(text)}</tspan>'
             )
         elif kind == "now":
@@ -103,13 +99,14 @@ def terminal() -> None:
     @keyframes blink {{ 50% {{ opacity: 0; }} }}
     @media (prefers-reduced-motion: reduce) {{ .l, .cur {{ animation: none; opacity: 1; }} }}
   </style>
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="url(#t-edge)" stroke-opacity=".55"/>
+  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="url(#t-edge)"/>
   <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="url(#t-glow)"/>
-  <circle cx="26" cy="24" r="6" fill="#ff5f57"/><circle cx="46" cy="24" r="6" fill="#febc2e"/><circle cx="66" cy="24" r="6" fill="#28c840"/>
-  <text x="{width / 2}" y="29" text-anchor="middle" fill="{MUTED}" style="font-size:12px">hammad@ops — zsh</text>
+  <rect x="24" y="19" width="8" height="8" rx="1" fill="{ACCENT}"/>
+  <text x="40" y="28" fill="{MUTED}" style="font-size:12px">~/muhammad-hammad</text>
+  <text x="{width - 24}" y="28" text-anchor="end" fill="{MUTED}" style="font-size:12px">bash</text>
   <line x1="1" y1="44" x2="{width - 1}" y2="44" stroke="{LINE}"/>
   {"".join(rows)}
-  <text class="cur" x="28" y="{cursor_y}"><tspan fill="{GREEN}">hammad</tspan><tspan fill="{MUTED}">@</tspan><tspan fill="{BLUE_SOFT}">ops</tspan><tspan fill="{MUTED}"> ~ $ </tspan><tspan fill="{TEXT}">▌</tspan></text>
+  <text class="cur" x="28" y="{cursor_y}"><tspan fill="{ACCENT}">$ </tspan><tspan fill="{TEXT}">▌</tspan></text>
 </svg>"""
     write("terminal.svg", svg)
 
@@ -121,69 +118,69 @@ def terminal() -> None:
 PROJECTS = [
     {
         "slug": "aws-terraform-platform",
-        "kind": "INFRASTRUCTURE AS CODE",
-        "title": "AWS Terraform Platform",
+        "kind": "PLATFORM · DEVSECOPS",
+        "title": "aws-terraform-platform",
         "lines": [
-            "HA across two AZs, self-healing Auto Scaling, OIDC",
-            "CI/CD with no stored keys, KMS, GuardDuty, CloudTrail.",
+            "Self-healing AWS in Terraform across two AZs.",
+            "Keyless OIDC CI/CD, KMS, GuardDuty, CloudTrail.",
         ],
         "stack": ["Terraform", "AWS", "GitHub Actions", "Checkov"],
-        "proof": "15 tests · Checkov 0 failed",
+        "proof": "15 tests · 0 failed checks",
     },
     {
         "slug": "Infotech-Wizard",
         "kind": "AIOPS · RAG",
-        "title": "Infotech Wizard",
+        "title": "Infotech-Wizard",
         "lines": [
-            "Helpdesk assistant: multilingual retrieval over 3.5k",
-            "resolved tickets, answers from a local LLM.",
+            "Private GenAI helpdesk: retrieval over 3,531",
+            "resolved tickets in 5 languages, local LLM.",
         ],
         "stack": ["FastAPI", "FAISS", "PyTorch", "React"],
-        "proof": "5 languages · tested API",
+        "proof": "tested API",
     },
     {
         "slug": "pfSense-Firewall-Lab",
         "kind": "NETWORK SECURITY",
-        "title": "pfSense Firewall Lab",
+        "title": "pfSense-Firewall-Lab",
         "lines": [
-            "Firewall policy as code: TOML rendered to pfSense",
-            "XML and audited for risky rules in CI.",
+            "Firewall policy as code, rendered to pfSense XML",
+            "and audited for risky rules before deployment.",
         ],
         "stack": ["pfSense", "Python", "OpenVPN", "CI"],
         "proof": "22 tests · 0 findings",
     },
     {
-        "slug": "nnapprox",
-        "kind": "RESEARCH · NUMERICS",
-        "title": "nnapprox",
+        "slug": "nova2labs",
+        "kind": "FULL-STACK · CLOUD",
+        "title": "nova2labs",
         "lines": [
-            "Function approximation with ReLU networks:",
-            "closed-form baselines vs. greedy growing axons.",
+            "AI and cloud engineering studio: server-rendered",
+            "React, generative artwork, SMTP lead pipeline.",
         ],
-        "stack": ["PyTorch", "NumPy", "Nevergrad"],
-        "proof": "33 tests · error bounds",
+        "stack": ["React 19", "TanStack Start", "SSR", "Vercel"],
+        "proof": "live",
     },
     {
         "slug": "velqatechnologies",
-        "kind": "PRODUCTION WEB",
-        "title": "Velqa Technologies",
+        "kind": "WEB · EDGE",
+        "title": "velqatechnologies",
         "lines": [
-            "Marketing site for a BPO company: 33 statically",
-            "exported routes, SEO, deployed on Vercel.",
+            "Company website for a BPO firm: 33 statically",
+            "exported routes served from the edge.",
         ],
         "stack": ["Next.js", "TypeScript", "Tailwind"],
         "proof": "live · CI",
     },
     {
-        "slug": "portfolio",
-        "kind": "PERSONAL SITE",
-        "title": "Portfolio",
+        "slug": "nnapprox",
+        "kind": "AI RESEARCH",
+        "title": "nnapprox",
         "lines": [
-            "Animated specialisation diagrams, skills matrix",
-            "and a work timeline, deployed on Vercel.",
+            "Deep ReLU network approximation: closed-form",
+            "constructions against greedy growing axons.",
         ],
-        "stack": ["Next.js 15", "React 19", "Framer Motion"],
-        "proof": "live",
+        "stack": ["PyTorch", "NumPy", "Python"],
+        "proof": "33 tests",
     },
 ]
 
@@ -199,7 +196,7 @@ def card(p: dict) -> None:
     for s in p["stack"]:
         cw = chip_width(s)
         chips.append(
-            f'<rect x="{x}" y="128" width="{cw}" height="24" rx="12" fill="{PANEL}" stroke="{LINE}"/>'
+            f'<rect x="{x}" y="128" width="{cw}" height="24" rx="4" fill="{PANEL}" stroke="{LINE}"/>'
             f'<text x="{x + cw / 2}" y="144" text-anchor="middle" class="chip">{escape(s)}</text>'
         )
         x += cw + 8
@@ -212,16 +209,17 @@ def card(p: dict) -> None:
   {gradient_defs(uid)}
   <style>
     text {{ font-family: {SANS}; }}
-    .k {{ font-size: 10.5px; letter-spacing: 1.6px; fill: {AMBER}; font-weight: 600; }}
+    .k {{ font-family: {MONO}; font-size: 10.5px; letter-spacing: 1.4px; fill: {MUTED}; }}
     .t {{ font-size: 20px; fill: {TEXT}; font-weight: 700; }}
     .d {{ font-size: 13px; fill: {MUTED}; }}
-    .chip {{ font-family: {MONO}; font-size: 11.5px; fill: {BLUE_SOFT}; }}
-    .p {{ font-family: {MONO}; font-size: 11px; fill: {GREEN}; }}
+    .t {{ font-family: {MONO}; }}
+    .chip {{ font-family: {MONO}; font-size: 11.5px; fill: {TEXT}; }}
+    .p {{ font-family: {MONO}; font-size: 11px; fill: {ACCENT}; }}
   </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="url(#{uid}-edge)" stroke-opacity=".6"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#{uid}-glow)"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="{BG}" stroke="{LINE}"/>
+  <rect x="0.5" y="22" width="3" height="40" fill="{ACCENT}"/>
   <text x="22" y="32" class="k">{escape(p['kind'])}</text>
-  <text x="{w - 22}" y="32" text-anchor="end" class="p">● {escape(p['proof'])}</text>
+  <text x="{w - 22}" y="32" text-anchor="end" class="p">{escape(p['proof'])}</text>
   <text x="22" y="58" class="t">{escape(p['title'])}</text>
   {desc}
   {"".join(chips)}
@@ -236,15 +234,18 @@ def card(p: dict) -> None:
 START, END = 2019.0, 2027.0
 
 # (role, organisation, start, end or None for current, colour)
+PAST = "#6e7681"
+EDU = "#484f58"
+
 TIMELINE = [
-    ("IT Engineer", "The Active Solutions", 2019.25, 2020.2, BLUE),
-    ("IT Specialist", "Target Logistics International", 2020.5, 2021.7, BLUE),
-    ("IT Specialist", "KTDMC", 2021.75, 2022.4, BLUE),
-    ("IT Specialist", "Liberty Books", 2022.42, 2022.8, BLUE),
-    ("IT Engineer · contract", "TestSolutions GmbH", 2023.08, 2024.95, BLUE_SOFT),
-    ("M.Sc. Data Science", "University of Göttingen", 2023.0, 2025.95, MUTED),
-    ("IT Engineer", "Kontinental Establishment", 2023.25, None, AMBER),
-    ("DevSecOps · Scientific Computing", "University of Göttingen", 2024.25, 2024.7, GREEN),
+    ("IT Engineer", "The Active Solutions", 2019.25, 2020.2, PAST),
+    ("IT Specialist", "Target Logistics International", 2020.5, 2021.7, PAST),
+    ("IT Specialist", "KTDMC", 2021.75, 2022.4, PAST),
+    ("IT Specialist", "Liberty Books", 2022.42, 2022.8, PAST),
+    ("IT Engineer · contract", "TestSolutions GmbH", 2023.08, 2024.95, PAST),
+    ("M.Sc. Data Science", "University of Göttingen", 2023.0, 2025.95, EDU),
+    ("IT Engineer", "Kontinental Establishment", 2023.25, None, ACCENT),
+    ("DevSecOps · Scientific Computing", "University of Göttingen", 2024.25, 2024.7, PAST),
 ]
 
 
@@ -276,7 +277,7 @@ def timeline() -> None:
             f'<g class="row" style="animation-delay:{delay:.2f}s">'
             f'<text x="28" y="{y}" class="lb">{escape(role)}</text>'
             f'<text x="28" y="{y + 13}" class="sb">{escape(org)}</text>'
-            f'<rect x="{x0:.1f}" y="{y - 10}" width="{max(x1 - x0, 5):.1f}" height="12" rx="6" fill="{colour}"/>'
+            f'<rect x="{x0:.1f}" y="{y - 10}" width="{max(x1 - x0, 5):.1f}" height="12" rx="2" fill="{colour}"/>'
             f"{live}</g>"
         )
     svg = f"""
@@ -285,7 +286,7 @@ def timeline() -> None:
   {gradient_defs("tl")}
   <style>
     text {{ font-family: {SANS}; }}
-    .h {{ font-size: 11px; letter-spacing: 1.8px; fill: {AMBER}; font-weight: 600; }}
+    .h {{ font-family: {MONO}; font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
     .yr {{ font-family: {MONO}; font-size: 10.5px; fill: {MUTED}; }}
     .lg {{ font-family: {MONO}; font-size: 10.5px; }}
     .lb {{ font-size: 12.5px; fill: {TEXT}; font-weight: 600; }}
@@ -296,10 +297,10 @@ def timeline() -> None:
     @keyframes pulse {{ 50% {{ opacity: .2; }} }}
     @media (prefers-reduced-motion: reduce) {{ .row, .pulse {{ animation: none; opacity: 1; }} }}
   </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="url(#tl-edge)" stroke-opacity=".5"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="url(#tl-edge)"/>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#tl-glow)"/>
-  <text x="28" y="34" class="h">CAREER · 2019 → TODAY</text>
-  <text x="{w - right}" y="34" text-anchor="end" class="lg"><tspan fill="{AMBER}">● current</tspan><tspan fill="{BLUE_SOFT}">   ● industry</tspan><tspan fill="{GREEN}">   ● research</tspan><tspan fill="{MUTED}">   ● education</tspan></text>
+  <text x="28" y="34" class="h">CAREER 2019 → TODAY</text>
+  <text x="{w - right}" y="34" text-anchor="end" class="lg"><tspan fill="{ACCENT}">■ current</tspan><tspan fill="{PAST}">   ■ past roles</tspan><tspan fill="{EDU}">   ■ education</tspan></text>
   {"".join(grid)}
   {"".join(rows)}
 </svg>"""
