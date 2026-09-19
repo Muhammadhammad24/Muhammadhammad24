@@ -31,7 +31,7 @@ code, CI pipelines, and retrieval-augmented assistants for the help desk.
 | [**Infotech Wizard**](https://github.com/Muhammadhammad24/Infotech-Wizard) | RAG helpdesk assistant: multilingual retrieval over 3.5k resolved tickets and answers from a local LLM | FastAPI · FAISS · Sentence-Transformers · TinyLlama · React · Docker |
 | [**pfSense Firewall Lab**](https://github.com/Muhammadhammad24/pfSense-Firewall-Lab) | Virtualised perimeter firewall with a firewall policy written as code, rendered to pfSense XML and audited in CI | pfSense · Python · OpenVPN · GitHub Actions |
 | [**nnapprox**](https://github.com/Muhammadhammad24/nnapprox) | Research on function approximation with deep ReLU networks: greedy “growing axons” vs random initialisation | PyTorch · NumPy · Nevergrad |
-| [**Velqa Technologies**](https://github.com/Muhammadhammad24/velqatechnologies) | Production marketing site for a BPO company, 29 statically exported pages | Next.js · TypeScript · Tailwind · Vercel |
+| [**Velqa Technologies**](https://github.com/Muhammadhammad24/velqatechnologies) | Production marketing site for a BPO company, 33 statically exported routes | Next.js · TypeScript · Tailwind · Vercel |
 | [**Portfolio**](https://github.com/Muhammadhammad24/portfolio) | Personal site with animated specialisation diagrams and a skills matrix | Next.js 15 · React 19 · Framer Motion |
 
 ## Toolbox
