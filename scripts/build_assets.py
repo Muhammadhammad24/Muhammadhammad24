@@ -690,6 +690,164 @@ def timeline() -> None:
     write("career.svg", svg)
 
 
+# --------------------------------------------------------------------------
+# Toolbox
+# --------------------------------------------------------------------------
+# Brand logos are vendored in scripts/icons: Simple Icons (CC0) as "si-*.svg",
+# Devicon (MIT) as "dev-*.svg", and a few supplied as-is. Trademarks belong
+# to their owners. "ms" draws the Microsoft four-square mark.
+
+ICONS = Path(__file__).resolve().parent / "icons"
+
+# (category, [(label, icon)])
+TOOLBOX = [
+    ("Cloud & virtualisation", [
+        ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "si-googlecloud"),
+        ("VMware", "si-vmware"), ("Hyper-V", "ms"), ("Docker", "si-docker"), ("Kubernetes", "si-kubernetes"), ("Terraform", "si-terraform"),
+    ]),
+    ("Operating systems", [
+        ("Windows", "dev-windows11-original"), ("Linux", "si-linux"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "si-redhat"),
+        ("CentOS", "si-centos"), ("macOS", "si-apple"), ("iOS", "si-ios"), ("Android", "si-android"),
+    ]),
+    ("Identity & endpoints", [
+        ("Entra ID", "ms"), ("Active Directory", "ms"), ("Intune", "ms"), ("Autopilot", "ms"),
+        ("Jamf Pro", "jamf"), ("Okta", "si-okta"), ("Workspace ONE", "si-vmware"), ("TeamViewer", "si-teamviewer"),
+    ]),
+    ("Network & security", [
+        ("Cisco", "si-cisco"), ("Juniper", "si-junipernetworks"), ("Fortinet", "si-fortinet"), ("pfSense", "si-pfsense"),
+        ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"), ("Wireshark", "si-wireshark"),
+    ]),
+    ("Automation & delivery", [
+        ("PowerShell", "dev-powershell-original"), ("Python", "si-python"), ("Bash", "si-gnubash"), ("Ansible", "si-ansible"),
+        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "si-githubactions"), ("Git", "si-git"),
+    ]),
+    ("Monitoring & backup", [
+        ("Splunk", "si-splunk"), ("Datadog", "si-datadog"), ("New Relic", "si-newrelic"), ("Grafana", "si-grafana"),
+        ("Prometheus", "si-prometheus"), ("SolarWinds", "solarwinds"), ("Veeam", "si-veeam"), ("Acronis", "acronis"),
+    ]),
+    ("Service & collaboration", [
+        ("ServiceNow", "servicenow"), ("Jira", "si-jira"), ("Confluence", "si-confluence"), ("Zendesk", "si-zendesk"),
+        ("Microsoft 365", "ms"), ("Google Workspace", "googleworkspace"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
+    ]),
+]
+
+# Simple Icons wordmarks sit small in their square; draw them larger.
+WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom", "cisco"}
+
+# Simple Icons ship one brand colour; a few are too dark for a dark card.
+SI_COLOURS = {
+    "googlecloud": "#4285F4", "terraform": "#844FBA", "ansible": "#EE0000", "docker": "#2496ED", "kubernetes": "#326CE5",
+    "vmware": "#607078", "linux": "#FCC624", "ubuntu": "#E95420", "redhat": "#EE0000", "centos": "#9CCD2A", "apple": TEXT,
+    "ios": TEXT, "android": "#3DDC84", "okta": "#007DC1", "cisco": "#1BA0D7", "junipernetworks": "#84B135", "fortinet": "#EE3124",
+    "pfsense": TEXT, "sonicwall": "#FF791A", "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": TEXT,
+    "datadog": "#8F5BD6", "newrelic": "#1CE783", "grafana": "#F46800", "prometheus": "#E6522C", "veeam": "#00B336",
+    "jira": "#2684FF", "confluence": "#2684FF", "zendesk": TEXT, "zoom": "#0B5CFF", "python": "#3776AB", "gnubash": "#4EAA25",
+    "chocolatey": "#80B5E3", "githubactions": "#2088FF", "git": "#F03C2E", "yaml": "#CB171E", "teamviewer": "#0E8EE9",
+}
+
+
+def _logo(icon: str, x: float, y: float, size: float, uid: str) -> str:
+    """Inline one brand logo inside a size x size box at (x, y)."""
+    if icon == "ms":
+        g, s = size * 0.06, size * 0.44
+        return "".join(
+            f'<rect x="{x + dx * (s + g):.1f}" y="{y + dy * (s + g):.1f}" width="{s:.1f}" height="{s:.1f}" fill="{c}"/>'
+            for dx, dy, c in ((0, 0, "#F25022"), (1, 0, "#7FBA00"), (0, 1, "#00A4EF"), (1, 1, "#FFB900"))
+        )
+    path = ICONS / f"{icon}.svg"
+    if not path.exists():
+        return ""
+    raw = path.read_text(encoding="utf-8")
+    import re
+
+    view = re.search(r'viewBox="([^"]+)"', raw)
+    inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", raw, flags=re.S)
+    inner = re.sub(r"<title>.*?</title>", "", inner, flags=re.S)
+    # keep ids unique when several logos share one document
+    inner = re.sub(r'id="([^"]+)"', lambda m: f'id="{uid}-{m.group(1)}"', inner)
+    inner = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{uid}-{m.group(1)})", inner)
+    inner = re.sub(r'href="#([^"]+)"', lambda m: f'href="#{uid}-{m.group(1)}"', inner)
+    fill = ""
+    if icon.startswith("si-"):
+        fill = f' fill="{SI_COLOURS.get(icon[3:], TEXT)}"'
+    vb = view.group(1) if view else "0 0 24 24"
+    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}"{fill}>{inner}</svg>'
+
+
+def toolbox() -> None:
+    w, top, row_h, label_w = 880, 70, 88, 196
+    tile, step = 46, 81
+    h = top + row_h * len(TOOLBOX) + 14
+    total = sum(len(items) for _, items in TOOLBOX)
+    rows = []
+    for r, (cat, items) in enumerate(TOOLBOX):
+        y = top + r * row_h
+        rows.append(
+            f'<line x1="26" y1="{y - 8}" x2="{w - 26}" y2="{y - 8}" stroke="{LINE}" stroke-dasharray="2 5"/>' if r else ""
+        )
+        rows.append(
+            f'<g class="in" style="animation-delay:{0.1 + r * 0.08:.2f}s">'
+            f'<circle cx="32" cy="{y + 28}" r="3" fill="{ACCENT}" class="led" style="animation-delay:{r * 0.3:.1f}s"/>'
+            f'<text x="44" y="{y + 32}" class="cat">{escape(cat)}</text>'
+            f'<text x="44" y="{y + 50}" class="cnt">{len(items):02d} tools</text></g>'
+        )
+        for c, (label, icon) in enumerate(items):
+            tx = label_w + c * step + (step - tile) / 2
+            d = 0.2 + r * 0.08 + c * 0.04
+            if icon[3:] in WORDMARKS or icon.endswith("wordmark"):
+                logo = _logo(icon, tx + 4, y + 2, 38, f"i{r}{c}")
+            else:
+                logo = _logo(icon, tx + 11, y + 9, 24, f"i{r}{c}")
+            if not logo:  # no logo file yet: a neat monogram
+                logo = f'<text x="{tx + tile / 2:.1f}" y="{y + 28}" text-anchor="middle" class="mono">{escape(label[:2])}</text>'
+            rows.append(
+                f'<g class="tile" style="animation-delay:{d:.2f}s">'
+                f'<rect x="{tx:.1f}" y="{y}" width="{tile}" height="{tile - 4}" rx="10" fill="{PANEL}" stroke="{LINE}"/>'
+                f"{logo}"
+                + "".join(
+                    f'<text x="{tx + tile / 2:.1f}" y="{y + tile + 12 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
+                    for k, part in enumerate(_wrap(label, 12))
+                )
+                + "</g>"
+            )
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Toolbox">
+  <title>Toolbox</title>
+  <defs>
+    <pattern id="tb-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
+    <radialGradient id="tb-halo" cx="0.02" cy="0.02" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".07"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+  </defs>
+  <style>
+    text {{ font-family: {SANS}; }}
+    .cmd, .meta, .cnt, .lb, .mono {{ font-family: {MONO}; }}
+    .cmd {{ font-size: 13px; fill: {TEXT}; }}
+    .meta {{ font-size: 11px; fill: {MUTED}; }}
+    .cat {{ font-size: 13.5px; font-weight: 600; fill: {TEXT}; }}
+    .cnt {{ font-size: 10.5px; fill: {MUTED}; }}
+    .lb {{ font-size: 9.5px; fill: {MUTED}; }}
+    .mono {{ font-size: 13px; font-weight: 700; fill: {TEXT}; }}
+    .in {{ animation: rin .5s ease-out both; }}
+    .tile {{ transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; }}
+    .led {{ animation: led 2.4s ease-in-out infinite; }}
+    .cur {{ animation: blink 1.05s steps(1) infinite; }}
+    @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
+    @keyframes pop {{ from {{ opacity: 0; transform: scale(.5); }} }}
+    @keyframes led {{ 50% {{ opacity: .25; }} }}
+    @keyframes blink {{ 50% {{ opacity: 0; }} }}
+    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
+  </style>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#tb-dots)"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#tb-halo)"/>
+  <text x="26" y="38" class="cmd"><tspan fill="{ACCENT}">~/toolbox</tspan><tspan fill="{MUTED}"> $ </tspan>ls --all</text>
+  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{ACCENT}" class="cur"/>
+  <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
+  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{LINE}"/>
+  {"".join(rows)}
+</svg>"""
+    write("toolbox.svg", svg)
+
+
 if __name__ == "__main__":
     terminal()
     impact()
@@ -697,3 +855,4 @@ if __name__ == "__main__":
         card(project)
     certs()
     timeline()
+    toolbox()

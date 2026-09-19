@@ -52,31 +52,8 @@ Every public repository is tested in CI, and each README states what exists and 
 
 ## Toolbox
 
-<p>
-  <b>Cloud &amp; IaC</b><br/>
-  <img src="https://skillicons.dev/icons?i=azure,aws,gcp,terraform,ansible,docker,kubernetes&theme=dark" alt="Azure, AWS, GCP, Terraform, Ansible, Docker, Kubernetes"/>
-</p>
-<p>
-  <b>Systems &amp; scripting</b><br/>
-  <img src="https://skillicons.dev/icons?i=windows,linux,ubuntu,redhat,apple,powershell,bash,python&theme=dark" alt="Windows, Linux, Ubuntu, Red Hat, macOS, PowerShell, Bash, Python"/>
-</p>
-<p>
-  <b>Delivery &amp; observability</b><br/>
-  <img src="https://skillicons.dev/icons?i=githubactions,git,grafana,prometheus,nginx,postgres&theme=dark" alt="GitHub Actions, Git, Grafana, Prometheus, nginx, PostgreSQL"/>
-</p>
-<p>
-  <b>Identity, endpoints &amp; networks</b><br/>
-  <img src="https://img.shields.io/badge/Entra_ID-161b22?style=flat-square&logo=microsoftazure&logoColor=b1eb21" alt="Entra ID"/>
-  <img src="https://img.shields.io/badge/Active_Directory-161b22?style=flat-square&logo=windows&logoColor=b1eb21" alt="Active Directory"/>
-  <img src="https://img.shields.io/badge/Intune_·_Autopilot-161b22?style=flat-square&logo=microsoft&logoColor=b1eb21" alt="Intune and Autopilot"/>
-  <img src="https://img.shields.io/badge/Jamf_Pro-161b22?style=flat-square&logo=apple&logoColor=b1eb21" alt="Jamf Pro"/>
-  <img src="https://img.shields.io/badge/Okta-161b22?style=flat-square&logo=okta&logoColor=b1eb21" alt="Okta"/>
-  <img src="https://img.shields.io/badge/Cisco_·_Juniper-161b22?style=flat-square&logo=cisco&logoColor=b1eb21" alt="Cisco and Juniper"/>
-  <img src="https://img.shields.io/badge/pfSense_·_Fortinet-161b22?style=flat-square&logo=pfsense&logoColor=b1eb21" alt="pfSense and Fortinet"/>
-  <img src="https://img.shields.io/badge/VMware_·_Hyper--V-161b22?style=flat-square&logo=vmware&logoColor=b1eb21" alt="VMware and Hyper-V"/>
-  <img src="https://img.shields.io/badge/CrowdStrike-161b22?style=flat-square&logo=crowdstrike&logoColor=b1eb21" alt="CrowdStrike"/>
-  <img src="https://img.shields.io/badge/Splunk-161b22?style=flat-square&logo=splunk&logoColor=b1eb21" alt="Splunk"/>
-  <img src="https://img.shields.io/badge/ServiceNow_·_Jira_SM-161b22?style=flat-square&logo=servicenow&logoColor=b1eb21" alt="ServiceNow and Jira Service Management"/>
+<p align="center">
+  <img src="assets/toolbox.svg" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Hyper-V, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Entra ID, Active Directory, Intune, Autopilot, Jamf Pro, Okta, Workspace ONE, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike, Wireshark. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, SolarWinds, Veeam, Acronis. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
 </p>
 
 ## Career
