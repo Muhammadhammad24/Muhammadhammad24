@@ -16,8 +16,8 @@
 I run IT for organisations end to end: Active Directory and Entra ID, Intune
 and Jamf fleets, firewalls and VPNs, and the service desk on top. I've done it
 for six years across logistics, publishing, research and consulting. Lately I
-build the tooling around that work: infrastructure as code, CI pipelines and
-retrieval-augmented assistants for the help desk.
+build the tooling around that work: Terraform for AWS, firewall policy as
+code, CI pipelines, and retrieval-augmented assistants for the help desk.
 
 - 🏢 **Now:** IT Specialist at Kontinental Establishment
 - 🎓 **Studying:** M.Sc. Data Science &amp; Computer Science, University of Göttingen
@@ -27,10 +27,11 @@ retrieval-augmented assistants for the help desk.
 
 | Project | What it is | Stack |
 | --- | --- | --- |
+| [**AWS Terraform Platform**](https://github.com/Muhammadhammad24/aws-terraform-platform) | Production-style AWS platform: HA across two AZs, self-healing Auto Scaling, OIDC CI/CD with no stored keys, monitoring, KMS, GuardDuty and CloudTrail, mapped to ISO 27001 | Terraform · AWS · GitHub Actions · Checkov |
 | [**Infotech Wizard**](https://github.com/Muhammadhammad24/Infotech-Wizard) | RAG helpdesk assistant: multilingual retrieval over 3.5k resolved tickets and answers from a local LLM | FastAPI · FAISS · Sentence-Transformers · TinyLlama · React · Docker |
-| [**pfSense Firewall Lab**](https://github.com/Muhammadhammad24/pfSense-Firewall-Lab) | Virtualised perimeter firewall with a WAN/LAN split, DHCP, a stateful rule set and runbooks | pfSense · VirtualBox · OpenVPN · Nmap |
+| [**pfSense Firewall Lab**](https://github.com/Muhammadhammad24/pfSense-Firewall-Lab) | Virtualised perimeter firewall with a firewall policy written as code, rendered to pfSense XML and audited in CI | pfSense · Python · OpenVPN · GitHub Actions |
 | [**nnapprox**](https://github.com/Muhammadhammad24/nnapprox) | Research on function approximation with deep ReLU networks: greedy “growing axons” vs random initialisation | PyTorch · NumPy · Nevergrad |
-| [**Velqa Technologies**](https://github.com/Muhammadhammad24/velqatechnologies) | Production marketing site for a BPO company, 33 statically exported routes | Next.js · TypeScript · Tailwind · Vercel |
+| [**Velqa Technologies**](https://github.com/Muhammadhammad24/velqatechnologies) | Production marketing site for a BPO company, 29 statically exported pages | Next.js · TypeScript · Tailwind · Vercel |
 | [**Portfolio**](https://github.com/Muhammadhammad24/portfolio) | Personal site with animated specialisation diagrams and a skills matrix | Next.js 15 · React 19 · Framer Motion |
 
 ## Toolbox
