@@ -696,7 +696,7 @@ def timeline() -> None:
 # Brand logos are vendored in scripts/icons: Simple Icons (CC0) as "si-*.svg",
 # Devicon (MIT) as "dev-*.svg", Microsoft's official Azure and Entra
 # architecture icons as "ms-*.svg", and a few supplied as-is. Trademarks belong
-# to their owners. Tiles are white so every logo keeps its own colours.
+# to their owners. Near-black marks switch to their light, dark-mode form.
 
 ICONS = Path(__file__).resolve().parent / "icons"
 
@@ -720,7 +720,7 @@ TOOLBOX = [
         ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"),
     ]),
     ("Automation & delivery", [
-        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "si-gnubash"), ("Ansible", "dev-ansible-original"),
+        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "si-gnubash"), ("Ansible", "si-ansible"),
         ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "dev-githubactions-original"), ("Git", "dev-git-original"),
     ]),
     ("Monitoring & backup", [
@@ -736,14 +736,24 @@ TOOLBOX = [
 # Simple Icons wordmarks sit small in their square; draw them larger.
 WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
 WIDE = {"cisco", "crowdstrike", "okta"}  # supplied logos that are wider than tall
+KEEP_COLOURS = {"dev-powershell-original"}  # already designed for dark backgrounds
 
 # Official brand colours for the single-colour Simple Icons marks.
 SI_COLOURS = {
     "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#FF791A",
     "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": "#000000", "newrelic": "#1CE783", "veeam": "#00B336",
     "zendesk": "#03363D", "zoom": "#0B5CFF", "gnubash": "#4EAA25", "chocolatey": "#80B5E3", "yaml": "#CB171E",
-    "teamviewer": "#050A52", "ubuntu": "#E95420",
+    "teamviewer": "#050A52", "ubuntu": "#E95420", "ansible": "#EE0000",
 }
+
+
+def _on_dark(hex_colour: str) -> str:
+    """Near-black brand colours become light so they read on a dark tile."""
+    h = hex_colour.lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return TEXT if max(r, g, b) < 0.35 else hex_colour
 
 
 def _logo(icon: str, x: float, y: float, size: float, uid: str) -> str:
@@ -767,9 +777,13 @@ def _logo(icon: str, x: float, y: float, size: float, uid: str) -> str:
     inner = re.sub(r'id="([^"]+)"', lambda m: f'id="{uid}-{m.group(1)}"', inner)
     inner = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{uid}-{m.group(1)})", inner)
     inner = re.sub(r'href="#([^"]+)"', lambda m: f'href="#{uid}-{m.group(1)}"', inner)
-    fill = ""
+    # Dark-mode treatment, as the brands do on dark backgrounds: near-black
+    # parts of a logo (and logos with no fill at all) are drawn light.
+    if icon not in KEEP_COLOURS:
+        inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
+    fill = f' fill="{TEXT}"'
     if icon.startswith("si-"):
-        fill = f' fill="{SI_COLOURS.get(icon[3:], TEXT)}"'
+        fill = f' fill="{_on_dark(SI_COLOURS.get(icon[3:], TEXT))}"'
     vb = view.group(1) if view else "0 0 24 24"
     return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}"{fill}>{inner}</svg>'
 
@@ -802,7 +816,7 @@ def toolbox() -> None:
                 logo = f'<text x="{tx + tile / 2:.1f}" y="{y + 28}" text-anchor="middle" class="mono">{escape(label[:2])}</text>'
             rows.append(
                 f'<g class="tile" style="animation-delay:{d:.2f}s">'
-                f'<rect x="{tx:.1f}" y="{y}" width="{tile}" height="{tile - 4}" rx="10" fill="#ffffff" stroke="{LINE}"/>'
+                f'<rect x="{tx:.1f}" y="{y}" width="{tile}" height="{tile - 4}" rx="8" fill="{PANEL}" stroke="{LINE}" class="edge" style="animation-delay:{d + 0.25:.2f}s"/>'
                 f"{logo}"
                 + "".join(
                     f'<text x="{tx + tile / 2:.1f}" y="{y + tile + 12 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
@@ -830,6 +844,8 @@ def toolbox() -> None:
     .tile {{ transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; }}
     .led {{ animation: led 2.4s ease-in-out infinite; }}
     .cur {{ animation: blink 1.05s steps(1) infinite; }}
+    .edge {{ animation: flash 1.4s ease-out both; }}
+    @keyframes flash {{ from {{ stroke: {ACCENT}; }} to {{ stroke: {LINE}; }} }}
     @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
     @keyframes pop {{ from {{ opacity: 0; transform: scale(.5); }} }}
     @keyframes led {{ 50% {{ opacity: .25; }} }}
@@ -845,7 +861,7 @@ def toolbox() -> None:
   <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{LINE}"/>
   {"".join(rows)}
 </svg>"""
-    write("stack.svg", svg)
+    write("tech.svg", svg)
 
 
 if __name__ == "__main__":
