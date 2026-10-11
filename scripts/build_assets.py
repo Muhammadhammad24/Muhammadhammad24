@@ -5,8 +5,8 @@ means editing one list and re-running:
 
     python scripts/build_assets.py
 
-The palette is deliberately quiet: GitHub-dark neutrals and one accent,
-the lime used on the portfolio.
+The palette matches the portfolio exactly: graphite near-black surfaces and
+one electric-blue accent.
 SVGs use system fonts only, because GitHub serves them as images and blocks
 external font loading.
 """
@@ -20,12 +20,12 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[1] / "assets"
 
-BG = "#0d1117"
-PANEL = "#161b22"
-LINE = "#30363d"
-TEXT = "#e6edf3"
-MUTED = "#8b949e"
-ACCENT = "#b1eb21"
+BG = "#09090B"
+PANEL = "#141417"
+LINE = "#26272B"
+TEXT = "#F5F5F7"
+MUTED = "#71757F"
+ACCENT = "#5B8DEF"
 BLUE = MUTED
 BLUE_SOFT = TEXT
 AMBER = ACCENT

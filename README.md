@@ -10,9 +10,9 @@
 </p>
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/mhammad24/"><img src="https://img.shields.io/badge/LinkedIn-mhammad24-161b22?style=for-the-badge&logo=linkedin&logoColor=b1eb21&labelColor=0d1117" alt="LinkedIn"/></a>
-  <a href="https://muhammadhammad.vercel.app"><img src="https://img.shields.io/badge/Portfolio-muhammadhammad.vercel.app-161b22?style=for-the-badge&logo=vercel&logoColor=b1eb21&labelColor=0d1117" alt="Portfolio"/></a>
-  <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-Get%20in%20touch-161b22?style=for-the-badge&logo=gmail&logoColor=b1eb21&labelColor=0d1117" alt="Email"/></a>
+  <a href="https://www.linkedin.com/in/mhammad24/"><img src="https://img.shields.io/badge/LinkedIn-mhammad24-141417?style=for-the-badge&logo=linkedin&logoColor=5B8DEF&labelColor=09090B" alt="LinkedIn"/></a>
+  <a href="https://muhammadhammad.vercel.app"><img src="https://img.shields.io/badge/Portfolio-muhammadhammad.vercel.app-141417?style=for-the-badge&logo=vercel&logoColor=5B8DEF&labelColor=09090B" alt="Portfolio"/></a>
+  <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-Get%20in%20touch-141417?style=for-the-badge&logo=gmail&logoColor=5B8DEF&labelColor=09090B" alt="Email"/></a>
 </p>
 
 <p align="center">
