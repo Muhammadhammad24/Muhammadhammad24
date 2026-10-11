@@ -497,18 +497,17 @@ def certs() -> None:
             d = 0.1 + (k - 1) * 0.1
             lines = _wrap(name, 46)[:2]
             meta = " · ".join(x for x in (issuer, str(year), hours) if x)
-            title = "".join(f'<text x="70" y="{34 + j * 18}" class="nm">{escape(line)}</text>' for j, line in enumerate(lines))
+            title = "".join(f'<text x="24" y="{34 + j * 18}" class="nm">{escape(line)}</text>' for j, line in enumerate(lines))
             tag_w = len(label) * 6.2 + 34
             write(f"certifications/{t}-{k}.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
   <title>{escape(name)}</title>{_cert_frame(w, h, uid)}
   <g class="hx" style="animation-delay:{d:.2f}s">
     <rect x="0" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
-    <text x="40" y="50" text-anchor="middle" class="mk">{mark}</text>
   </g>
   <g class="in" style="animation-delay:{d:.2f}s">
     {title}
-    <text x="70" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
+    <text x="24" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
   </g>
   <rect x="{w - 16 - tag_w:.1f}" y="{h - 30}" width="{tag_w:.1f}" height="20" rx="10" fill="none" stroke="{LINE}"/>
   <text x="{w - 16 - tag_w / 2:.1f}" y="{h - 16}" text-anchor="middle" class="tag">{label} ↗</text>
@@ -532,9 +531,11 @@ def certs() -> None:
 
 # (role, organisation, tag, years shown, start, end or None for current)
 # Newest first. Dates are year + (month - 1) / 12 and only size the uptime bars.
+# Roles only, newest first; education is listed separately below so the
+# employment sequence reads straight down without a degree interrupting it.
+# (role, organisation, tag, years shown, start, end or None for current)
 CAREER = [
-    ("IT Engineer", "Kontinental Establishment", "HEAD → main|full-time", "2023 — now", 2023.25, None),
-    ("M.Sc. Data Science", "University of Göttingen", "merge", "2023 — 2025", 2023.0, 2025.92),
+    ("IT Engineer", "Kontinental Establishment", "current|full-time", "2023 — now", 2023.25, None),
     ("IT Engineer", "TestSolutions GmbH", "contract", "2023 — 2024", 2023.08, 2024.92),
     ("DevSecOps · Scientific Computing", "University of Göttingen", "internship", "2022 — 2023", 2022.83, 2023.08),
     ("IT Specialist", "Liberty Books", "full-time", "2022", 2022.42, 2022.75),
@@ -542,7 +543,13 @@ CAREER = [
     ("IT Specialist", "Target Logistics International", "full-time", "2020 — 2021", 2020.5, 2021.67),
     ("IT Engineer", "The Active Solutions", "full-time", "2019 — 2020", 2019.25, 2020.17),
 ]
-MERGE_ROW, FORK_ROW = 1, 3
+CAREER.sort(key=lambda r: r[4], reverse=True)
+
+# (degree, institution, years)
+EDUCATION = [
+    ("M.Sc. Data Science & Computer Science", "University of Göttingen, Germany", "2023 — 2026"),
+    ("B.Sc. Computer Science", "University of Karachi, Pakistan", "2016 — 2018"),
+]
 
 
 def timeline() -> None:
@@ -550,7 +557,8 @@ def timeline() -> None:
     the left, one dot per role. No git-log chrome, no glow."""
     w, row_h, top = 880, 54, 92
     n = len(CAREER)
-    h = top + row_h * (n - 1) + 78
+    edu_h = 34 + len(EDUCATION) * 34
+    h = top + row_h * (n - 1) + 56 + edu_h
     rail_x, year_x, text_x = 112, 92, 140
     today = date.today()
     now = today.year + (today.month - 1) / 12
@@ -565,7 +573,6 @@ def timeline() -> None:
         yc = y(i)
         d = 0.15 + i * step
         head = i == 0
-        edu = i == MERGE_ROW
 
         node = (
             f'<circle cx="{rail_x}" cy="{yc}" r="4.5" fill="{ACCENT if head else BG}" '
@@ -593,18 +600,25 @@ def timeline() -> None:
             f'<rect x="{w - 30 - bw:.1f}" y="{yc + 6}" width="{bw:.1f}" height="3" rx="1.5" '
             f'fill="{ACCENT}" fill-opacity="{1 if head else 0.55}" class="bar" style="animation-delay:{d + 0.15:.2f}s"/>'
         )
-        prefix = "degree · " if edu else ""
         rows.append(
             f'<g class="r" style="animation-delay:{d:.2f}s">'
             f'<text x="{year_x}" y="{yc + 4}" text-anchor="end" class="yrs" '
             f'fill="{ACCENT if head else MUTED}">{years.split(" — ")[0]}</text>'
             f'<text x="{text_x}" y="{yc - 3}" class="role">{escape(role)}</text>{chips}'
-            f'<text x="{text_x}" y="{yc + 14}" class="org">{prefix}{escape(org)}</text>'
+            f'<text x="{text_x}" y="{yc + 14}" class="org">{escape(org)}</text>'
             f'<text x="{w - 30}" y="{yc - 3}" text-anchor="end" class="yrs" '
             f'fill="{MUTED}">{years}</text>'
             f'{bar}</g>{node}'
         )
 
+    edu_y = y(n - 1) + 56
+    edu_rows = "".join(
+        f'<text x="{text_x}" y="{edu_y + 20 + j * 34}" class="role" font-size="13.5">{escape(deg)}</text>'
+        f'<text x="{text_x}" y="{edu_y + 36 + j * 34}" class="org">{escape(inst)}</text>'
+        f'<text x="{w - 30}" y="{edu_y + 20 + j * 34}" text-anchor="end" class="yrs" fill="{MUTED}">{yrs}</text>'
+        f'<circle cx="{rail_x}" cy="{edu_y + 16 + j * 34}" r="3.5" fill="{BG}" stroke="{LINE}" stroke-width="2"/>'
+        for j, (deg, inst, yrs) in enumerate(EDUCATION)
+    )
     fy = h - 30
     svg = f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Career, newest first">
@@ -628,11 +642,15 @@ def timeline() -> None:
   <rect x="1" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
 
   <text x="30" y="44" class="lbl">CAREER</text>
-  <text x="{w - 30}" y="44" text-anchor="end" class="foot">8 entries · since 2019 · open to roles worldwide</text>
+  <text x="{w - 30}" y="44" text-anchor="end" class="foot">{n} roles · since 2019 · open to roles worldwide</text>
   <line x1="30" y1="62" x2="{w - 30}" y2="62" stroke="{LINE}"/>
 
   <line x1="{rail_x}" y1="{y(0)}" x2="{rail_x}" y2="{y(n - 1)}" stroke="{LINE}" stroke-width="1"/>
   {"".join(rows)}
+
+  <line x1="30" y1="{edu_y - 26}" x2="{w - 30}" y2="{edu_y - 26}" stroke="{LINE}"/>
+  <text x="30" y="{edu_y - 6}" class="lbl" font-size="11">EDUCATION</text>
+  {edu_rows}
 
   <line x1="30" y1="{fy - 20}" x2="{w - 30}" y2="{fy - 20}" stroke="{LINE}"/>
   <text x="30" y="{fy + 2}" class="foot">Karachi → Göttingen · 5,617 km</text>
