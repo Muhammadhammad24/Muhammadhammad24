@@ -15,7 +15,7 @@
     .tag { font-size: 10px; fill: #71757F; }
     .tr { font-size: 11px; letter-spacing: 1.6px; fill: #71757F; }
     .in { animation: rin .5s ease-out both; }
-    .hx { transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }
+    .hx { animation: rin .5s ease-out both; }
     .cur { animation: blink 1.05s steps(1) infinite; }
     @keyframes rin { from { opacity: 0; transform: translateX(-10px); } }
     @keyframes spin { from { opacity: 0; transform: rotate(-90deg) scale(.4); } }
@@ -26,8 +26,8 @@
   <rect x="0.5" y="0.5" width="429" height="91" rx="10" fill="url(#t1c3-dots)"/>
   <rect x="0.5" y="0.5" width="429" height="91" rx="10" fill="url(#t1c3-halo)"/>
   <g class="hx" style="animation-delay:0.30s">
-    <polygon points="38.0,28.0 53.6,37.0 53.6,55.0 38.0,64.0 22.4,55.0 22.4,37.0" fill="#5B8DEF" fill-opacity=".1" stroke="#5B8DEF" stroke-width="1.5"/>
-    <text x="38" y="50" text-anchor="middle" class="mk">U</text>
+    <rect x="0" y="1" width="3" height="90" rx="1.5" fill="#5B8DEF"/>
+    <text x="40" y="50" text-anchor="middle" class="mk">U</text>
   </g>
   <g class="in" style="animation-delay:0.30s">
     <text x="70" y="34" class="nm">Information Security Basics for IT Support</text><text x="70" y="52" class="nm">Technicians</text>

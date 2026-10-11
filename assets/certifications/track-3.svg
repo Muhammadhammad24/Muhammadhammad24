@@ -15,7 +15,7 @@
     .tag { font-size: 10px; fill: #71757F; }
     .tr { font-size: 11px; letter-spacing: 1.6px; fill: #71757F; }
     .in { animation: rin .5s ease-out both; }
-    .hx { transform-box: fill-box; transform-origin: center; animation: spin .7s cubic-bezier(.3,1.5,.5,1) both; }
+    .hx { animation: rin .5s ease-out both; }
     .cur { animation: blink 1.05s steps(1) infinite; }
     @keyframes rin { from { opacity: 0; transform: translateX(-10px); } }
     @keyframes spin { from { opacity: 0; transform: rotate(-90deg) scale(.4); } }
