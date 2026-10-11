@@ -558,8 +558,8 @@ def timeline() -> None:
     the left, one dot per role. No git-log chrome, no glow."""
     w, row_h, top = 880, 62, 96
     n = len(CAREER)
-    edu_h = 34 + len(EDUCATION) * 34
-    h = top + row_h * (n - 1) + 56 + edu_h
+    edu_h = 30 + len(EDUCATION) * 38
+    h = top + row_h * (n - 1) + 70 + edu_h + 46
     rail_x, year_x, text_x = 112, 92, 140
     today = date.today()
     now = today.year + (today.month - 1) / 12
@@ -593,12 +593,7 @@ def timeline() -> None:
         dur = dur.replace(" 0 mo", "")
 
         span = (e or now) - s
-        bw = max(10.0, 110 * span / longest)
-        bar = (
-            f'<rect x="{w - 140}" y="{yc + 6}" width="110" height="3" rx="1.5" fill="{LINE}"/>'
-            f'<rect x="{w - 30 - bw:.1f}" y="{yc + 6}" width="{bw:.1f}" height="3" rx="1.5" '
-            f'fill="{ACCENT}" fill-opacity="{1 if head else 0.55}" class="bar" style="animation-delay:{d + 0.15:.2f}s"/>'
-        )
+
         rows.append(
             f'<g class="r" style="animation-delay:{d:.2f}s">'
             f'<text x="{year_x}" y="{yc + 4}" text-anchor="end" class="yrs" '
@@ -606,16 +601,17 @@ def timeline() -> None:
             f'<text x="{text_x}" y="{yc - 3}" class="role">{escape(role)}</text>{chips}'
             f'<text x="{text_x}" y="{yc + 14}" class="org">{escape(org)} · {escape(loc)}</text>'
             f'<text x="{w - 30}" y="{yc - 3}" text-anchor="end" class="yrs" '
-            f'fill="{MUTED}">{years}</text>'
-            f'{bar}</g>{node}'
+            f'fill="{TEXT if head else MUTED}">{years}</text>'
+            f'<text x="{w - 30}" y="{yc + 14}" text-anchor="end" class="org">{dur}</text>'
+            f'</g>{node}'
         )
 
-    edu_y = y(n - 1) + 56
+    edu_y = y(n - 1) + 62
     edu_rows = "".join(
-        f'<text x="{text_x}" y="{edu_y + 20 + j * 34}" class="role" font-size="13.5">{escape(deg)}</text>'
-        f'<text x="{text_x}" y="{edu_y + 36 + j * 34}" class="org">{escape(inst)}</text>'
-        f'<text x="{w - 30}" y="{edu_y + 20 + j * 34}" text-anchor="end" class="yrs" fill="{MUTED}">{yrs}</text>'
-        f'<circle cx="{rail_x}" cy="{edu_y + 16 + j * 34}" r="3.5" fill="{BG}" stroke="{LINE}" stroke-width="2"/>'
+        f'<text x="{text_x}" y="{edu_y + 20 + j * 38}" class="role" font-size="13.5">{escape(deg)}</text>'
+        f'<text x="{text_x}" y="{edu_y + 37 + j * 38}" class="org">{escape(inst)}</text>'
+        f'<text x="{w - 30}" y="{edu_y + 20 + j * 38}" text-anchor="end" class="yrs" fill="{MUTED}">{yrs}</text>'
+        f'<circle cx="{rail_x}" cy="{edu_y + 16 + j * 38}" r="3.5" fill="{BG}" stroke="{LINE}" stroke-width="2"/>'
         for j, (deg, inst, yrs) in enumerate(EDUCATION)
     )
     fy = h - 30
