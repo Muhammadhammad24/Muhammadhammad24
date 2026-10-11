@@ -535,15 +535,16 @@ def certs() -> None:
 # employment sequence reads straight down without a degree interrupting it.
 # (role, organisation, tag, years shown, start, end or None for current)
 CAREER = [
-    ("IT Engineer", "Kontinental Establishment", "current|full-time", "2023 — now", 2023.25, None),
-    ("IT Engineer", "TestSolutions GmbH", "contract", "2023 — 2024", 2023.08, 2024.92),
-    ("DevSecOps · Scientific Computing", "University of Göttingen", "internship", "2022 — 2023", 2022.83, 2023.08),
-    ("IT Specialist", "Liberty Books", "full-time", "2022", 2022.42, 2022.75),
-    ("IT Specialist", "KTDMC", "full-time", "2021 — 2022", 2021.75, 2022.33),
-    ("IT Specialist", "Target Logistics International", "full-time", "2020 — 2021", 2020.5, 2021.67),
-    ("IT Engineer", "The Active Solutions", "full-time", "2019 — 2020", 2019.25, 2020.17),
+    # (role, organisation, location, type, dates shown, start, end or None)
+    ("IT Engineer", "Kontinental Establishment", "Germany · remote", "Full-time", "Apr 2023 — now", 2023.25, None),
+    ("IT Engineer", "TestSolutions GmbH", "Germany", "Contract", "Jan 2023 — Dec 2024", 2023.08, 2024.92),
+    ("DevSecOps · Scientific Computing", "University of Göttingen", "Göttingen, Germany", "Internship", "Nov 2022 — Jan 2023", 2022.83, 2023.08),
+    ("IT Specialist", "Liberty Books", "Karachi, Pakistan", "Full-time", "Jun 2022 — Oct 2022", 2022.42, 2022.75),
+    ("IT Specialist", "KTDMC", "Karachi, Pakistan", "Full-time", "Oct 2021 — May 2022", 2021.75, 2022.33),
+    ("IT Specialist", "Target Logistics International", "Karachi, Pakistan", "Full-time", "Jul 2020 — Sep 2021", 2020.5, 2021.67),
+    ("IT Engineer", "The Active Solutions", "Karachi, Pakistan", "Full-time", "Apr 2019 — Mar 2020", 2019.25, 2020.17),
 ]
-CAREER.sort(key=lambda r: r[4], reverse=True)
+CAREER.sort(key=lambda r: r[5], reverse=True)
 
 # (degree, institution, years)
 EDUCATION = [
@@ -555,7 +556,7 @@ EDUCATION = [
 def timeline() -> None:
     """Career drawn the way the portfolio draws it: a quiet rail, the year on
     the left, one dot per role. No git-log chrome, no glow."""
-    w, row_h, top = 880, 54, 92
+    w, row_h, top = 880, 62, 96
     n = len(CAREER)
     edu_h = 34 + len(EDUCATION) * 34
     h = top + row_h * (n - 1) + 56 + edu_h
@@ -569,7 +570,7 @@ def timeline() -> None:
         return top + i * row_h
 
     rows = []
-    for i, (role, org, tag, years, s, e) in enumerate(CAREER):
+    for i, (role, org, loc, kind, years, s, e) in enumerate(CAREER):
         yc = y(i)
         d = 0.15 + i * step
         head = i == 0
@@ -579,19 +580,17 @@ def timeline() -> None:
             f'stroke="{ACCENT if head else LINE}" stroke-width="2"/>'
         )
 
-        chips = ""
         cx0 = text_x + len(role) * 7.4 + 14
-        for t in filter(None, tag.split("|")):
-            if t == "HEAD → main":
-                t = "current"
-            cw = len(t) * 6.3 + 18
-            chips += (
-                f'<rect x="{cx0:.1f}" y="{yc - 17}" width="{cw:.1f}" height="18" rx="9" '
-                f'fill="none" stroke="{ACCENT if head else LINE}"/>'
-                f'<text x="{cx0 + cw / 2:.1f}" y="{yc - 4}" text-anchor="middle" class="chip" '
-                f'fill="{ACCENT if head else MUTED}">{escape(t)}</text>'
-            )
-            cx0 += cw + 6
+        cw = len(kind) * 6.3 + 18
+        chips = (
+            f'<rect x="{cx0:.1f}" y="{yc - 17}" width="{cw:.1f}" height="18" rx="9" '
+            f'fill="none" stroke="{ACCENT if head else LINE}"/>'
+            f'<text x="{cx0 + cw / 2:.1f}" y="{yc - 4}" text-anchor="middle" class="chip" '
+            f'fill="{ACCENT if head else MUTED}">{escape(kind)}</text>'
+        )
+        months = round(((e or now) - s) * 12)
+        dur = f"{months // 12} yr {months % 12} mo" if months >= 12 else f"{months} mo"
+        dur = dur.replace(" 0 mo", "")
 
         span = (e or now) - s
         bw = max(10.0, 110 * span / longest)
@@ -605,7 +604,7 @@ def timeline() -> None:
             f'<text x="{year_x}" y="{yc + 4}" text-anchor="end" class="yrs" '
             f'fill="{ACCENT if head else MUTED}">{years.split(" — ")[0]}</text>'
             f'<text x="{text_x}" y="{yc - 3}" class="role">{escape(role)}</text>{chips}'
-            f'<text x="{text_x}" y="{yc + 14}" class="org">{escape(org)}</text>'
+            f'<text x="{text_x}" y="{yc + 14}" class="org">{escape(org)} · {escape(loc)}</text>'
             f'<text x="{w - 30}" y="{yc - 3}" text-anchor="end" class="yrs" '
             f'fill="{MUTED}">{years}</text>'
             f'{bar}</g>{node}'
