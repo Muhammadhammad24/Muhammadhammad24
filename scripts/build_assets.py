@@ -538,7 +538,7 @@ CAREER = [
     # (role, organisation, location, type, dates shown, start, end or None)
     ("IT Engineer", "Kontinental Establishment", "Germany · remote", "Full-time", "Apr 2023 — now", 2023.25, None),
     ("IT Engineer", "TestSolutions GmbH", "Germany", "Contract", "Jan 2023 — Dec 2024", 2023.08, 2024.92),
-    ("DevSecOps · Scientific Computing", "University of Göttingen", "Göttingen, Germany", "Internship", "Apr 2024 — Sep 2024", 2024.25, 2024.75),
+    ("DevSecOps Engineer", "University of Göttingen", "Göttingen, Germany", "Internship", "Apr 2024 — Sep 2024", 2024.25, 2024.75),
     ("IT Specialist", "Liberty Books", "Karachi, Pakistan", "Full-time", "Jun 2022 — Oct 2022", 2022.42, 2022.75),
     ("IT Specialist", "KTDMC", "Karachi, Pakistan", "Full-time", "Oct 2021 — May 2022", 2021.75, 2022.33),
     ("IT Specialist", "Target Logistics International", "Karachi, Pakistan", "Full-time", "Jul 2020 — Sep 2021", 2020.5, 2021.67),
