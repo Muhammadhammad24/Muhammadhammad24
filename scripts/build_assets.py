@@ -20,19 +20,19 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[1] / "assets"
 
-BG = "#040405"
-PANEL = "#121214"
-LINE = "#2C2C31"
-TEXT = "#E4E5E9"
-MUTED = "#6A6C74"
+BG = "#000000"
+PANEL = "#0B0B0D"
+LINE = "#4A4A55"
+TEXT = "#F7F8FA"
+MUTED = "#777982"
 ACCENT = "#FFFFFF"
 BLUE = MUTED
 BLUE_SOFT = TEXT
 AMBER = ACCENT
 GREEN = ACCENT
 
-SANS = "'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif"
-MONO = "ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace"
+SANS = "'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif"
+MONO = "'IBM Plex Mono', ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, monospace"
 
 
 def write(name: str, svg: str) -> None:

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="880" height="670" viewBox="0 0 880 670" role="img" aria-label="Toolbox">
   <title>Toolbox</title>
   <style>
-    text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
-    .cmd, .meta, .cnt, .lb { font-family: ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace; }
+    text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+    .cmd, .meta, .cnt, .lb { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, monospace; }
     .cmd { font-size: 13px; fill: #1f2328; }
     .meta { font-size: 11px; fill: #59636e; }
     .cat { font-size: 13.5px; font-weight: 600; fill: #1f2328; }
