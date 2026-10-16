@@ -20,12 +20,12 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parents[1] / "assets"
 
-BG = "#09090B"
-PANEL = "#141417"
-LINE = "#26272B"
-TEXT = "#F5F5F7"
-MUTED = "#71757F"
-ACCENT = "#5B8DEF"
+BG = "#040405"
+PANEL = "#121214"
+LINE = "#2C2C31"
+TEXT = "#E4E5E9"
+MUTED = "#6A6C74"
+ACCENT = "#FFFFFF"
 BLUE = MUTED
 BLUE_SOFT = TEXT
 AMBER = ACCENT
