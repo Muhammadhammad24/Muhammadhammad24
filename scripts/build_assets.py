@@ -866,3 +866,37 @@ if __name__ == "__main__":
     certs()
     timeline()
     toolbox()
+
+
+# ---------------------------------------------------------------------------
+# Section headings
+# ---------------------------------------------------------------------------
+# GitHub renders markdown in its own typeface, so a `## Heading` is the one
+# place the profile stops matching the site. Drawing them keeps every visible
+# word in IBM Plex.
+
+HEADINGS = [
+    ("what-i-do", "What I do"),
+    ("featured-work", "Featured work"),
+    ("toolbox", "Toolbox"),
+    ("career", "Career"),
+    ("certifications", "Certifications"),
+]
+
+
+def build_headings() -> None:
+    for slug, label in HEADINGS:
+        w, h = 760, 46
+        svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{escape(label)}">
+  <style>
+    text {{ font-family: {SANS}; }}
+    .h {{ font-size: 21px; font-weight: 600; fill: {TEXT}; letter-spacing: -0.4px; }}
+  </style>
+  <text x="0" y="30" class="h">{escape(label)}</text>
+  <line x1="0" y1="43" x2="{w}" y2="43" stroke="{LINE}"/>
+</svg>"""
+        write(f"headings/{slug}.svg", svg)
+
+
+build_headings()
