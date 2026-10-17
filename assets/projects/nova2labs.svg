@@ -4,7 +4,13 @@
 
 
 
+
+
+
   <title>nova2labs</title>
+
+
+
 
 
 
@@ -16,7 +22,13 @@
 
 
 
+
+
+
   <defs>
+
+
+
 
 
 
@@ -28,7 +40,13 @@
 
 
 
+
+
+
     <radialGradient id="nova2labs-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".08"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+
+
+
 
 
 
@@ -40,7 +58,13 @@
 
 
 
+
+
+
   </defs>
+
+
+
 
 
 
@@ -52,7 +76,13 @@
 
 
 
+
+
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
+
+
 
 
 
@@ -64,7 +94,13 @@
 
 
 
+
+
+
     .k { font-size: 10.5px; letter-spacing: 1.4px; fill: #777982; }
+
+
+
 
 
 
@@ -76,7 +112,13 @@
 
 
 
+
+
+
     .d { font-size: 12.5px; fill: #777982; }
+
+
+
 
 
 
@@ -88,7 +130,13 @@
 
 
 
+
+
+
     .p { font-size: 11px; fill: #FFFFFF; }
+
+
+
 
 
 
@@ -132,7 +180,13 @@
 
 
 
+
+
+
   </style>
+
+
+
 
 
 
@@ -144,7 +198,13 @@
 
 
 
+
+
+
   <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#nova2labs-dots)"/>
+
+
+
 
 
 
@@ -156,7 +216,13 @@
 
 
 
+
+
+
   <circle cx="26" cy="28" r="3.5" fill="#FFFFFF" class="led"/>
+
+
+
 
 
 
@@ -168,7 +234,13 @@
 
 
 
+
+
+
   <text x="408" y="32" text-anchor="end" class="p">live · nova2labs.com</text>
+
+
+
 
 
 
@@ -180,7 +252,13 @@
 
 
 
+
+
+
   <text x="22" y="88" class="d">AI and cloud engineering studio: server-rendered</text><text x="22" y="107" class="d">React, generative artwork, SMTP lead pipeline.</text>
+
+
+
 
 
 
@@ -192,13 +270,22 @@
 
 
 
+
+
+
   <line x1="65.8" y1="153" x2="370.8" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5"/><g class="node"><rect x="34.0" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="65.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">visitor</text></g><g class="node"><rect x="116.8" y="140" width="37.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="135.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">SSR</text></g><g class="node"><rect x="173.5" y="140" width="89.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="218.2" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">Vercel edge</text></g><g class="node"><rect x="282.2" y="140" width="44.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="304.2" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">SMTP</text></g><g class="node"><rect x="345.5" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="370.8" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">inbox</text></g>
 
 
 
 
 
+
+
+
   <g class="chipg"><rect x="22" y="194" width="76" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="60.0" y="210" text-anchor="middle" class="chip">React 19</text></g><g class="chipg"><rect x="106" y="194" width="119" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="165.5" y="210" text-anchor="middle" class="chip">TanStack Start</text></g><g class="chipg"><rect x="233" y="194" width="41" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="253.5" y="210" text-anchor="middle" class="chip">SSR</text></g><g class="chipg"><rect x="282" y="194" width="62" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="313.0" y="210" text-anchor="middle" class="chip">Vercel</text></g>
+
+
+
 
 
 

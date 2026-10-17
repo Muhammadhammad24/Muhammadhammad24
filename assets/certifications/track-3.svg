@@ -4,7 +4,13 @@
 
 
 
+
+
+
   <title>data · machine learning · ai</title>
+
+
+
 
 
 
@@ -16,7 +22,13 @@
 
 
 
+
+
+
     <pattern id="tr3-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#4A4A55" opacity=".5"/></pattern>
+
+
+
 
 
 
@@ -28,7 +40,13 @@
 
 
 
+
+
+
   </defs>
+
+
+
 
 
 
@@ -40,7 +58,13 @@
 
 
 
+
+
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
+
+
 
 
 
@@ -52,7 +76,13 @@
 
 
 
+
+
+
     .cmd { font-size: 13px; fill: #F7F8FA; }
+
+
+
 
 
 
@@ -64,7 +94,13 @@
 
 
 
+
+
+
     .nm { font-size: 13px; font-weight: 600; fill: #F7F8FA; }
+
+
+
 
 
 
@@ -76,13 +112,22 @@
 
 
 
+
+
+
     .mk { font-size: 10px; font-weight: 700; fill: #FFFFFF; }
 
 
 
 
 
+
+
+
     .tag { font-size: 10px; fill: #777982; }
+
+
+
 
 
 
@@ -118,7 +163,13 @@
 
 
 
+
+
+
   </style>
+
+
+
 
 
 
@@ -130,7 +181,13 @@
 
 
 
+
+
+
   <rect x="0.5" y="0.5" width="879" height="39" rx="10" fill="url(#tr3-dots)"/>
+
+
+
 
 
 
@@ -142,7 +199,13 @@
 
 
 
+
+
+
   <text x="20" y="25" class="tr in"><tspan fill="#FFFFFF">03</tspan>  DATA · MACHINE LEARNING · AI</text>
+
+
+
 
 
 
@@ -154,7 +217,13 @@
 
 
 
+
+
+
   <text x="860" y="25" text-anchor="end" class="tr">4 credentials</text>
+
+
+
 
 
 
