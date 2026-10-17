@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/prose/name.svg?v=44" alt="Muhammad Hammad · IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration. Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen." width="100%" />
+  <img src="assets/prose/name.svg?v=44" alt="Muhammad Hammad · IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration. Germany · IT engineering since 2019" width="100%" />
 </p>
 
 <p align="center">
