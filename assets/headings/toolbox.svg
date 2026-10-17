@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 46" width="760" height="46" role="img" aria-label="Toolbox">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 50" width="900" height="50" role="img" aria-label="Toolbox">
+
+
+
+
+
 
 
 
@@ -18,7 +23,17 @@
 
 
 
+
+
+
+
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
+
+
+
+
 
 
 
@@ -38,7 +53,17 @@
 
 
 
+
+
+
+
+
   </style>
+
+
+
+
+
 
 
 
@@ -58,7 +83,17 @@
 
 
 
-  <line x1="0" y1="43" x2="760" y2="43" stroke="#4A4A55"/>
+
+
+
+
+
+  <line x1="0" y1="43" x2="900" y2="43" stroke="#4A4A55"/>
+
+
+
+
+
 
 
 

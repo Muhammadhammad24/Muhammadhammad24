@@ -12,7 +12,17 @@
 
 
 
+
+
+
+
+
   <title>velqatechnologies</title>
+
+
+
+
+
 
 
 
@@ -40,7 +50,17 @@
 
 
 
+
+
+
+
+
   <defs>
+
+
+
+
+
 
 
 
@@ -68,7 +88,17 @@
 
 
 
+
+
+
+
+
     <radialGradient id="velqatechnologies-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".08"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+
+
+
+
+
 
 
 
@@ -96,7 +126,17 @@
 
 
 
+
+
+
+
+
   </defs>
+
+
+
+
+
 
 
 
@@ -124,7 +164,17 @@
 
 
 
+
+
+
+
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
+
+
+
+
 
 
 
@@ -152,7 +202,17 @@
 
 
 
+
+
+
+
+
     .k { font-size: 10.5px; letter-spacing: 1.4px; fill: #777982; }
+
+
+
+
+
 
 
 
@@ -180,7 +240,17 @@
 
 
 
+
+
+
+
+
     .d { font-size: 12.5px; fill: #777982; }
+
+
+
+
+
 
 
 
@@ -208,7 +278,17 @@
 
 
 
+
+
+
+
+
     .p { font-size: 11px; fill: #FFFFFF; }
+
+
+
+
+
 
 
 
@@ -268,7 +348,17 @@
 
 
 
+
+
+
+
+
   </style>
+
+
+
+
+
 
 
 
@@ -296,7 +386,17 @@
 
 
 
+
+
+
+
+
   <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#velqatechnologies-dots)"/>
+
+
+
+
+
 
 
 
@@ -324,7 +424,17 @@
 
 
 
+
+
+
+
+
   <circle cx="26" cy="28" r="3.5" fill="#FFFFFF" class="led"/>
+
+
+
+
+
 
 
 
@@ -352,7 +462,17 @@
 
 
 
+
+
+
+
+
   <text x="408" y="32" text-anchor="end" class="p">live · CI</text>
+
+
+
+
+
 
 
 
@@ -380,7 +500,17 @@
 
 
 
+
+
+
+
+
   <text x="22" y="88" class="d">Company website for a BPO firm: 33 statically</text><text x="22" y="107" class="d">exported routes served from the edge.</text>
+
+
+
+
+
 
 
 
@@ -408,6 +538,11 @@
 
 
 
+
+
+
+
+
   <line x1="75.5" y1="153" x2="364.2" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5"/><g class="node"><rect x="34.0" y="140" width="83.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="75.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">next build</text></g><g class="node"><rect x="140.0" y="140" width="76.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="178.2" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">33 routes</text></g><g class="node"><rect x="239.5" y="140" width="70.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="274.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">edge CDN</text></g><g class="node"><rect x="332.5" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="364.2" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">visitor</text></g>
 
 
@@ -422,7 +557,17 @@
 
 
 
+
+
+
+
+
   <g class="chipg"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">Next.js</text></g><g class="chipg"><rect x="99" y="194" width="91" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="144.5" y="210" text-anchor="middle" class="chip">TypeScript</text></g><g class="chipg"><rect x="198" y="194" width="76" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="236.0" y="210" text-anchor="middle" class="chip">Tailwind</text></g>
+
+
+
+
+
 
 
 
