@@ -918,10 +918,12 @@ def build_prose() -> None:
     prose(
         "what-i-do",
         [
-            ("I keep infrastructure boring, meaning secure, observable and automated, so the people who depend on it never have to think about it. I work across the whole stack: identity (Active Directory, Entra ID, Okta), endpoints (Intune, Autopilot, Jamf), networks (Cisco, Juniper, pfSense, VPN), cloud (Azure, AWS) and the service desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines.", 14.5, 400, TEXT, 0),
+            ("I started in 2019 on a helpdesk in Karachi. Dead laptops, forgotten passwords, a printer nobody could fix. It taught me the thing I still work by: behind every ticket there is a person who cannot do their job right now.", 14.5, 400, TEXT, 0),
+            ("Seven years and seven employers later the numbers are bigger. 265 government endpoints at KTDMC. 180 people across 12 countries at TestSolutions. Azure and AWS, Active Directory, firewalls, a few hundred devices that all have to wake up working on Monday. The job never really changed. Keep it running, keep it locked, make sure nobody has to think about it.", 14.5, 400, TEXT, 16),
+            ("What I actually enjoy is deleting work. If something gets done by hand twice, I would rather lose a week automating it than do it a third time — that is how 25 hours a week of manual onboarding and patching disappeared at TestSolutions. The best compliment my work gets is silence: no outage, no breach, no ticket.", 14.5, 400, TEXT, 16),
         ],
         align="start",
-        label="I keep infrastructure boring, meaning secure, observable and automated, so the people who depend on it never have to think about it. I work across the whole stack: identity, endpoints, networks, cloud and the service desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines.",
+        label="I started in 2019 on a helpdesk in Karachi. Dead laptops, forgotten passwords, a printer nobody could fix. It taught me the thing I still work by: behind every ticket there is a person who cannot do their job right now. Seven years and seven employers later the numbers are bigger. 265 government endpoints at KTDMC. 180 people across 12 countries at TestSolutions. Azure and AWS, Active Directory, firewalls, a few hundred devices that all have to wake up working on Monday. The job never really changed. Keep it running, keep it locked, make sure nobody has to think about it. What I actually enjoy is deleting work. If something gets done by hand twice, I would rather lose a week automating it than do it a third time, that is how 25 hours a week of manual onboarding and patching disappeared at TestSolutions. The best compliment my work gets is silence: no outage, no breach, no ticket.",
     )
     prose(
         "ci-note",
