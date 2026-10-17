@@ -12,7 +12,7 @@
   <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-Get%20in%20touch-0B0B0D?style=for-the-badge&amp;logo=gmail&amp;logoColor=FFFFFF&amp;labelColor=000000" alt="Email"/></a>
 </p>
 
-<img src="assets/headings/what-i-do.svg?v=37" alt="What I do" width="95%" />
+<img src="assets/headings/what-i-do.svg?v=37" alt="What I do" width="100%" />
 
 <p align="center">
   <img
