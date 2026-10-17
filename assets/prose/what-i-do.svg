@@ -4,7 +4,7 @@
 
   <style>
     text {
-      font-family: IBM Plex Sans;
+      font-family: "IBM Plex Sans", Arial, sans-serif;
       font-size: 14.5px;
       font-weight: 400;
       fill: #F7F8FA;
@@ -12,7 +12,7 @@
   </style>
 
   <text x="0" y="22">IT Infrastructure Engineer with 7 years of experience bridging traditional system</text>
-  <text x="0" y="45">administration and cloud native approaches. I manage 500+ endpoints across Azure and</text>
+  <text x="0" y="45">administration and cloud-native approaches. I manage 500+ endpoints across Azure and</text>
   <text x="0" y="68">AWS, with a strong foundation in Windows and Linux server administration, enterprise</text>
   <text x="0" y="91">networking, and GDPR-aligned Zero Trust security.</text>
 
