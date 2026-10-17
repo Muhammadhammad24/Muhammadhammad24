@@ -1050,3 +1050,84 @@ def environment() -> None:
 
 
 environment()
+
+
+# ---------------------------------------------------------------------------
+# Portfolio cards
+# ---------------------------------------------------------------------------
+# The site's own project and certificate cards, drawn to the same spec: one
+# surface, a 14px radius, a hairline border, the figure in mono. Each is its
+# own image so each can keep its link.
+
+import re as _re
+
+CARD_BG, CARD_LINE = "#0B0B0D", "rgba(255,255,255,0.17)"
+
+PROJECT_CARDS = [
+    ("aws-terraform-platform", "Platform · DevSecOps", "0 failed", "Checkov checks · 196 passed", "OPEN SOURCE"),
+    ("Infotech-Wizard", "AIOps · RAG", "3,531 tickets", "indexed in 5 languages", "OPEN SOURCE"),
+    ("pfSense-Firewall-Lab", "Network Security", "0 findings", "on the hardened rule set", "OPEN SOURCE"),
+    ("nova2labs", "Full-Stack · Cloud", "29 pages", "server-rendered, SEO-complete", "LIVE"),
+    ("velqatechnologies", "Web · Edge", "33 routes", "statically generated", "LIVE"),
+    ("nnapprox", "AI Research", "33 tests", "verify the error bounds", "OPEN SOURCE"),
+]
+
+CERT_CARDS = [
+    ("SysAdmin & IT Infrastructure", "Google", "Verified"),
+    ("Full Stack Developer", "IBM", "Verified"),
+    ("Computer Networks", "The Open University", "2023"),
+    ("Successful IT Systems", "The Open University", "2023"),
+    ("Cyber Security", "Udemy", "2022"),
+    ("Information Security", "Udemy", "2022"),
+    ("Database Development", "The Open University", "2023"),
+    ("Computer Systems", "The Open University", "2023"),
+    ("Exploring Data", "The Open University", "2023"),
+]
+
+
+def _pill(x, y, label, size=9):
+    """The site's bordered capsule, measured off the label."""
+    w = len(label) * size * 0.68 + 18
+    return (
+        '<rect x="%.0f" y="%.0f" width="%.0f" height="18" rx="9" fill="none" stroke="%s"/>'
+        '<text x="%.0f" y="%.0f" text-anchor="middle" class="pl">%s</text>'
+        % (x - w, y - 13, w, CARD_LINE, x - w / 2, y, escape(label))
+    )
+
+
+def _card(w, h, inner):
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img">' % (w, h, w, h)
+        + "<style>text{font-family:%s;}.ti{font-size:15px;font-weight:600;fill:%s;}.su{font-size:11.5px;fill:%s;}"
+          ".mt{font-family:%s;font-size:14px;font-weight:600;fill:%s;}.ml{font-size:10.5px;fill:%s;}"
+          ".pl{font-size:9px;fill:%s;letter-spacing:.5px;}.ar{font-size:13px;fill:%s;}</style>"
+          % (SANS, TEXT, MUTED, MONO, TEXT, MUTED, MUTED, MUTED)
+        + '<rect x="0.5" y="0.5" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 1, h - 1, CARD_BG, CARD_LINE)
+        + inner + "</svg>"
+    )
+
+
+def portfolio_cards() -> None:
+    w, h = 430, 150
+    for title, cat, metric, label, badge in PROJECT_CARDS:
+        inner = (
+            '<text x="22" y="34" class="ti">%s</text>' % escape(title)
+            + '<text x="%d" y="34" text-anchor="end" class="ar">\u2197</text>' % (w - 20)
+            + '<text x="22" y="52" class="su">%s</text>' % escape(cat)
+            + '<text x="22" y="92" class="mt">%s</text>' % escape(metric)
+            + '<text x="%d" y="92" class="ml">%s</text>' % (22 + len(metric) * 8.6 + 10, escape(label))
+            + _pill(22 + len(badge) * 6.1 + 18, 126, badge)
+        )
+        write("cards/%s.svg" % _re.sub(r"[^A-Za-z0-9-]", "-", title), _card(w, h, inner))
+
+    ch = 86
+    for title, issuer, badge in CERT_CARDS:
+        inner = (
+            '<text x="22" y="34" class="ti">%s</text>' % escape(title)
+            + '<text x="22" y="58" class="su">%s</text>' % escape(issuer)
+            + _pill(w - 20, 58, badge)
+        )
+        write("cards/cert-%s.svg" % _re.sub(r"[^A-Za-z0-9-]", "-", title), _card(w, ch, inner))
+
+
+portfolio_cards()
