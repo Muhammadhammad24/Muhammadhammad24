@@ -9,7 +9,9 @@
 
 
 
+
   <title>Selected impact</title>
+
 
 
 
@@ -31,7 +33,9 @@
 
 
 
+
     <pattern id="i-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#4A4A55" opacity=".55"/></pattern>
+
 
 
 
@@ -53,7 +57,9 @@
 
 
 
+
   </defs>
+
 
 
 
@@ -75,7 +81,9 @@
 
 
 
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
 
 
 
@@ -97,7 +105,9 @@
 
 
 
+
     .cmd { font-size: 13px; fill: #F7F8FA; }
+
 
 
 
@@ -119,6 +129,7 @@
 
 
 
+
     .m { font-size: 25px; font-weight: 700; fill: #FFFFFF; }
 
 
@@ -130,7 +141,9 @@
 
 
 
+
     .lb { font-size: 11.5px; fill: #F7F8FA; opacity: .85; }
+
 
 
 
@@ -176,7 +189,9 @@
 
 
 
+
   </style>
+
 
 
 
@@ -198,7 +213,9 @@
 
 
 
+
   <rect x="1" y="1" width="878" height="212" rx="14" fill="url(#i-dots)"/>
+
 
 
 
@@ -220,7 +237,9 @@
 
 
 
+
   <text x="28" y="38" class="cmd"><tspan fill="#FFFFFF">~/impact</tspan><tspan fill="#777982"> $ </tspan>cat outcomes.log</text>
+
 
 
 
@@ -242,6 +261,7 @@
 
 
 
+
   <text x="850" y="38" text-anchor="end" class="meta">measured in production</text>
 
 
@@ -253,7 +273,9 @@
 
 
 
+
   <g class="tile"><rect x="28.0" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="42.0" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="42.0" y="108" class="m">25 h/wk</text><text x="42.0" y="134" class="lb">onboarding, provisioning</text><text x="42.0" y="150" class="lb">and patching automated</text><text x="42.0" y="176" class="wh">TESTSOLUTIONS</text></g><g class="tile"><rect x="194.8" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="208.8" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="208.8" y="108" class="m">−75%</text><text x="208.8" y="134" class="lb">device setup time on</text><text x="208.8" y="150" class="lb">180+ endpoints, 12 sites</text><text x="208.8" y="176" class="wh">TESTSOLUTIONS</text></g><g class="tile"><rect x="361.6" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="375.6" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="375.6" y="108" class="m">4h→35m</text><text x="375.6" y="134" class="lb">ML infrastructure</text><text x="375.6" y="150" class="lb">deploys through CI/CD</text><text x="375.6" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile"><rect x="528.4" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="542.4" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="542.4" y="108" class="m">−85%</text><text x="542.4" y="134" class="lb">vulnerabilities, through</text><text x="542.4" y="150" class="lb">automated scan gates</text><text x="542.4" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile"><rect x="695.2" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="709.2" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="709.2" y="108" class="m">265+</text><text x="709.2" y="134" class="lb">government endpoints at</text><text x="709.2" y="150" class="lb">100% patch compliance</text><text x="709.2" y="176" class="wh">KTDMC</text></g>
+
 
 
 
