@@ -10,7 +10,9 @@
 
 
 
+
   <title>nnapprox</title>
+
 
 
 
@@ -34,7 +36,9 @@
 
 
 
+
   <defs>
+
 
 
 
@@ -58,7 +62,9 @@
 
 
 
+
     <radialGradient id="nnapprox-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".08"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+
 
 
 
@@ -82,7 +88,9 @@
 
 
 
+
   </defs>
+
 
 
 
@@ -106,7 +114,9 @@
 
 
 
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
 
 
 
@@ -130,7 +140,9 @@
 
 
 
+
     .k { font-size: 10.5px; letter-spacing: 1.4px; fill: #777982; }
+
 
 
 
@@ -154,7 +166,9 @@
 
 
 
+
     .d { font-size: 12.5px; fill: #777982; }
+
 
 
 
@@ -178,7 +192,9 @@
 
 
 
+
     .p { font-size: 11px; fill: #FFFFFF; }
+
 
 
 
@@ -234,7 +250,9 @@
 
 
 
+
   </style>
+
 
 
 
@@ -258,7 +276,9 @@
 
 
 
+
   <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#nnapprox-dots)"/>
+
 
 
 
@@ -282,7 +302,9 @@
 
 
 
+
   <circle cx="26" cy="28" r="3.5" fill="#FFFFFF" class="led"/>
+
 
 
 
@@ -306,7 +328,9 @@
 
 
 
+
   <text x="408" y="32" text-anchor="end" class="p">33 tests · O(n⁻²)</text>
+
 
 
 
@@ -330,7 +354,9 @@
 
 
 
+
   <text x="22" y="88" class="d">Deep ReLU network approximation: closed-form</text><text x="22" y="107" class="d">constructions against greedy growing axons.</text>
+
 
 
 
@@ -354,6 +380,7 @@
 
 
 
+
   <path d="M34.0,148.0 L37.6,145.9 L41.3,143.8 L45.0,141.9 L48.6,140.3 L52.2,138.9 L55.9,137.9 L59.5,137.2 L63.2,136.9 L66.8,136.9 L70.5,137.3 L74.2,137.9 L77.8,138.8 L81.5,139.8 L85.1,141.0 L88.8,142.3 L92.4,143.5 L96.0,144.7 L99.7,145.8 L103.3,146.7 L107.0,147.5 L110.7,148.1 L114.3,148.5 L117.9,148.8 L121.6,148.9 L125.2,148.9 L128.9,148.8 L132.6,148.8 L136.2,148.8 L139.8,148.9 L143.5,149.2 L147.2,149.7 L150.8,150.3 L154.4,151.2 L158.1,152.4 L161.8,153.8 L165.4,155.4 L169.1,157.1 L172.7,159.0 L176.3,160.9 L180.0,162.8 L183.6,164.6 L187.3,166.3 L190.9,167.8 L194.6,169.0 L198.2,169.8 L201.9,170.4 L205.6,170.6 L209.2,170.4 L212.9,169.8 L216.5,168.9 L220.1,167.8 L223.8,166.3 L227.4,164.8 L231.1,163.1 L234.8,161.3 L238.4,159.6 L242.1,157.9 L245.7,156.4 L249.4,155.1 L253.0,153.9 L256.6,153.0 L260.3,152.3 L263.9,151.8 L267.6,151.5 L271.2,151.3 L274.9,151.3 L278.6,151.2 L282.2,151.2 L285.9,151.1 L289.5,151.0 L293.1,150.6 L296.8,150.1 L300.4,149.4 L304.1,148.6 L307.8,147.5 L311.4,146.2 L315.1,144.9 L318.7,143.4 L322.4,142.0 L326.0,140.5" fill="none" stroke="#777982" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="2 3"/><path d="M34.0,148.0 L70.5,137.3 L107.0,147.5 L143.5,149.2 L180.0,162.8 L216.5,168.9 L253.0,153.9 L289.5,151.0 L326.0,140.5" fill="none" stroke="#FFFFFF" stroke-width="2" pathLength="100" class="drawn" filter="url(#nnapprox-glow)"/><circle cx="34.0" cy="148.0" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="70.5" cy="137.3" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="107.0" cy="147.5" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="143.5" cy="149.2" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="180.0" cy="162.8" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="216.5" cy="168.9" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="253.0" cy="153.9" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="289.5" cy="151.0" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><circle cx="326.0" cy="140.5" r="2.6" fill="#000000" stroke="#FFFFFF" stroke-width="1.5" class="node"/><text x="396" y="147" text-anchor="end" class="nd" fill="#777982">f(x)</text><text x="396" y="165" text-anchor="end" class="nd" fill="#FFFFFF">ReLU net</text>
 
 
@@ -366,7 +393,9 @@
 
 
 
+
   <g class="chipg"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">PyTorch</text></g><g class="chipg"><rect x="99" y="194" width="55" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="126.5" y="210" text-anchor="middle" class="chip">NumPy</text></g><g class="chipg"><rect x="162" y="194" width="62" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="193.0" y="210" text-anchor="middle" class="chip">Python</text></g>
+
 
 
 
