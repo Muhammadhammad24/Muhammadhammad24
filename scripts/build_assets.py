@@ -803,7 +803,6 @@ def toolbox() -> None:
     .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
-  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{t["accent"]}" class="cur"/>
   <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
   <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
   {"".join(rows)}
