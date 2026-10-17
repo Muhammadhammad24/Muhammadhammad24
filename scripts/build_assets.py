@@ -944,3 +944,108 @@ def build_prose() -> None:
 
 
 build_prose()
+
+
+# ---------------------------------------------------------------------------
+# The environment
+# ---------------------------------------------------------------------------
+# The same drawing the portfolio opens with: a request crossing a managed
+# estate end to end, and beside it the control plane that put every box there.
+# A box is a thing that runs, a solid line is traffic, a dashed line happened
+# at build time, a dotted frame is a boundary.
+
+RUNTIME = [
+    ("Managed endpoint", "Intune · Autopilot · Jamf", "device attested"),
+    ("Identity", "Entra ID · MFA · Conditional Access", "identity proven"),
+    ("Zero-trust edge", "ZTNA · firewall · DNS · segmentation", "least privilege"),
+    ("Workload", "Azure · AWS · Kubernetes · containers", "scheduled"),
+    ("Data & recovery", "PostgreSQL · SQL · immutable backup", "read, replicated"),
+    ("Observability", "SIEM · metrics · alerting · runbooks", "accounted for"),
+]
+
+CONTROL = [
+    ("Git", "single source"),
+    ("CI/CD", "build, scan, ship"),
+    ("IaC", "Terraform"),
+    ("Policy", "ISO 27001 · GDPR"),
+]
+
+
+def environment() -> None:
+    w, pad = 900, 26
+    nx, nw, nh, gap, top = 300, 574, 58, 14, 76
+    cx, cw, ch = pad, 196, 50
+    rows = []
+
+    cspan = (len(RUNTIME) * (nh + gap) - gap)
+    cgap = (cspan - len(CONTROL) * ch) / (len(CONTROL) - 1)
+    rows.append(
+        '<rect x="%d" y="%d" width="%d" height="%d" rx="10" fill="none" stroke="%s" stroke-width="1" stroke-dasharray="4 4"/>'
+        % (cx - 8, top - 26, cw + 16, cspan + 34, LINE)
+    )
+    rows.append('<text x="%d" y="%d" class="z">CONTROL PLANE</text>' % (cx, top - 12))
+
+    for i, (name, sub) in enumerate(CONTROL):
+        y = top + i * (ch + cgap)
+        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="7" fill="%s" stroke="%s"/>' % (cx, y, cw, ch, PANEL, LINE))
+        rows.append('<text x="%d" y="%.0f" class="cn">%s</text>' % (cx + 12, y + 22, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="cs">%s</text>' % (cx + 12, y + 38, escape(sub)))
+        rows.append('<path d="M%d %.0f H%d" stroke="%s" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eh)"/>' % (cx + cw, y + ch / 2, nx - 14, LINE))
+
+    # A request crossing the stack, the way the site shows it: the rail it
+    # travels, then each stage lit in turn with what it did to the request.
+    n = len(RUNTIME)
+    step, hold = 0.9, 0.9
+    cycle = n * step + hold
+    rail_x = nx - 26
+    rows.append('<path d="M%d %d V%d" stroke="%s" stroke-width="1"/>'
+                % (rail_x, top + nh // 2, top + (n - 1) * (nh + gap) + nh // 2, LINE))
+    frames = []
+    for i in range(n):
+        a, b = i * step / cycle * 100, (i + 1) * step / cycle * 100
+        frames.append(".s%d{animation:lit%d %.2fs infinite;}" % (i, i, cycle))
+        frames.append("@keyframes lit%d{0%%,%.3f%%{opacity:0}%.3f%%,%.3f%%{opacity:1}%.3f%%,100%%{opacity:0}}"
+                      % (i, max(0.001, a - 0.001), a, b, min(99.999, b + 0.001)))
+    dy = nh + gap
+    stops = "".join("%.3f%%{transform:translateY(%dpx)}" % (i * step / cycle * 100, i * dy) for i in range(n))
+    frames.append(".dot{animation:ride %.2fs steps(1) infinite;}" % cycle)
+    frames.append("@keyframes ride{%s100%%{transform:translateY(%dpx)}}" % (stops, (n - 1) * dy))
+    frames.append("@media (prefers-reduced-motion:reduce){.dot,.s0,.s1,.s2,.s3,.s4,.s5{animation:none;opacity:0}}")
+    anim_css = "".join(frames)
+
+    for i, (name, sub, does) in enumerate(RUNTIME):
+        y = top + i * (nh + gap)
+        if i:
+            rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1" marker-end="url(#eh)"/>' % (nx + nw // 2, int(y - gap), y - 3, LINE))
+        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"/>' % (nx, y, nw, nh, PANEL, LINE))
+        rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, ACCENT if i == 0 else LINE))
+        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 24, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 42, escape(sub)))
+        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 24, i + 1))
+        # Lit overlay for the moment the request is inside this stage.
+        rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
+                    '<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>'
+                    '<text x="%d" y="%.0f" text-anchor="end" class="dz">%s</text></g>'
+                    % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT, nx + nw - 44, y + 24, escape(does)))
+
+    rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
+    h = top + cspan + 46
+    alt = ("The environment I run, one request end to end: " +
+           " then ".join(r[0] for r in RUNTIME) +
+           ". Built and governed by a control plane of " +
+           ", ".join(n for n, _ in CONTROL) + ".")
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
+        + '<defs><marker id="eh" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="%s"/></marker></defs>' % LINE
+        + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}.cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}.dz{font-size:10px;fill:%s;}%s</style>" % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, MONO, LINE, MUTED, TEXT, anim_css)
+        + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
+        + '<text x="%d" y="34" class="z">THE ENVIRONMENT I RUN</text>' % pad
+        + '<text x="%d" y="34" text-anchor="end" class="ft">one request, end to end</text>' % (w - pad)
+        + "".join(rows)
+        + '<text x="%d" y="%d" class="ft">Dashed lines are how it got there; solid lines are traffic. I have built and run every box on this diagram.</text>' % (pad, h - 16)
+        + "</svg>"
+    )
+    write("environment.svg", svg)
+
+
+environment()
