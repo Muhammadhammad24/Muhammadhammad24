@@ -78,37 +78,26 @@
 
 
 
-    .in { animation: rin .5s ease-out both; }
 
 
 
 
-    .hx { animation: rin .5s ease-out both; }
 
 
 
 
-    .cur { animation: blink 1.05s steps(1) infinite; }
 
 
 
 
-    @keyframes rin { from { opacity: 0; transform: translateX(-10px); } }
 
 
 
 
-    @keyframes spin { from { opacity: 0; transform: rotate(-90deg) scale(.4); } }
 
 
 
 
-    @keyframes blink { 50% { opacity: 0; } }
-
-
-
-
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 
 
 
@@ -133,7 +122,7 @@
 
 
 
-  <g class="hx" style="animation-delay:0.30s">
+  <g class="hx">
 
 
 
@@ -148,7 +137,7 @@
 
 
 
-  <g class="in" style="animation-delay:0.30s">
+  <g class="in">
 
 
 

@@ -83,47 +83,34 @@
 
 
 
-    .led { animation: led 1.8s ease-in-out infinite; }
 
 
 
 
-    .node, .chipg { animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }
 
 
 
 
-    .wire { stroke-dasharray: 4 5; animation: flow .9s linear infinite; }
 
 
 
 
-    .drawn { stroke-dasharray: 100; animation: draw 1.6s ease-out .3s both; }
 
 
 
 
-    @keyframes led { 50% { opacity: .25; } }
 
 
 
 
-    @keyframes pop { from { opacity: 0; transform: scale(.6); } }
 
 
 
 
-    @keyframes flow { to { stroke-dashoffset: -9; } }
 
 
 
 
-    @keyframes draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-
-
-
-
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 
 
 
@@ -178,12 +165,12 @@
 
 
 
-  <line x1="78.8" y1="153" x2="364.2" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5" class="wire"/><circle r="3.2" fill="#FFFFFF" filter="url(#pfsense-firewall-lab-glow)" opacity="0"><animateMotion path="M78.8,153 L364.2,153" dur="3s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".4 0 .6 1"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.9;1" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle><g class="node" style="animation-delay:0.20s"><rect x="34.0" y="140" width="89.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="78.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">policy.toml</text></g><g class="node" style="animation-delay:0.34s"><rect x="157.3" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="185.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">render</text></g><g class="node" style="animation-delay:0.48s"><rect x="248.2" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="273.4" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">audit</text></g><g class="node" style="animation-delay:0.62s"><rect x="332.5" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="364.2" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">pfSense</text></g>
+  <line x1="78.8" y1="153" x2="364.2" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5"/><g class="node"><rect x="34.0" y="140" width="89.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="78.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">policy.toml</text></g><g class="node"><rect x="157.3" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="185.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">render</text></g><g class="node"><rect x="248.2" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="273.4" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">audit</text></g><g class="node"><rect x="332.5" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="364.2" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">pfSense</text></g>
 
 
 
 
-  <g class="chipg" style="animation-delay:0.60s"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">pfSense</text></g><g class="chipg" style="animation-delay:0.68s"><rect x="99" y="194" width="62" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="130.0" y="210" text-anchor="middle" class="chip">Python</text></g><g class="chipg" style="animation-delay:0.76s"><rect x="169" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="203.5" y="210" text-anchor="middle" class="chip">OpenVPN</text></g><g class="chipg" style="animation-delay:0.84s"><rect x="246" y="194" width="34" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="263.0" y="210" text-anchor="middle" class="chip">CI</text></g>
+  <g class="chipg"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">pfSense</text></g><g class="chipg"><rect x="99" y="194" width="62" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="130.0" y="210" text-anchor="middle" class="chip">Python</text></g><g class="chipg"><rect x="169" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="203.5" y="210" text-anchor="middle" class="chip">OpenVPN</text></g><g class="chipg"><rect x="246" y="194" width="34" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="263.0" y="210" text-anchor="middle" class="chip">CI</text></g>
 
 
 

@@ -83,47 +83,34 @@
 
 
 
-    .led { animation: led 1.8s ease-in-out infinite; }
 
 
 
 
-    .node, .chipg { animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }
 
 
 
 
-    .wire { stroke-dasharray: 4 5; animation: flow .9s linear infinite; }
 
 
 
 
-    .drawn { stroke-dasharray: 100; animation: draw 1.6s ease-out .3s both; }
 
 
 
 
-    @keyframes led { 50% { opacity: .25; } }
 
 
 
 
-    @keyframes pop { from { opacity: 0; transform: scale(.6); } }
 
 
 
 
-    @keyframes flow { to { stroke-dashoffset: -9; } }
 
 
 
 
-    @keyframes draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-
-
-
-
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 
 
 
@@ -178,12 +165,12 @@
 
 
 
-  <line x1="75.5" y1="153" x2="364.2" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5" class="wire"/><circle r="3.2" fill="#FFFFFF" filter="url(#velqatechnologies-glow)" opacity="0"><animateMotion path="M75.5,153 L364.2,153" dur="3s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".4 0 .6 1"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.9;1" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle><g class="node" style="animation-delay:0.20s"><rect x="34.0" y="140" width="83.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="75.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">next build</text></g><g class="node" style="animation-delay:0.34s"><rect x="140.0" y="140" width="76.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="178.2" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">33 routes</text></g><g class="node" style="animation-delay:0.48s"><rect x="239.5" y="140" width="70.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="274.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">edge CDN</text></g><g class="node" style="animation-delay:0.62s"><rect x="332.5" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="364.2" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">visitor</text></g>
+  <line x1="75.5" y1="153" x2="364.2" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5"/><g class="node"><rect x="34.0" y="140" width="83.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="75.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">next build</text></g><g class="node"><rect x="140.0" y="140" width="76.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="178.2" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">33 routes</text></g><g class="node"><rect x="239.5" y="140" width="70.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="274.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">edge CDN</text></g><g class="node"><rect x="332.5" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="364.2" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">visitor</text></g>
 
 
 
 
-  <g class="chipg" style="animation-delay:0.60s"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">Next.js</text></g><g class="chipg" style="animation-delay:0.68s"><rect x="99" y="194" width="91" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="144.5" y="210" text-anchor="middle" class="chip">TypeScript</text></g><g class="chipg" style="animation-delay:0.76s"><rect x="198" y="194" width="76" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="236.0" y="210" text-anchor="middle" class="chip">Tailwind</text></g>
+  <g class="chipg"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">Next.js</text></g><g class="chipg"><rect x="99" y="194" width="91" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="144.5" y="210" text-anchor="middle" class="chip">TypeScript</text></g><g class="chipg"><rect x="198" y="194" width="76" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="236.0" y="210" text-anchor="middle" class="chip">Tailwind</text></g>
 
 
 

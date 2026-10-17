@@ -125,7 +125,7 @@ def terminal() -> None:
         else:
             body = f'<tspan fill="{MUTED}">{escape(text)}</tspan>'
         rows.append(
-            f'<text class="l" style="animation-delay:{delay:.2f}s" x="28" y="{y}">{body}</text>'
+            f'<text class="l" x="28" y="{y}">{body}</text>'
         )
     cursor_y = top + line_h * len(TERMINAL)
     cursor_delay = 0.35 + len(TERMINAL) * 0.45
@@ -134,12 +134,7 @@ def terminal() -> None:
   <title>whoami</title>
   {gradient_defs("t")}
   <style>
-    text {{ font-family: {MONO}; font-size: 14px; }}
-    .l {{ opacity: 0; animation: in .35s ease-out forwards; }}
-    .cur {{ opacity: 0; animation: in .1s linear {cursor_delay:.2f}s forwards, blink 1s steps(1) {cursor_delay:.2f}s infinite; }}
-    @keyframes in {{ from {{ opacity: 0; transform: translateX(-6px); }} to {{ opacity: 1; transform: none; }} }}
-    @keyframes blink {{ 50% {{ opacity: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ .l, .cur {{ animation: none; opacity: 1; }} }}
+    text {{ font-family: {MONO}; font-size: 14px; }}
   </style>
   <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="url(#t-edge)"/>
   <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="url(#t-glow)"/>
@@ -255,18 +250,13 @@ def flow_diagram(uid: str, nodes: list[str], cy: int, x0: int, x1: int) -> str:
         xs.append(x)
         x += wd + gap
     first, last = xs[0] + widths[0] / 2, xs[-1] + widths[-1] / 2
-    out = [f'<line x1="{first:.1f}" y1="{cy}" x2="{last:.1f}" y2="{cy}" stroke="{MUTED}" stroke-opacity=".55" stroke-width="1.5" class="wire"/>']
-    out.append(
-        f'<circle r="3.2" fill="{ACCENT}" filter="url(#{uid}-glow)" opacity="0">'
-        f'<animateMotion path="M{first:.1f},{cy} L{last:.1f},{cy}" dur="3s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".4 0 .6 1"/>'
-        f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.9;1" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle>'
-    )
+    out = [f'<line x1="{first:.1f}" y1="{cy}" x2="{last:.1f}" y2="{cy}" stroke="{MUTED}" stroke-opacity=".55" stroke-width="1.5"/>']
     for i, (t, bx, wd) in enumerate(zip(nodes, xs, widths)):
         end = i == len(nodes) - 1
         stroke = ACCENT if end else LINE
         fill_t = ACCENT if end else TEXT
         out.append(
-            f'<g class="node" style="animation-delay:{0.2 + i * 0.14:.2f}s">'
+            f'<g class="node">'
             f'<rect x="{bx:.1f}" y="{cy - 13}" width="{wd:.1f}" height="26" rx="6" fill="{BG}" stroke="{stroke}"/>'
             f'<text x="{bx + wd / 2:.1f}" y="{cy + 4}" text-anchor="middle" class="nd" fill="{fill_t}">{escape(t)}</text></g>'
         )
@@ -289,7 +279,7 @@ def relu_diagram(uid: str, cy: int, x0: int, x1: int) -> str:
     knots = [pt(i / 8) for i in range(9)]
     relu = " ".join(f"{'M' if i == 0 else 'L'}{x:.1f},{y:.1f}" for i, (x, y) in enumerate(knots))
     dots = "".join(
-        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="{BG}" stroke="{ACCENT}" stroke-width="1.5" class="node" style="animation-delay:{0.9 + i * 0.08:.2f}s"/>'
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="{BG}" stroke="{ACCENT}" stroke-width="1.5" class="node"/>'
         for i, (x, y) in enumerate(knots)
     )
     return (
@@ -308,7 +298,7 @@ def card(p: dict) -> None:
     for i, s in enumerate(p["stack"]):
         cw = chip_width(s)
         chips.append(
-            f'<g class="chipg" style="animation-delay:{0.6 + i * 0.08:.2f}s">'
+            f'<g class="chipg">'
             f'<rect x="{x}" y="194" width="{cw}" height="24" rx="12" fill="{PANEL}" stroke="{LINE}"/>'
             f'<text x="{x + cw / 2}" y="210" text-anchor="middle" class="chip">{escape(s)}</text></g>'
         )
@@ -330,16 +320,7 @@ def card(p: dict) -> None:
     .d {{ font-size: 12.5px; fill: {MUTED}; }}
     .chip {{ font-size: 11px; fill: {TEXT}; }}
     .p {{ font-size: 11px; fill: {ACCENT}; }}
-    .nd {{ font-size: 10.5px; }}
-    .led {{ animation: led 1.8s ease-in-out infinite; }}
-    .node, .chipg {{ animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }}
-    .wire {{ stroke-dasharray: 4 5; animation: flow .9s linear infinite; }}
-    .drawn {{ stroke-dasharray: 100; animation: draw 1.6s ease-out .3s both; }}
-    @keyframes led {{ 50% {{ opacity: .25; }} }}
-    @keyframes pop {{ from {{ opacity: 0; transform: scale(.6); }} }}
-    @keyframes flow {{ to {{ stroke-dashoffset: -9; }} }}
-    @keyframes draw {{ from {{ stroke-dashoffset: 100; }} to {{ stroke-dashoffset: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
+    .nd {{ font-size: 10.5px; }}
   </style>
   <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="{BG}" stroke="{LINE}"/>
   <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-dots)"/>
@@ -381,9 +362,9 @@ def impact() -> None:
             f'<text x="{x + 14:.1f}" y="{top + 70 + j * 16}" class="lb">{escape(line)}</text>' for j, line in enumerate(lines)
         )
         tiles.append(
-            f'<g class="tile" style="animation-delay:{d:.2f}s">'
+            f'<g class="tile">'
             f'<rect x="{x:.1f}" y="{top}" width="{tw:.1f}" height="{th}" rx="10" fill="{PANEL}" fill-opacity=".7" stroke="{LINE}"/>'
-            f'<rect x="{x + 14:.1f}" y="{top}" width="{tw - 28:.1f}" height="2" fill="{ACCENT}" class="bar" style="animation-delay:{d + 0.25:.2f}s"/>'
+            f'<rect x="{x + 14:.1f}" y="{top}" width="{tw - 28:.1f}" height="2" fill="{ACCENT}" class="bar"/>'
             f'<text x="{x + 14:.1f}" y="{top + 44}" class="m">{escape(metric)}</text>'
             f"{body}"
             f'<text x="{x + 14:.1f}" y="{top + th - 14}" class="wh">{escape(where)}</text></g>'
@@ -402,14 +383,7 @@ def impact() -> None:
     .meta {{ font-size: 11px; fill: {MUTED}; }}
     .m {{ font-size: 25px; font-weight: 700; fill: {ACCENT}; }}
     .lb {{ font-size: 11.5px; fill: {TEXT}; opacity: .85; }}
-    .wh {{ font-size: 9.5px; letter-spacing: 1.3px; fill: {MUTED}; }}
-    .tile {{ animation: up .55s ease-out both; }}
-    .bar {{ transform-box: fill-box; transform-origin: left; animation: grow .8s ease-out both; }}
-    .cur {{ animation: blink 1.05s steps(1) infinite; }}
-    @keyframes up {{ from {{ opacity: 0; transform: translateY(10px); }} }}
-    @keyframes grow {{ from {{ transform: scaleX(0); }} }}
-    @keyframes blink {{ 50% {{ opacity: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
+    .wh {{ font-size: 9.5px; letter-spacing: 1.3px; fill: {MUTED}; }}
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-dots)"/>
@@ -487,14 +461,7 @@ _CERT_STYLE = f"""
     .is {{ font-size: 11px; fill: {MUTED}; }}
     .mk {{ font-size: 10px; font-weight: 700; fill: {ACCENT}; }}
     .tag {{ font-size: 10px; fill: {MUTED}; }}
-    .tr {{ font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
-    .in {{ animation: rin .5s ease-out both; }}
-    .hx {{ animation: rin .5s ease-out both; }}
-    .cur {{ animation: blink 1.05s steps(1) infinite; }}
-    @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
-    @keyframes spin {{ from {{ opacity: 0; transform: rotate(-90deg) scale(.4); }} }}
-    @keyframes blink {{ 50% {{ opacity: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
+    .tr {{ font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
   </style>"""
 
 
@@ -543,10 +510,10 @@ def certs() -> None:
             write(f"certifications/{t}-{k}.svg", f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
   <title>{escape(name)}</title>{_cert_frame(w, h, uid)}
-  <g class="hx" style="animation-delay:{d:.2f}s">
+  <g class="hx">
     <rect x="0" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
   </g>
-  <g class="in" style="animation-delay:{d:.2f}s">
+  <g class="in">
     {title}
     <text x="24" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
   </g>
@@ -636,7 +603,7 @@ def timeline() -> None:
         span = (e or now) - s
 
         rows.append(
-            f'<g class="r" style="animation-delay:{d:.2f}s">'
+            f'<g class="r">'
             f'<text x="{year_x}" y="{yc + 4}" text-anchor="end" class="yrs" '
             f'fill="{ACCENT if head else MUTED}">{years.split(" — ")[0]}</text>'
             f'<text x="{text_x}" y="{yc - 3}" class="role">{escape(role)}</text>{chips}'
@@ -667,12 +634,7 @@ def timeline() -> None:
     .org {{ font-size: 12px; fill: {MUTED}; }}
     .chip {{ font-size: 10px; }}
     .yrs {{ font-size: 11.5px; }}
-    .foot {{ font-size: 11px; fill: {MUTED}; }}
-    .r {{ animation: rin .45s ease-out both; }}
-    .bar {{ transform-box: fill-box; transform-origin: right; animation: grow .7s ease-out both; }}
-    @keyframes rin {{ from {{ opacity: 0; transform: translateY(8px); }} }}
-    @keyframes grow {{ from {{ transform: scaleX(0); }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
+    .foot {{ font-size: 11px; fill: {MUTED}; }}
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{PANEL}" stroke="{LINE}"/>
   <rect x="1" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
@@ -807,8 +769,8 @@ def toolbox() -> None:
             if r:
                 rows.append(f'<line x1="26" y1="{y - 10}" x2="{w - 26}" y2="{y - 10}" stroke="{t["line"]}" stroke-dasharray="2 5"/>')
             rows.append(
-                f'<g class="in" style="animation-delay:{0.1 + r * 0.08:.2f}s">'
-                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led" style="animation-delay:{r * 0.3:.1f}s"/>'
+                f'<g class="in">'
+                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led"/>'
                 f'<text x="44" y="{y + 26}" class="cat">{escape(cat)}</text>'
                 f'<text x="44" y="{y + 44}" class="cnt">{len(items):02d} tools</text></g>'
             )
@@ -826,7 +788,7 @@ def toolbox() -> None:
                     f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
                     for k, part in enumerate(_wrap(label, 12))
                 )
-                rows.append(f'<g class="logo" style="animation-delay:{d:.2f}s">{logo}{labels}</g>')
+                rows.append(f'<g class="logo">{logo}{labels}</g>')
         svg = f"""
 <svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Toolbox">
   <title>Toolbox</title>
@@ -837,16 +799,7 @@ def toolbox() -> None:
     .meta {{ font-size: 11px; fill: {t["muted"]}; }}
     .cat {{ font-size: 13.5px; font-weight: 600; fill: {t["text"]}; }}
     .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
-    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
-    .in {{ animation: rin .5s ease-out both; }}
-    .logo {{ transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; }}
-    .led {{ animation: led 2.4s ease-in-out infinite; }}
-    .cur {{ animation: blink 1.05s steps(1) infinite; }}
-    @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
-    @keyframes pop {{ from {{ opacity: 0; transform: scale(.5); }} }}
-    @keyframes led {{ 50% {{ opacity: .25; }} }}
-    @keyframes blink {{ 50% {{ opacity: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
+    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
   <text x="26" y="38" class="cmd"><tspan fill="{t["prompt"]}">~/toolbox</tspan><tspan fill="{t["muted"]}"> $ </tspan>ls --all</text>

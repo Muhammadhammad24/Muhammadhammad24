@@ -43,27 +43,18 @@
 
 
 
-    .l { opacity: 0; animation: in .35s ease-out forwards; }
 
 
 
 
-    .cur { opacity: 0; animation: in .1s linear 4.40s forwards, blink 1s steps(1) 4.40s infinite; }
 
 
 
 
-    @keyframes in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
 
 
 
 
-    @keyframes blink { 50% { opacity: 0; } }
-
-
-
-
-    @media (prefers-reduced-motion: reduce) { .l, .cur { animation: none; opacity: 1; } }
 
 
 
@@ -103,7 +94,7 @@
 
 
 
-  <text class="l" style="animation-delay:0.35s" x="28" y="62"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">whoami</tspan></text><text class="l" style="animation-delay:0.80s" x="28" y="86"><tspan fill="#777982">Muhammad Hammad · IT Infrastructure Engineer · Göttingen, Germany</tspan></text><text class="l" style="animation-delay:1.25s" x="28" y="110"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">cat focus.txt</tspan></text><text class="l" style="animation-delay:1.70s" x="28" y="134"><tspan fill="#777982">Cloud infrastructure (Azure / AWS) · DevOps &amp; automation</tspan></text><text class="l" style="animation-delay:2.15s" x="28" y="158"><tspan fill="#777982">Network engineering · Systems administration · Security</tspan></text><text class="l" style="animation-delay:2.60s" x="28" y="182"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">cat principles.md</tspan></text><text class="l" style="animation-delay:3.05s" x="28" y="206"><tspan fill="#777982">Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook</tspan></text><text class="l" style="animation-delay:3.50s" x="28" y="230"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">ls ~/now</tspan></text><text class="l" style="animation-delay:3.95s" x="28" y="254"><tspan fill="#FFFFFF">it-engineer@kontinental   msc-data-science@uni-goettingen   open-to-roles: worldwide</tspan></text>
+  <text class="l" x="28" y="62"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">whoami</tspan></text><text class="l" x="28" y="86"><tspan fill="#777982">Muhammad Hammad · IT Infrastructure Engineer · Göttingen, Germany</tspan></text><text class="l" x="28" y="110"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">cat focus.txt</tspan></text><text class="l" x="28" y="134"><tspan fill="#777982">Cloud infrastructure (Azure / AWS) · DevOps &amp; automation</tspan></text><text class="l" x="28" y="158"><tspan fill="#777982">Network engineering · Systems administration · Security</tspan></text><text class="l" x="28" y="182"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">cat principles.md</tspan></text><text class="l" x="28" y="206"><tspan fill="#777982">Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook</tspan></text><text class="l" x="28" y="230"><tspan fill="#FFFFFF">$ </tspan><tspan fill="#F7F8FA">ls ~/now</tspan></text><text class="l" x="28" y="254"><tspan fill="#FFFFFF">it-engineer@kontinental   msc-data-science@uni-goettingen   open-to-roles: worldwide</tspan></text>
 
 
 

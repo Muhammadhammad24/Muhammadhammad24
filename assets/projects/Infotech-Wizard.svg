@@ -83,47 +83,34 @@
 
 
 
-    .led { animation: led 1.8s ease-in-out infinite; }
 
 
 
 
-    .node, .chipg { animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; transform-box: fill-box; transform-origin: center; }
 
 
 
 
-    .wire { stroke-dasharray: 4 5; animation: flow .9s linear infinite; }
 
 
 
 
-    .drawn { stroke-dasharray: 100; animation: draw 1.6s ease-out .3s both; }
 
 
 
 
-    @keyframes led { 50% { opacity: .25; } }
 
 
 
 
-    @keyframes pop { from { opacity: 0; transform: scale(.6); } }
 
 
 
 
-    @keyframes flow { to { stroke-dashoffset: -9; } }
 
 
 
 
-    @keyframes draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-
-
-
-
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 
 
 
@@ -178,12 +165,12 @@
 
 
 
-  <line x1="62.5" y1="153" x2="367.5" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5" class="wire"/><circle r="3.2" fill="#FFFFFF" filter="url(#infotech-wizard-glow)" opacity="0"><animateMotion path="M62.5,153 L367.5,153" dur="3s" begin="1.2s" repeatCount="indefinite" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".4 0 .6 1"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.9;1" dur="3s" begin="1.2s" repeatCount="indefinite"/></circle><g class="node" style="animation-delay:0.20s"><rect x="34.0" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="62.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">ticket</text></g><g class="node" style="animation-delay:0.34s"><rect x="108.6" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="133.9" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">embed</text></g><g class="node" style="animation-delay:0.48s"><rect x="176.8" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="202.0" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">FAISS</text></g><g class="node" style="animation-delay:0.62s"><rect x="244.9" y="140" width="76.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="283.1" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">local LLM</text></g><g class="node" style="animation-delay:0.76s"><rect x="339.0" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="367.5" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">answer</text></g>
+  <line x1="62.5" y1="153" x2="367.5" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5"/><g class="node"><rect x="34.0" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="62.5" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">ticket</text></g><g class="node"><rect x="108.6" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="133.9" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">embed</text></g><g class="node"><rect x="176.8" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="202.0" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">FAISS</text></g><g class="node"><rect x="244.9" y="140" width="76.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="283.1" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">local LLM</text></g><g class="node"><rect x="339.0" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="367.5" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">answer</text></g>
 
 
 
 
-  <g class="chipg" style="animation-delay:0.60s"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">FastAPI</text></g><g class="chipg" style="animation-delay:0.68s"><rect x="99" y="194" width="55" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="126.5" y="210" text-anchor="middle" class="chip">FAISS</text></g><g class="chipg" style="animation-delay:0.76s"><rect x="162" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="196.5" y="210" text-anchor="middle" class="chip">PyTorch</text></g><g class="chipg" style="animation-delay:0.84s"><rect x="239" y="194" width="55" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="266.5" y="210" text-anchor="middle" class="chip">React</text></g>
+  <g class="chipg"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">FastAPI</text></g><g class="chipg"><rect x="99" y="194" width="55" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="126.5" y="210" text-anchor="middle" class="chip">FAISS</text></g><g class="chipg"><rect x="162" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="196.5" y="210" text-anchor="middle" class="chip">PyTorch</text></g><g class="chipg"><rect x="239" y="194" width="55" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="266.5" y="210" text-anchor="middle" class="chip">React</text></g>
 
 
 

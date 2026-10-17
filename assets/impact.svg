@@ -68,37 +68,26 @@
 
 
 
-    .tile { animation: up .55s ease-out both; }
 
 
 
 
-    .bar { transform-box: fill-box; transform-origin: left; animation: grow .8s ease-out both; }
 
 
 
 
-    .cur { animation: blink 1.05s steps(1) infinite; }
 
 
 
 
-    @keyframes up { from { opacity: 0; transform: translateY(10px); } }
 
 
 
 
-    @keyframes grow { from { transform: scaleX(0); } }
 
 
 
 
-    @keyframes blink { 50% { opacity: 0; } }
-
-
-
-
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
 
 
 
@@ -138,7 +127,7 @@
 
 
 
-  <g class="tile" style="animation-delay:0.20s"><rect x="28.0" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="42.0" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar" style="animation-delay:0.45s"/><text x="42.0" y="108" class="m">25 h/wk</text><text x="42.0" y="134" class="lb">onboarding, provisioning</text><text x="42.0" y="150" class="lb">and patching automated</text><text x="42.0" y="176" class="wh">TESTSOLUTIONS</text></g><g class="tile" style="animation-delay:0.33s"><rect x="194.8" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="208.8" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar" style="animation-delay:0.58s"/><text x="208.8" y="108" class="m">−75%</text><text x="208.8" y="134" class="lb">device setup time on</text><text x="208.8" y="150" class="lb">180+ endpoints, 12 sites</text><text x="208.8" y="176" class="wh">TESTSOLUTIONS</text></g><g class="tile" style="animation-delay:0.46s"><rect x="361.6" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="375.6" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar" style="animation-delay:0.71s"/><text x="375.6" y="108" class="m">4h→35m</text><text x="375.6" y="134" class="lb">ML infrastructure</text><text x="375.6" y="150" class="lb">deploys through CI/CD</text><text x="375.6" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile" style="animation-delay:0.59s"><rect x="528.4" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="542.4" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar" style="animation-delay:0.84s"/><text x="542.4" y="108" class="m">−85%</text><text x="542.4" y="134" class="lb">vulnerabilities, through</text><text x="542.4" y="150" class="lb">automated scan gates</text><text x="542.4" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile" style="animation-delay:0.72s"><rect x="695.2" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="709.2" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar" style="animation-delay:0.97s"/><text x="709.2" y="108" class="m">265+</text><text x="709.2" y="134" class="lb">government endpoints at</text><text x="709.2" y="150" class="lb">100% patch compliance</text><text x="709.2" y="176" class="wh">KTDMC</text></g>
+  <g class="tile"><rect x="28.0" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="42.0" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="42.0" y="108" class="m">25 h/wk</text><text x="42.0" y="134" class="lb">onboarding, provisioning</text><text x="42.0" y="150" class="lb">and patching automated</text><text x="42.0" y="176" class="wh">TESTSOLUTIONS</text></g><g class="tile"><rect x="194.8" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="208.8" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="208.8" y="108" class="m">−75%</text><text x="208.8" y="134" class="lb">device setup time on</text><text x="208.8" y="150" class="lb">180+ endpoints, 12 sites</text><text x="208.8" y="176" class="wh">TESTSOLUTIONS</text></g><g class="tile"><rect x="361.6" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="375.6" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="375.6" y="108" class="m">4h→35m</text><text x="375.6" y="134" class="lb">ML infrastructure</text><text x="375.6" y="150" class="lb">deploys through CI/CD</text><text x="375.6" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile"><rect x="528.4" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="542.4" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="542.4" y="108" class="m">−85%</text><text x="542.4" y="134" class="lb">vulnerabilities, through</text><text x="542.4" y="150" class="lb">automated scan gates</text><text x="542.4" y="176" class="wh">UNI GÖTTINGEN</text></g><g class="tile"><rect x="695.2" y="64" width="156.8" height="126" rx="10" fill="#0B0B0D" fill-opacity=".7" stroke="#4A4A55"/><rect x="709.2" y="64" width="128.8" height="2" fill="#FFFFFF" class="bar"/><text x="709.2" y="108" class="m">265+</text><text x="709.2" y="134" class="lb">government endpoints at</text><text x="709.2" y="150" class="lb">100% patch compliance</text><text x="709.2" y="176" class="wh">KTDMC</text></g>
 
 
 
