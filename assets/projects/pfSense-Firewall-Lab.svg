@@ -16,9 +16,7 @@
 
 
 
-
   <title>pfSense-Firewall-Lab</title>
-
 
 
 
@@ -54,9 +52,7 @@
 
 
 
-
   <defs>
-
 
 
 
@@ -92,9 +88,7 @@
 
 
 
-
     <radialGradient id="pfsense-firewall-lab-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".08"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
-
 
 
 
@@ -130,9 +124,7 @@
 
 
 
-
   </defs>
-
 
 
 
@@ -168,9 +160,7 @@
 
 
 
-
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
-
 
 
 
@@ -206,9 +196,7 @@
 
 
 
-
     .k { font-size: 10.5px; letter-spacing: 1.4px; fill: #777982; }
-
 
 
 
@@ -244,9 +232,7 @@
 
 
 
-
     .d { font-size: 12.5px; fill: #777982; }
-
 
 
 
@@ -282,9 +268,7 @@
 
 
 
-
     .p { font-size: 11px; fill: #FFFFFF; }
-
 
 
 
@@ -352,9 +336,7 @@
 
 
 
-
   </style>
-
 
 
 
@@ -390,9 +372,7 @@
 
 
 
-
   <rect x="0.5" y="0.5" width="429" height="235" rx="12" fill="url(#pfsense-firewall-lab-dots)"/>
-
 
 
 
@@ -428,9 +408,7 @@
 
 
 
-
   <circle cx="26" cy="28" r="3.5" fill="#FFFFFF" class="led"/>
-
 
 
 
@@ -466,9 +444,7 @@
 
 
 
-
   <text x="408" y="32" text-anchor="end" class="p">22 tests · 0 findings</text>
-
 
 
 
@@ -504,9 +480,7 @@
 
 
 
-
   <text x="22" y="88" class="d">Firewall policy as code, rendered to pfSense XML</text><text x="22" y="107" class="d">and audited for risky rules before deployment.</text>
-
 
 
 
@@ -542,7 +516,6 @@
 
 
 
-
   <line x1="78.8" y1="153" x2="364.2" y2="153" stroke="#777982" stroke-opacity=".55" stroke-width="1.5"/><g class="node"><rect x="34.0" y="140" width="89.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="78.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">policy.toml</text></g><g class="node"><rect x="157.3" y="140" width="57.0" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="185.8" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">render</text></g><g class="node"><rect x="248.2" y="140" width="50.5" height="26" rx="6" fill="#000000" stroke="#4A4A55"/><text x="273.4" y="157" text-anchor="middle" class="nd" fill="#F7F8FA">audit</text></g><g class="node"><rect x="332.5" y="140" width="63.5" height="26" rx="6" fill="#000000" stroke="#FFFFFF"/><text x="364.2" y="157" text-anchor="middle" class="nd" fill="#FFFFFF">pfSense</text></g>
 
 
@@ -561,9 +534,7 @@
 
 
 
-
   <g class="chipg"><rect x="22" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="56.5" y="210" text-anchor="middle" class="chip">pfSense</text></g><g class="chipg"><rect x="99" y="194" width="62" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="130.0" y="210" text-anchor="middle" class="chip">Python</text></g><g class="chipg"><rect x="169" y="194" width="69" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="203.5" y="210" text-anchor="middle" class="chip">OpenVPN</text></g><g class="chipg"><rect x="246" y="194" width="34" height="24" rx="12" fill="#0B0B0D" stroke="#4A4A55"/><text x="263.0" y="210" text-anchor="middle" class="chip">CI</text></g>
-
 
 
 
