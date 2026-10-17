@@ -900,3 +900,92 @@ def build_headings() -> None:
 
 
 build_headings()
+
+
+# ---------------------------------------------------------------------------
+# Prose blocks
+# ---------------------------------------------------------------------------
+# The last markdown left on the page was its running text, which GitHub sets
+# in its own face. Drawing it puts every word in Plex. Blocks whose only link
+# is a single destination are wrapped in an <a> in the README, so nothing that
+# was clickable stops being clickable.
+
+W_PROSE = 880
+
+
+def _wrap(text: str, size: float, width: int, weight: int = 400) -> list:
+    """Greedy wrap on an estimated advance width; Plex sits near 0.52 em."""
+    per = size * (0.545 if weight >= 600 else 0.515)
+    limit = max(8, int(width / per))
+    words, lines, cur = text.split(), [], ""
+    for wd in words:
+        trial = f"{cur} {wd}".strip()
+        if len(trial) <= limit:
+            cur = trial
+        else:
+            lines.append(cur)
+            cur = wd
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def prose(slug: str, blocks: list, align: str = "middle", label: str = "") -> None:
+    """blocks: [(text, size, weight, colour, gap_before)]"""
+    inner = W_PROSE - 8
+    rows, y = [], 0
+    for text, size, weight, colour, gap in blocks:
+        y += gap
+        for ln in _wrap(text, size, inner, weight):
+            y += size * 1.55
+            x = W_PROSE / 2 if align == "middle" else 0
+            rows.append(
+                f'<text x="{x:.0f}" y="{y:.0f}" text-anchor="{align}" '
+                f'font-size="{size}" font-weight="{weight}" fill="{colour}">{escape(ln)}</text>'
+            )
+    h = int(y + 10)
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W_PROSE} {h}" width="{W_PROSE}" height="{h}" role="img" aria-label="{escape(label)}">
+  <style>text {{ font-family: {SANS}; }}</style>
+  {"".join(rows)}
+</svg>"""
+    write(f"prose/{slug}.svg", svg)
+
+
+def build_prose() -> None:
+    prose(
+        "name",
+        [
+            ("Muhammad Hammad · IT Infrastructure Engineer", 25, 600, TEXT, 4),
+            ("Cloud infrastructure (Azure / AWS) · DevOps & automation · Network engineering · Systems administration", 14, 400, TEXT, 14),
+            ("Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen", 12, 400, MUTED, 6),
+        ],
+        label="Muhammad Hammad, IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS), DevOps and automation, network engineering, systems administration. Göttingen, Germany. IT engineering since 2019. M.Sc. Data Science, University of Göttingen.",
+    )
+    prose(
+        "what-i-do",
+        [
+            ("I keep infrastructure boring, meaning secure, observable and automated, so the people who depend on it never have to think about it. I work across the whole stack: identity (Active Directory, Entra ID, Okta), endpoints (Intune, Autopilot, Jamf), networks (Cisco, Juniper, pfSense, VPN), cloud (Azure, AWS) and the service desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines.", 14.5, 400, TEXT, 0),
+        ],
+        align="start",
+        label="I keep infrastructure boring, meaning secure, observable and automated, so the people who depend on it never have to think about it. I work across the whole stack: identity, endpoints, networks, cloud and the service desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines.",
+    )
+    prose(
+        "ci-note",
+        [
+            ("Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app", 13.5, 400, MUTED, 0),
+        ],
+        align="start",
+        label="Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app",
+    )
+    prose(
+        "footer",
+        [
+            ("Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate.", 15, 600, TEXT, 4),
+            ("English (C1) · German (B1) · muhammad24997@gmail.com", 12.5, 400, MUTED, 8),
+        ],
+        label="Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate. English C1, German B1, muhammad24997@gmail.com",
+    )
+
+
+build_prose()
