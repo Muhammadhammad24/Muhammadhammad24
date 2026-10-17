@@ -105,7 +105,7 @@ CAREER.sort(key=lambda r: (r[6] is None, r[5]), reverse=True)
 # (degree, institution, years)
 EDUCATION = [
     ("M.Sc. Data Science & Computer Science", "University of Göttingen, Germany", "2023 — 2026"),
-    ("B.Sc. Computer Science", "University of Karachi, Pakistan", "2016 — 2018"),
+    ("B.Sc. Computational Mathematics", "University of Karachi, Pakistan", "2016 — 2018"),
 ]
 
 
@@ -203,7 +203,7 @@ def timeline() -> None:
   <text x="{w - 30}" y="{fy + 2}" text-anchor="end" class="foot">muhammadhammad.vercel.app</text>
 </svg>"""
 
-    write("career-panel.svg", svg)
+    write("career-board.svg", svg)
 
 
 # --------------------------------------------------------------------------

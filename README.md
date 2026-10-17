@@ -47,7 +47,7 @@ I build infrastructure that runs quietly in the background, scales without drama
 <img src="assets/headings/career.svg?v=44" alt="Career" width="100%" />
 
 <p align="center">
-  <img src="assets/career-panel.svg" alt="Career, newest first, all roles full-time except the TestSolutions contract and the internship: IT Engineer at Kontinental Establishment since 2025; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevOps internship, University of Göttingen 2024; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
+  <img src="assets/career-board.svg" alt="Career, newest first, all roles full-time except the TestSolutions contract and the internship: IT Engineer at Kontinental Establishment since 2025; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevOps internship, University of Göttingen 2024; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
 </p>
 
 <img src="assets/headings/certifications.svg?v=44" alt="Certifications" width="100%" />
