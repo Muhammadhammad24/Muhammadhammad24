@@ -637,7 +637,6 @@ def timeline() -> None:
     .foot {{ font-size: 11px; fill: {MUTED}; }}
   </style>
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{PANEL}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
 
 
   <text x="30" y="44" class="lbl" font-size="11">INDUSTRY EXPERIENCE</text>
