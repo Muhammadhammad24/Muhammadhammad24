@@ -1,922 +1,935 @@
-"""Generate the SVG graphics used in the profile README.
-
-Everything is drawn from the data below, so updating a role or a project
-means editing one list and re-running:
-
-    python scripts/build_assets.py
-
-The palette matches the portfolio exactly: graphite near-black surfaces and
-one electric-blue accent.
-SVGs use system fonts only, because GitHub serves them as images and blocks
-external font loading.
-"""
-
-from __future__ import annotations
-
-import hashlib
-from datetime import date
-from html import escape
-from pathlib import Path
-
-OUT = Path(__file__).resolve().parents[1] / "assets"
-
-BG = "#000000"
-PANEL = "#0B0B0D"
-LINE = "#4A4A55"
-TEXT = "#F7F8FA"
-MUTED = "#777982"
-ACCENT = "#FFFFFF"
-BLUE = MUTED
-BLUE_SOFT = TEXT
-AMBER = ACCENT
-GREEN = ACCENT
-
-SANS = "'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif"
-MONO = "'IBM Plex Mono', ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, monospace"
-
-
-# A README SVG renders as an image, so it cannot fetch a webfont from
-# anywhere: naming IBM Plex only works for readers who happen to have it
-# installed, and everyone else silently gets a different typeface from the
-# site. Inlining the woff2 as a data URI is the one way the two actually
-# match, because a data URI is not an external fetch.
-import base64
-from functools import lru_cache
-
-FONT_DIR = Path(__file__).resolve().parent / "fonts"
-_FACES = [
-    ("IBM Plex Sans", 400, "ibm-plex-sans-latin-400-subset.woff2"),
-    ("IBM Plex Sans", 600, "ibm-plex-sans-latin-600-subset.woff2"),
-    ("IBM Plex Mono", 400, "ibm-plex-mono-latin-400-subset.woff2"),
-    ("IBM Plex Mono", 600, "ibm-plex-mono-latin-600-subset.woff2"),
-]
-
-
-@lru_cache(maxsize=8)
-def font_faces(families: tuple) -> str:
-    """@font-face rules for just the families this drawing uses."""
-    out = []
-    for family, weight, fname in _FACES:
-        if family not in families:
-            continue
-        path = FONT_DIR / fname
-        if not path.exists():
-            continue
-        b64 = base64.b64encode(path.read_bytes()).decode("ascii")
-        out.append(
-            f"@font-face{{font-family:'{family}';font-weight:{weight};font-style:normal;"
-            f"font-display:block;src:url(data:font/woff2;base64,{b64}) format('woff2');}}"
-        )
-    return "".join(out)
-
-
-
-def write(name: str, svg: str) -> None:
-    svg = svg.strip()
-    used = tuple(f for f in ("IBM Plex Sans", "IBM Plex Mono") if f in svg)
-    faces = font_faces(used)
-    if faces and "<style>" in svg:
-        svg = svg.replace("<style>", "<style>" + faces, 1)
-    (OUT / name).parent.mkdir(parents=True, exist_ok=True)
-    (OUT / name).write_text(svg + "\n", encoding="utf-8", newline="\n")
-    print(f"wrote assets/{name}")
-
-
-def gradient_defs(uid: str) -> str:
-    """Flat frame paints: a hairline border and no glow."""
-    return f"""
-  <defs>
-    <linearGradient id="{uid}-edge"><stop offset="0" stop-color="{LINE}"/></linearGradient>
-    <linearGradient id="{uid}-glow"><stop offset="0" stop-color="{BG}" stop-opacity="0"/></linearGradient>
-  </defs>"""
-
-
-# --------------------------------------------------------------------------
-# Terminal card
-# --------------------------------------------------------------------------
-
-TERMINAL = [
-    ("cmd", "whoami"),
-    ("out", "Muhammad Hammad · IT Infrastructure Engineer · Göttingen, Germany"),
-    ("cmd", "cat focus.txt"),
-    ("out", "Cloud infrastructure (Azure / AWS) · DevOps & automation"),
-    ("out", "Network engineering · Systems administration · Security"),
-    ("cmd", "cat principles.md"),
-    ("out", "Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook"),
-    ("cmd", "ls ~/now"),
-    ("now", "it-engineer@kontinental   msc-data-science@uni-goettingen   open-to-roles: worldwide"),
-]
-
-
-def terminal() -> None:
-    width, line_h, top = 900, 24, 62
-    height = top + line_h * len(TERMINAL) + 34
-    rows = []
-    for i, (kind, text) in enumerate(TERMINAL):
-        y = top + i * line_h
-        delay = 0.35 + i * 0.45
-        if kind == "cmd":
-            body = (
-                f'<tspan fill="{ACCENT}">$ </tspan>'
-                f'<tspan fill="{TEXT}">{escape(text)}</tspan>'
-            )
-        elif kind == "now":
-            body = f'<tspan fill="{AMBER}">{escape(text)}</tspan>'
-        else:
-            body = f'<tspan fill="{MUTED}">{escape(text)}</tspan>'
-        rows.append(
-            f'<text class="l" x="28" y="{y}">{body}</text>'
-        )
-    cursor_y = top + line_h * len(TERMINAL)
-    cursor_delay = 0.35 + len(TERMINAL) * 0.45
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="whoami: Muhammad Hammad, IT Infrastructure Engineer">
-  <title>whoami</title>
-  {gradient_defs("t")}
-  <style>
-    text {{ font-family: {MONO}; font-size: 14px; }}
-  </style>
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="url(#t-edge)"/>
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="url(#t-glow)"/>
-  <rect x="24" y="19" width="8" height="8" rx="1" fill="{ACCENT}"/>
-  <text x="40" y="28" fill="{MUTED}" style="font-size:12px">~/muhammad-hammad</text>
-  <text x="{width - 24}" y="28" text-anchor="end" fill="{MUTED}" style="font-size:12px">bash</text>
-  <line x1="1" y1="44" x2="{width - 1}" y2="44" stroke="{LINE}"/>
-  {"".join(rows)}
-  <text class="cur" x="28" y="{cursor_y}"><tspan fill="{ACCENT}">$ </tspan><tspan fill="{TEXT}">▌</tspan></text>
-</svg>"""
-    write("terminal.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Project cards
-# --------------------------------------------------------------------------
-
-PROJECTS = [
-    {
-        "slug": "aws-terraform-platform",
-        "kind": "PLATFORM · DEVSECOPS",
-        "title": "aws-terraform-platform",
-        "lines": [
-            "Self-healing AWS in Terraform across two AZs.",
-            "Keyless OIDC CI/CD, KMS, GuardDuty, CloudTrail.",
-        ],
-        "flow": ["git push", "OIDC", "terraform", "AWS · 2 AZ"],
-        "stack": ["Terraform", "AWS", "GitHub Actions", "Checkov"],
-        "proof": "15 tests · 0 failed checks",
-    },
-    {
-        "slug": "Infotech-Wizard",
-        "kind": "AIOPS · RAG",
-        "title": "Infotech-Wizard",
-        "lines": [
-            "Private GenAI helpdesk: retrieval over 3,531",
-            "resolved tickets in 5 languages, local LLM.",
-        ],
-        "flow": ["ticket", "embed", "FAISS", "local LLM", "answer"],
-        "stack": ["FastAPI", "FAISS", "PyTorch", "React"],
-        "proof": "3,531 tickets · 5 languages",
-    },
-    {
-        "slug": "pfSense-Firewall-Lab",
-        "kind": "NETWORK SECURITY",
-        "title": "pfSense-Firewall-Lab",
-        "lines": [
-            "Firewall policy as code, rendered to pfSense XML",
-            "and audited for risky rules before deployment.",
-        ],
-        "flow": ["policy.toml", "render", "audit", "pfSense"],
-        "stack": ["pfSense", "Python", "OpenVPN", "CI"],
-        "proof": "22 tests · 0 findings",
-    },
-    {
-        "slug": "nova2labs",
-        "kind": "FULL-STACK · CLOUD",
-        "title": "nova2labs",
-        "lines": [
-            "AI and cloud engineering studio: server-rendered",
-            "React, generative artwork, SMTP lead pipeline.",
-        ],
-        "flow": ["visitor", "SSR", "Vercel edge", "SMTP", "inbox"],
-        "stack": ["React 19", "TanStack Start", "SSR", "Vercel"],
-        "proof": "live · nova2labs.com",
-    },
-    {
-        "slug": "velqatechnologies",
-        "kind": "WEB · EDGE",
-        "title": "velqatechnologies",
-        "lines": [
-            "Company website for a BPO firm: 33 statically",
-            "exported routes served from the edge.",
-        ],
-        "flow": ["next build", "33 routes", "edge CDN", "visitor"],
-        "stack": ["Next.js", "TypeScript", "Tailwind"],
-        "proof": "live · CI",
-    },
-    {
-        "slug": "nnapprox",
-        "kind": "AI RESEARCH",
-        "title": "nnapprox",
-        "lines": [
-            "Deep ReLU network approximation: closed-form",
-            "constructions against greedy growing axons.",
-        ],
-        "flow": None,  # drawn as a curve and its ReLU approximation
-        "stack": ["PyTorch", "NumPy", "Python"],
-        "proof": "33 tests · O(n⁻²)",
-    },
-]
-
-
-def chip_width(label: str) -> int:
-    return int(len(label) * 7.1) + 20
-
-
-def card_defs(uid: str) -> str:
-    return f"""
-  <defs>
-    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
-    <radialGradient id="{uid}-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".08"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-    <filter id="{uid}-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>"""
-
-
-def flow_diagram(uid: str, nodes: list[str], cy: int, x0: int, x1: int) -> str:
-    """A pipeline of boxes with a packet travelling through them."""
-    widths = [len(t) * 6.5 + 18 for t in nodes]
-    gap = (x1 - x0 - sum(widths)) / (len(nodes) - 1)
-    xs, x = [], float(x0)
-    for wd in widths:
-        xs.append(x)
-        x += wd + gap
-    first, last = xs[0] + widths[0] / 2, xs[-1] + widths[-1] / 2
-    out = [f'<line x1="{first:.1f}" y1="{cy}" x2="{last:.1f}" y2="{cy}" stroke="{MUTED}" stroke-opacity=".55" stroke-width="1.5"/>']
-    for i, (t, bx, wd) in enumerate(zip(nodes, xs, widths)):
-        end = i == len(nodes) - 1
-        stroke = ACCENT if end else LINE
-        fill_t = ACCENT if end else TEXT
-        out.append(
-            f'<g class="node">'
-            f'<rect x="{bx:.1f}" y="{cy - 13}" width="{wd:.1f}" height="26" rx="6" fill="{BG}" stroke="{stroke}"/>'
-            f'<text x="{bx + wd / 2:.1f}" y="{cy + 4}" text-anchor="middle" class="nd" fill="{fill_t}">{escape(t)}</text></g>'
-        )
-    return "".join(out)
-
-
-def relu_diagram(uid: str, cy: int, x0: int, x1: int) -> str:
-    """A smooth target function and the piecewise-linear ReLU net that approximates it."""
-    import math
-
-    top, bot = cy - 20, cy + 20
-
-    def f(t: float) -> float:
-        return 0.5 + 0.32 * math.sin(2 * math.pi * 1.15 * t + 0.4) + 0.12 * math.sin(2 * math.pi * 3 * t)
-
-    def pt(t: float) -> tuple[float, float]:
-        return x0 + t * (x1 - x0 - 70), bot - f(t) * (bot - top)
-
-    smooth = " ".join(f"{'M' if i == 0 else 'L'}{pt(i / 80)[0]:.1f},{pt(i / 80)[1]:.1f}" for i in range(81))
-    knots = [pt(i / 8) for i in range(9)]
-    relu = " ".join(f"{'M' if i == 0 else 'L'}{x:.1f},{y:.1f}" for i, (x, y) in enumerate(knots))
-    dots = "".join(
-        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="{BG}" stroke="{ACCENT}" stroke-width="1.5" class="node"/>'
-        for i, (x, y) in enumerate(knots)
-    )
-    return (
-        f'<path d="{smooth}" fill="none" stroke="{MUTED}" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="2 3"/>'
-        f'<path d="{relu}" fill="none" stroke="{ACCENT}" stroke-width="2" pathLength="100" class="drawn" filter="url(#{uid}-glow)"/>'
-        f"{dots}"
-        f'<text x="{x1}" y="{cy - 6}" text-anchor="end" class="nd" fill="{MUTED}">f(x)</text>'
-        f'<text x="{x1}" y="{cy + 12}" text-anchor="end" class="nd" fill="{ACCENT}">ReLU net</text>'
-    )
-
-
-def card(p: dict) -> None:
-    w, h = 430, 236
-    uid = p["slug"].lower()
-    chips, x = [], 22
-    for i, s in enumerate(p["stack"]):
-        cw = chip_width(s)
-        chips.append(
-            f'<g class="chipg">'
-            f'<rect x="{x}" y="194" width="{cw}" height="24" rx="12" fill="{PANEL}" stroke="{LINE}"/>'
-            f'<text x="{x + cw / 2}" y="210" text-anchor="middle" class="chip">{escape(s)}</text></g>'
-        )
-        x += cw + 8
-    desc = "".join(
-        f'<text x="22" y="{88 + i * 19}" class="d">{escape(line)}</text>' for i, line in enumerate(p["lines"])
-    )
-    band_y, cy = 124, 153
-    diagram = flow_diagram(uid, p["flow"], cy, 34, w - 34) if p["flow"] else relu_diagram(uid, cy, 34, w - 34)
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(p['title'])}">
-  <title>{escape(p['title'])}</title>
-  {card_defs(uid)}
-  <style>
-    text {{ font-family: {SANS}; }}
-    .k, .t, .chip, .p, .nd {{ font-family: {MONO}; }}
-    .k {{ font-size: 10.5px; letter-spacing: 1.4px; fill: {MUTED}; }}
-    .t {{ font-size: 20px; fill: {TEXT}; font-weight: 700; }}
-    .d {{ font-size: 12.5px; fill: {MUTED}; }}
-    .chip {{ font-size: 11px; fill: {TEXT}; }}
-    .p {{ font-size: 11px; fill: {ACCENT}; }}
-    .nd {{ font-size: 10.5px; }}
-  </style>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="{BG}" stroke="{LINE}"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-dots)"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-halo)"/>
-  <circle cx="26" cy="28" r="3.5" fill="{ACCENT}" class="led"/>
-  <text x="38" y="32" class="k">{escape(p['kind'])}</text>
-  <text x="{w - 22}" y="32" text-anchor="end" class="p">{escape(p['proof'])}</text>
-  <text x="22" y="64" class="t">{escape(p['title'])}</text>
-  {desc}
-  <rect x="16" y="{band_y}" width="{w - 32}" height="58" rx="9" fill="{PANEL}" fill-opacity=".55" stroke="{LINE}" stroke-dasharray="2 4"/>
-  {diagram}
-  {"".join(chips)}
-</svg>"""
-    write(f"projects/{p['slug']}.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Impact panel
-# --------------------------------------------------------------------------
-
-IMPACT = [
-    ("25 h/wk", ["onboarding, provisioning", "and patching automated"], "TESTSOLUTIONS"),
-    ("−75%", ["device setup time on", "180+ endpoints, 12 sites"], "TESTSOLUTIONS"),
-    ("4h→35m", ["ML infrastructure", "deploys through CI/CD"], "UNI GÖTTINGEN"),
-    ("−85%", ["vulnerabilities, through", "automated scan gates"], "UNI GÖTTINGEN"),
-    ("265+", ["government endpoints at", "100% patch compliance"], "KTDMC"),
-]
-
-
-def impact() -> None:
-    w, top, th, gap = 900, 64, 126, 10
-    h = top + th + 24
-    tw = (w - 56 - gap * (len(IMPACT) - 1)) / len(IMPACT)
-    tiles = []
-    for i, (metric, lines, where) in enumerate(IMPACT):
-        x = 28 + i * (tw + gap)
-        d = 0.2 + i * 0.13
-        body = "".join(
-            f'<text x="{x + 14:.1f}" y="{top + 70 + j * 16}" class="lb">{escape(line)}</text>' for j, line in enumerate(lines)
-        )
-        tiles.append(
-            f'<g class="tile">'
-            f'<rect x="{x:.1f}" y="{top}" width="{tw:.1f}" height="{th}" rx="10" fill="{PANEL}" fill-opacity=".7" stroke="{LINE}"/>'
-            f'<rect x="{x + 14:.1f}" y="{top}" width="{tw - 28:.1f}" height="2" fill="{ACCENT}" class="bar"/>'
-            f'<text x="{x + 14:.1f}" y="{top + 44}" class="m">{escape(metric)}</text>'
-            f"{body}"
-            f'<text x="{x + 14:.1f}" y="{top + th - 14}" class="wh">{escape(where)}</text></g>'
-        )
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Selected impact">
-  <title>Selected impact</title>
-  <defs>
-    <pattern id="i-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
-    <radialGradient id="i-halo" cx="0.5" cy="0" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".07"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-  </defs>
-  <style>
-    text {{ font-family: {SANS}; }}
-    .cmd, .m, .wh, .meta {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {TEXT}; }}
-    .meta {{ font-size: 11px; fill: {MUTED}; }}
-    .m {{ font-size: 25px; font-weight: 700; fill: {ACCENT}; }}
-    .lb {{ font-size: 11.5px; fill: {TEXT}; opacity: .85; }}
-    .wh {{ font-size: 9.5px; letter-spacing: 1.3px; fill: {MUTED}; }}
-  </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-dots)"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-halo)"/>
-  <text x="28" y="38" class="cmd"><tspan fill="{ACCENT}">~/impact</tspan><tspan fill="{MUTED}"> $ </tspan>cat outcomes.log</text>
-  <rect x="{28 + 27 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 30}" y="38" text-anchor="end" class="meta">measured in production</text>
-  {"".join(tiles)}
-</svg>"""
-    write("impact.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Certifications
-# --------------------------------------------------------------------------
-
-OU = "https://www.open.edu/openlearn/"
-UDEMY = "https://www.udemy.com/certificate/"
-COURSERA = "https://www.coursera.org/account/accomplishments/verify/"
-
-# Featured credentials, grouped into tracks. (name, issuer, mark, year, hours, link, link label)
-TRACKS = [
-    ("infrastructure · networking · security", [
-        ("System Administration and IT Infrastructure Services", "Google · Coursera", "G", 2025, "23 h", COURSERA + "29N5ZLK6BVWW", "verify"),
-        ("Discovering Computer Networks: hands-on in the Open Networking Lab", "The Open University", "OU", 2023, "24 h",
-         OU + "digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview", "course"),
-        ("Information Security Basics for IT Support Technicians", "Udemy", "U", 2022, "", UDEMY + "UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/", "verify"),
-        ("Successful IT Systems", "The Open University", "OU", 2023, "", OU + "digital-computing/successful-it-systems/content-section-0", "course"),
-    ]),
-    ("software engineering", [
-        ("Full Stack Software Developer Assessment", "IBM · Coursera", "IBM", 2023, "", COURSERA + "74NSF2JALFZV", "verify"),
-        ("The Complete React, Redux, Node, Express and MySQL Developer Course", "Udemy", "U", 2022, "8 h", UDEMY + "UC-0b67e267-2b09-40d7-a980-d2f5b62876fe/", "verify"),
-        ("The Database Development Life Cycle", "The Open University", "OU", 2023, "12 h", OU + "digital-computing/the-database-development-life-cycle/content-section-0", "course"),
-        ("SQL: The Complete Introduction to SQL Programming", "Udemy", "U", 2022, "3.5 h", UDEMY + "UC-be70fe74-aa67-4e6c-afad-5cacc8d371ae/", "verify"),
-    ]),
-    ("data · machine learning · ai", [
-        ("The Data Science Course: Complete Data Science Bootcamp", "Udemy", "U", 2022, "30 h", UDEMY + "UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/", "verify"),
-        ("Python for Machine Learning with NumPy, Pandas and Matplotlib", "Udemy", "U", 2022, "7 h", UDEMY + "UC-b6509a21-528b-43bf-b0ae-f7458612d212/", "verify"),
-        ("Python: Introduction to Data Science and Machine Learning A–Z", "Udemy", "U", 2022, "7.5 h", UDEMY + "UC-4c5d2d2a-dade-4cee-a7c4-0fd2ad689c90/", "verify"),
-        ("Exploring Data: Graphs and Numerical Summaries", "The Open University", "OU", 2023, "20 h",
-         OU + "science-maths-technology/mathematics-statistics/exploring-data-graphs-and-numerical-summaries/content-section-0", "course"),
-    ]),
-]
-TOTAL_CREDENTIALS = 29
-MORE = "Java · C++ · PHP · R · HTML & CSS · Android · big data · Python ×2 · AI & the future of work · mathematics · modelling"
-
-
-def _wrap(text: str, limit: int) -> list[str]:
-    lines, cur = [], ""
-    for word in text.split():
-        if cur and len(cur) + 1 + len(word) > limit:
-            lines.append(cur)
-            cur = word
-        else:
-            cur = f"{cur} {word}".strip()
-    lines.append(cur)
-    return lines
-
-
-def _hexagon(cx: float, cy: float, r: float) -> str:
-    import math
-
-    return " ".join(
-        f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
-    )
-
-
-_CERT_STYLE = f"""
-  <style>
-    text {{ font-family: {SANS}; }}
-    .m, .cmd, .meta, .tag, .tr, .mk {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {TEXT}; }}
-    .meta {{ font-size: 11px; fill: {MUTED}; }}
-    .nm {{ font-size: 13px; font-weight: 600; fill: {TEXT}; }}
-    .is {{ font-size: 11px; fill: {MUTED}; }}
-    .mk {{ font-size: 10px; font-weight: 700; fill: {ACCENT}; }}
-    .tag {{ font-size: 10px; fill: {MUTED}; }}
-    .tr {{ font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
-  </style>"""
-
-
-def _cert_frame(w: int, h: int, uid: str) -> str:
-    return f"""
-  <defs>
-    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
-    <radialGradient id="{uid}-halo" cx="0" cy="0" r="0.9"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".06"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-  </defs>{_CERT_STYLE}
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="{BG}" stroke="{LINE}"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-dots)"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-halo)"/>"""
-
-
-def certs() -> None:
-    """Header, track labels and one small card per credential, laid out as a table in the README."""
-    shown = sum(len(items) for _, items in TRACKS)
-
-    w, h = 900, 60
-    write("certifications/header.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
-  <title>Certifications</title>{_cert_frame(w, h, "hd")}
-  <text x="26" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>ls --featured</text>
-  <rect x="{26 + 24 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 26}" y="35" text-anchor="end" class="meta">{TOTAL_CREDENTIALS} credentials · Google · IBM · Open University · Udemy · 6 shown</text>
-</svg>""")
-
-    for t, (track, items) in enumerate(TRACKS, 1):
-        w, h = 880, 40
-        write(f"certifications/track-{t}.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(track)}">
-  <title>{escape(track)}</title>{_cert_frame(w, h, f"tr{t}")}
-  <text x="20" y="25" class="tr in"><tspan fill="{ACCENT}">{t:02d}</tspan>  {escape(track.upper())}</text>
-  <line x1="{20 + (len(track) + 4) * 8.3:.0f}" y1="21" x2="{w - 150}" y2="21" stroke="{LINE}"/>
-  <text x="{w - 20}" y="25" text-anchor="end" class="tr">{len(items)} credentials</text>
-</svg>""")
-
-        for k, (name, issuer, mark, year, hours, _link, label) in enumerate(items, 1):
-            w, h = 430, 92
-            uid = f"t{t}c{k}"
-            d = 0.1 + (k - 1) * 0.1
-            lines = _wrap(name, 46)[:2]
-            meta = " · ".join(x for x in (issuer, str(year), hours) if x)
-            title = "".join(f'<text x="24" y="{34 + j * 18}" class="nm">{escape(line)}</text>' for j, line in enumerate(lines))
-            tag_w = len(label) * 6.2 + 34
-            write(f"certifications/{t}-{k}.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
-  <title>{escape(name)}</title>{_cert_frame(w, h, uid)}
-  <g class="hx">
-    <rect x="0" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
-  </g>
-  <g class="in">
-    {title}
-    <text x="24" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
-  </g>
-  <rect x="{w - 16 - tag_w:.1f}" y="{h - 30}" width="{tag_w:.1f}" height="20" rx="10" fill="none" stroke="{LINE}"/>
-  <text x="{w - 16 - tag_w / 2:.1f}" y="{h - 16}" text-anchor="middle" class="tag">{label} ↗</text>
-</svg>""")
-
-    w, h = 880, 46
-    write("certifications/more.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="More courses">
-  <title>More courses</title>{_cert_frame(w, h, "mo")}
-  <text x="26" y="28" class="meta"><tspan fill="{ACCENT}">+ {TOTAL_CREDENTIALS - shown} more</tspan>   {escape(MORE)}</text>
-</svg>""")
-
-
-# --------------------------------------------------------------------------
-# Career timeline
-# --------------------------------------------------------------------------
-
-# The career is drawn as `git log --graph`: every role is a commit on main,
-# growing upwards from the first job, and the M.Sc. is a branch that forks
-# at the university internship and merges back in.
-
-# (role, organisation, tag, years shown, start, end or None for current)
-# Newest first. Dates are year + (month - 1) / 12 and only size the uptime bars.
-# Roles only, newest first; education is listed separately below so the
-# employment sequence reads straight down without a degree interrupting it.
-# (role, organisation, tag, years shown, start, end or None for current)
-CAREER = [
-    # (role, organisation, location, type, dates shown, start, end or None)
-    ("IT Engineer", "Kontinental Establishment", "Germany / US · hybrid", "Full-time", "Jan 2025 — now", 2025.0, None),
-    ("IT Engineer", "TestSolutions GmbH", "Frankfurt, Germany · hybrid", "Contract", "Feb 2023 — Dec 2024", 2023.08, 2024.92),
-    ("DevOps Engineer", "University of Göttingen", "Göttingen, Germany", "Internship", "Apr 2024 — Sep 2024", 2024.25, 2024.75),
-    ("IT Specialist", "Liberty Books", "Karachi, Pakistan", "Full-time", "Jun 2022 — Oct 2022", 2022.42, 2022.75),
-    ("IT Specialist", "KTDMC", "Karachi, Pakistan", "Full-time", "Oct 2021 — May 2022", 2021.75, 2022.33),
-    ("IT Specialist", "Target Logistics International", "Karachi, Pakistan", "Full-time", "Jul 2020 — Sep 2021", 2020.5, 2021.67),
-    ("IT Engineer", "The Active Solutions", "Karachi, Pakistan", "Full-time", "Apr 2019 — Mar 2020", 2019.25, 2020.17),
-]
-CAREER.sort(key=lambda r: (r[6] is None, r[5]), reverse=True)
-
-# (degree, institution, years)
-EDUCATION = [
-    ("M.Sc. Data Science & Computer Science", "University of Göttingen, Germany", "2023 — 2026"),
-    ("B.Sc. Computer Science", "University of Karachi, Pakistan", "2016 — 2018"),
-]
-
-
-def timeline() -> None:
-    """Career drawn the way the portfolio draws it: a quiet rail, the year on
-    the left, one dot per role. No git-log chrome, no glow."""
-    w, row_h, top = 900, 62, 96
-    n = len(CAREER)
-    edu_h = 30 + len(EDUCATION) * 38
-    h = top + row_h * (n - 1) + 70 + edu_h + 46
-    rail_x, year_x, text_x = 112, 92, 140
-    today = date.today()
-    now = today.year + (today.month - 1) / 12
-    longest = max((e or now) - s for *_, s, e in CAREER)
-    step = 0.06
-
-    def y(i: int) -> int:
-        return top + i * row_h
-
-    rows = []
-    for i, (role, org, loc, kind, years, s, e) in enumerate(CAREER):
-        yc = y(i)
-        d = 0.15 + i * step
-        head = i == 0
-
-        node = (
-            f'<circle cx="{rail_x}" cy="{yc}" r="4.5" fill="{ACCENT if head else BG}" '
-            f'stroke="{ACCENT if head else LINE}" stroke-width="2"/>'
-        )
-
-        cx0 = text_x + len(role) * 7.4 + 14
-        cw = len(kind) * 6.3 + 18
-        chips = (
-            f'<rect x="{cx0:.1f}" y="{yc - 17}" width="{cw:.1f}" height="18" rx="9" '
-            f'fill="none" stroke="{ACCENT if head else LINE}"/>'
-            f'<text x="{cx0 + cw / 2:.1f}" y="{yc - 4}" text-anchor="middle" class="chip" '
-            f'fill="{ACCENT if head else MUTED}">{escape(kind)}</text>'
-        )
-        months = round(((e or now) - s) * 12)
-        dur = f"{months // 12} yr {months % 12} mo" if months >= 12 else f"{months} mo"
-        dur = dur.replace(" 0 mo", "")
-
-        span = (e or now) - s
-
-        rows.append(
-            f'<g class="r">'
-            f'<text x="{year_x}" y="{yc + 4}" text-anchor="end" class="yrs" '
-            f'fill="{ACCENT if head else MUTED}">{years.split(" — ")[0]}</text>'
-            f'<text x="{text_x}" y="{yc - 3}" class="role">{escape(role)}</text>{chips}'
-            f'<text x="{text_x}" y="{yc + 14}" class="org">{escape(org)} · {escape(loc)}</text>'
-            f'<text x="{w - 30}" y="{yc - 3}" text-anchor="end" class="yrs" '
-            f'fill="{TEXT if head else MUTED}">{years}</text>'
-            f'<text x="{w - 30}" y="{yc + 14}" text-anchor="end" class="org">{dur}</text>'
-            f'</g>{node}'
-        )
-
-    edu_y = y(n - 1) + 62
-    edu_rows = "".join(
-        f'<text x="{text_x}" y="{edu_y + 20 + j * 38}" class="role" font-size="13.5">{escape(deg)}</text>'
-        f'<text x="{text_x}" y="{edu_y + 37 + j * 38}" class="org">{escape(inst)}</text>'
-        f'<text x="{w - 30}" y="{edu_y + 20 + j * 38}" text-anchor="end" class="yrs" fill="{MUTED}">{yrs}</text>'
-        f'<circle cx="{rail_x}" cy="{edu_y + 16 + j * 38}" r="3.5" fill="{BG}" stroke="{LINE}" stroke-width="2"/>'
-        for j, (deg, inst, yrs) in enumerate(EDUCATION)
-    )
-    fy = h - 30
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Career, newest first">
-  <title>Career</title>
-  <style>
-    text {{ font-family: {SANS}; }}
-    .chip, .yrs, .lbl, .foot {{ font-family: {MONO}; }}
-    .lbl {{ font-size: 12px; fill: {ACCENT}; letter-spacing: 1.6px; }}
-    .role {{ font-size: 14.5px; font-weight: 600; fill: {TEXT}; }}
-    .org {{ font-size: 12px; fill: {MUTED}; }}
-    .chip {{ font-size: 10px; }}
-    .yrs {{ font-size: 11.5px; }}
-    .foot {{ font-size: 11px; fill: {MUTED}; }}
-  </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{PANEL}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
-
-
-  <text x="30" y="44" class="lbl" font-size="11">INDUSTRY EXPERIENCE</text>
-  <text x="{w - 30}" y="44" text-anchor="end" class="foot">{n} roles · since 2019 · open to roles worldwide</text>
-  <line x1="30" y1="62" x2="{w - 30}" y2="62" stroke="{LINE}"/>
-
-  <line x1="{rail_x}" y1="{y(0)}" x2="{rail_x}" y2="{y(n - 1)}" stroke="{LINE}" stroke-width="1"/>
-  {"".join(rows)}
-
-  <line x1="30" y1="{edu_y - 26}" x2="{w - 30}" y2="{edu_y - 26}" stroke="{LINE}"/>
-  <text x="30" y="{edu_y - 6}" class="lbl" font-size="11">EDUCATION</text>
-  {edu_rows}
-
-  <line x1="30" y1="{fy - 20}" x2="{w - 30}" y2="{fy - 20}" stroke="{LINE}"/>
-  <text x="30" y="{fy + 2}" class="foot">Karachi → Göttingen · 5,617 km</text>
-  <text x="{w - 30}" y="{fy + 2}" text-anchor="end" class="foot">muhammadhammad.vercel.app</text>
-</svg>"""
-
-    write("career.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Toolbox
-# --------------------------------------------------------------------------
-# Brand logos are vendored in scripts/icons: Simple Icons (CC0) as "si-*.svg",
-# Devicon (MIT) as "dev-*.svg", Microsoft's official Azure and Entra
-# architecture icons as "ms-*.svg", and a few supplied as-is. Trademarks belong
-# to their owners. The light build shows every logo exactly as published;
-# the dark build swaps near-black marks for their light, dark-mode form.
-
-ICONS = Path(__file__).resolve().parent / "icons"
-
-# (category, [(label, icon)])
-TOOLBOX = [
-    ("Cloud & virtualisation", [
-        ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "dev-googlecloud-original"),
-        ("VMware", "vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "si-docker"),
-        ("Kubernetes", "dev-kubernetes-original"), ("Terraform", "terraform"),
-    ]),
-    ("Operating systems", [
-        ("Windows", "dev-windows11-original"), ("Linux", "dev-linux-original"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "redhat"),
-        ("CentOS", "dev-centos-original"), ("macOS", "dev-apple-original"), ("iOS", "si-ios"), ("Android", "si-android"),
-    ]),
-    ("Identity & endpoints", [
-        ("Entra ID", "ms-entra-id"), ("Active Directory", "ms-active-directory"), ("Intune", "ms-intune"), ("Defender", "ms-defender"),
-        ("Jamf Pro", "jamf"), ("Okta", "okta"), ("TeamViewer", "si-teamviewer"),
-    ]),
-    ("Network & security", [
-        ("Cisco", "cisco"), ("Juniper", "si-junipernetworks"), ("Fortinet", "si-fortinet"), ("pfSense", "pfsense"),
-        ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"),
-    ]),
-    ("Automation & delivery", [
-        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "bash"), ("Ansible", "si-ansible"),
-        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "si-githubactions"), ("Git", "dev-git-original"),
-    ]),
-    ("Monitoring & backup", [
-        ("Splunk", "si-splunk"), ("Datadog", "datadog"), ("New Relic", "si-newrelic"), ("Grafana", "dev-grafana-original"),
-        ("Prometheus", "dev-prometheus-original"), ("Wireshark", "wireshark"), ("Veeam", "veeam"),
-    ]),
-    ("Service & collaboration", [
-        ("ServiceNow", "servicenow"), ("Jira", "dev-jira-original"), ("Confluence", "confluence"), ("Zendesk", "si-zendesk"),
-        ("Microsoft 365", "ms-365"), ("Google Workspace", "dev-google-original"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
-    ]),
-]
-
-# Simple Icons wordmarks sit small in their square; draw them larger.
-WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
-WIDE = {"cisco", "crowdstrike", "okta"}  # supplied logos that are wider than tall
-KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark backgrounds
-
-# Official brand colours for the single-colour Simple Icons marks.
-SI_COLOURS = {
-    "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#000000", "githubactions": "#2088FF",
-    "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": "#000000", "newrelic": "#1CE783", "veeam": "#00B336",
-    "zendesk": "#03363D", "zoom": "#0B5CFF", "docker": "#1D63ED", "android": "#34A853", "chocolatey": "#80B5E3", "yaml": "#CB171E",
-    "teamviewer": "#050A52", "ubuntu": "#E95420", "ansible": "#EE0000",
-}
-
-
-def _on_dark(hex_colour: str) -> str:
-    """Near-black brand colours become light so they read on a dark background."""
-    h = hex_colour.lstrip("#")
-    if len(h) == 3:
-        h = "".join(c * 2 for c in h)
-    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
-    return TEXT if max(r, g, b) < 0.35 else hex_colour
-
-
-def _logo(icon: str, x: float, y: float, size: float, uid: str, dark: bool) -> str:
-    """Inline one brand logo inside a size x size box at (x, y).
-
-    Light mode draws every logo exactly as published. Dark mode swaps only
-    near-black parts for their light, dark-mode form.
-    """
-    import re
-
-    raw = (ICONS / f"{icon}.svg").read_text(encoding="utf-8")
-    view = re.search(r'viewBox="([^"]+)"', raw)
-    inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", raw, flags=re.S)
-    inner = re.sub(r"<title>.*?</title>", "", inner, flags=re.S)
-    # keep ids unique when several logos share one document
-    inner = re.sub(r'id="([^"]+)"', lambda m: f'id="{uid}-{m.group(1)}"', inner)
-    inner = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{uid}-{m.group(1)})", inner)
-    inner = re.sub(r'href="#([^"]+)"', lambda m: f'href="#{uid}-{m.group(1)}"', inner)
-    colour = SI_COLOURS.get(icon[3:], "#000000") if icon.startswith("si-") else "#000000"
-    if dark and icon not in KEEP_COLOURS:
-        inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
-        colour = _on_dark(colour)
-    vb = view.group(1) if view else "0 0 24 24"
-    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}" fill="{colour}">{inner}</svg>'
-
-
-# Panel colours per GitHub theme; the logos themselves stay as published.
-THEMES = {
-    "dark": {"bg": BG, "line": LINE, "text": TEXT, "muted": MUTED, "accent": ACCENT, "prompt": ACCENT},
-    "light": {"bg": "#ffffff", "line": "#d0d7de", "text": "#1f2328", "muted": "#59636e", "accent": ACCENT, "prompt": "#4d7c0f"},
-}
-
-
-def toolbox() -> None:
-    """Two builds of the same panel; the README picks one with prefers-color-scheme."""
-    for mode, t in THEMES.items():
-        dark = mode == "dark"
-        w, top, row_h, label_w, step = 900, 72, 84, 196, 81
-        h = top + row_h * len(TOOLBOX) + 10
-        total = sum(len(items) for _, items in TOOLBOX)
-        rows = []
-        for r, (cat, items) in enumerate(TOOLBOX):
-            y = top + r * row_h
-            if r:
-                rows.append(f'<line x1="26" y1="{y - 10}" x2="{w - 26}" y2="{y - 10}" stroke="{t["line"]}" stroke-dasharray="2 5"/>')
-            rows.append(
-                f'<g class="in">'
-                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led"/>'
-                f'<text x="44" y="{y + 26}" class="cat">{escape(cat)}</text>'
-                f'<text x="44" y="{y + 44}" class="cnt">{len(items):02d} tools</text></g>'
-            )
-            for c, (label, icon) in enumerate(items):
-                cx = label_w + c * step + step / 2
-                d = 0.2 + r * 0.08 + c * 0.04
-                if icon == "servicenow":  # long wordmark
-                    size = 72
-                elif icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
-                    size = 44
-                else:
-                    size = 32
-                logo = _logo(icon, cx - size / 2, y + 20 - size / 2, size, f"{mode[0]}{r}{c}", dark)
-                labels = "".join(
-                    f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
-                    for k, part in enumerate(_wrap(label, 12))
-                )
-                rows.append(f'<g class="logo">{logo}{labels}</g>')
-        svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Toolbox">
-  <title>Toolbox</title>
-  <style>
-    text {{ font-family: {SANS}; }}
-    .cmd, .meta, .cnt, .lb {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {t["text"]}; }}
-    .meta {{ font-size: 11px; fill: {t["muted"]}; }}
-    .cat {{ font-size: 13.5px; font-weight: 600; fill: {t["text"]}; }}
-    .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
-    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
-  </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
-  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{t["accent"]}" class="cur"/>
-  <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
-  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
-  {"".join(rows)}
-</svg>"""
-        write(f"brands-{mode}.svg", svg)
-
-
-if __name__ == "__main__":
-    terminal()
-    impact()
-    for project in PROJECTS:
-        card(project)
-    certs()
-    timeline()
-    toolbox()
-
-
-# ---------------------------------------------------------------------------
-# Section headings
-# ---------------------------------------------------------------------------
-# GitHub renders markdown in its own typeface, so a `## Heading` is the one
-# place the profile stops matching the site. Drawing them keeps every visible
-# word in IBM Plex.
-
-HEADINGS = [
-    ("what-i-do", "What I do"),
-    ("environment", "The environment I run"),
-    ("toolbox", "Toolbox"),
-    ("projects", "Projects"),
-    ("toolbox", "Toolbox"),
-    ("career", "Career"),
-    ("certifications", "Certifications"),
-]
-
-
-def build_headings() -> None:
-    for slug, label in HEADINGS:
-        w, h = 900, 50
-        svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{escape(label)}">
-  <style>
-    text {{ font-family: {SANS}; }}
-    .h {{ font-size: 21px; font-weight: 600; fill: {TEXT}; letter-spacing: -0.4px; }}
-  </style>
-  <text x="0" y="30" class="h">{escape(label)}</text>
-  <line x1="0" y1="43" x2="{w}" y2="43" stroke="{LINE}"/>
-</svg>"""
-        write(f"headings/{slug}.svg", svg)
-
-
-build_headings()
-
-
-# ---------------------------------------------------------------------------
-# Prose blocks
-# ---------------------------------------------------------------------------
-# The last markdown left on the page was its running text, which GitHub sets
-# in its own face. Drawing it puts every word in Plex. Blocks whose only link
-# is a single destination are wrapped in an <a> in the README, so nothing that
-# was clickable stops being clickable.
-
-W_PROSE = 900
-
-
-def _wrap(text: str, size: float, width: int, weight: int = 400) -> list:
-    """Greedy wrap on an estimated advance width; Plex sits near 0.52 em."""
-    per = size * (0.472 if weight >= 600 else 0.445)
-    limit = max(8, int(width / per))
-    words, lines, cur = text.split(), [], ""
-    for wd in words:
-        trial = f"{cur} {wd}".strip()
-        if len(trial) <= limit:
-            cur = trial
-        else:
-            lines.append(cur)
-            cur = wd
-    if cur:
-        lines.append(cur)
-    return lines
-
-
-def prose(slug: str, blocks: list, align: str = "middle", label: str = "") -> None:
-    """blocks: [(text, size, weight, colour, gap_before)]"""
-    inner = W_PROSE - 8
-    rows, y = [], 0
-    for text, size, weight, colour, gap in blocks:
-        y += gap
-        for ln in _wrap(text, size, inner, weight):
-            y += size * 1.55
-            x = W_PROSE / 2 if align == "middle" else 0
-            rows.append(
-                f'<text x="{x:.0f}" y="{y:.0f}" text-anchor="{align}" '
-                f'font-size="{size}" font-weight="{weight}" fill="{colour}">{escape(ln)}</text>'
-            )
-    h = int(y + 10)
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W_PROSE} {h}" width="{W_PROSE}" height="{h}" role="img" aria-label="{escape(label)}">
-  <style>text {{ font-family: {SANS}; }}</style>
-  {"".join(rows)}
-</svg>"""
-    write(f"prose/{slug}.svg", svg)
-
-
-def build_prose() -> None:
-    prose(
-        "name",
-        [
-            ("Muhammad Hammad · IT Infrastructure Engineer", 25, 600, TEXT, 4),
-            ("Cloud infrastructure (Azure / AWS) · DevOps & automation · Network engineering · Systems administration", 14, 400, TEXT, 14),
-            ("Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen", 12, 400, MUTED, 6),
-        ],
-        label="Muhammad Hammad, IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS), DevOps and automation, network engineering, systems administration. Göttingen, Germany. IT engineering since 2019. M.Sc. Data Science, University of Göttingen.",
-    )
+"""Generate the SVG graphics used in the profile README.
+
+Everything is drawn from the data below, so updating a role or a project
+means editing one list and re-running:
+
+    python scripts/build_assets.py
+
+The palette matches the portfolio exactly: graphite near-black surfaces and
+one electric-blue accent.
+SVGs use system fonts only, because GitHub serves them as images and blocks
+external font loading.
+"""
+
+from __future__ import annotations
+
+import hashlib
+from datetime import date
+from html import escape
+from pathlib import Path
+
+OUT = Path(__file__).resolve().parents[1] / "assets"
+
+BG = "#000000"
+PANEL = "#0B0B0D"
+LINE = "#4A4A55"
+TEXT = "#F7F8FA"
+MUTED = "#777982"
+ACCENT = "#FFFFFF"
+BLUE = MUTED
+BLUE_SOFT = TEXT
+AMBER = ACCENT
+GREEN = ACCENT
+
+SANS = "'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif"
+MONO = "'IBM Plex Mono', ui-monospace, SFMono-Regular, 'Cascadia Mono', Consolas, monospace"
+
+
+# A README SVG renders as an image, so it cannot fetch a webfont from
+# anywhere: naming IBM Plex only works for readers who happen to have it
+# installed, and everyone else silently gets a different typeface from the
+# site. Inlining the woff2 as a data URI is the one way the two actually
+# match, because a data URI is not an external fetch.
+import base64
+from functools import lru_cache
+
+FONT_DIR = Path(__file__).resolve().parent / "fonts"
+_FACES = [
+    ("IBM Plex Sans", 400, "ibm-plex-sans-latin-400-subset.woff2"),
+    ("IBM Plex Sans", 600, "ibm-plex-sans-latin-600-subset.woff2"),
+    ("IBM Plex Mono", 400, "ibm-plex-mono-latin-400-subset.woff2"),
+    ("IBM Plex Mono", 600, "ibm-plex-mono-latin-600-subset.woff2"),
+]
+
+
+@lru_cache(maxsize=8)
+def font_faces(families: tuple) -> str:
+    """@font-face rules for just the families this drawing uses."""
+    out = []
+    for family, weight, fname in _FACES:
+        if family not in families:
+            continue
+        path = FONT_DIR / fname
+        if not path.exists():
+            continue
+        b64 = base64.b64encode(path.read_bytes()).decode("ascii")
+        out.append(
+            f"@font-face{{font-family:'{family}';font-weight:{weight};font-style:normal;"
+            f"font-display:block;src:url(data:font/woff2;base64,{b64}) format('woff2');}}"
+        )
+    return "".join(out)
+
+
+
+def write(name: str, svg: str) -> None:
+    svg = svg.strip()
+    used = tuple(f for f in ("IBM Plex Sans", "IBM Plex Mono") if f in svg)
+    faces = font_faces(used)
+    if faces and "<style>" in svg:
+        svg = svg.replace("<style>", "<style>" + faces, 1)
+    (OUT / name).parent.mkdir(parents=True, exist_ok=True)
+    (OUT / name).write_text(svg + "\n", encoding="utf-8", newline="\n")
+    print(f"wrote assets/{name}")
+
+
+def gradient_defs(uid: str) -> str:
+    """Flat frame paints: a hairline border and no glow."""
+    return f"""
+  <defs>
+    <linearGradient id="{uid}-edge"><stop offset="0" stop-color="{LINE}"/></linearGradient>
+    <linearGradient id="{uid}-glow"><stop offset="0" stop-color="{BG}" stop-opacity="0"/></linearGradient>
+  </defs>"""
+
+
+# --------------------------------------------------------------------------
+# Terminal card
+# --------------------------------------------------------------------------
+
+TERMINAL = [
+    ("cmd", "whoami"),
+    ("out", "Muhammad Hammad · IT Infrastructure Engineer · Göttingen, Germany"),
+    ("cmd", "cat focus.txt"),
+    ("out", "Cloud infrastructure (Azure / AWS) · DevOps & automation"),
+    ("out", "Network engineering · Systems administration · Security"),
+    ("cmd", "cat principles.md"),
+    ("out", "Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook"),
+    ("cmd", "ls ~/now"),
+    ("now", "it-engineer@kontinental   msc-data-science@uni-goettingen   open-to-roles: worldwide"),
+]
+
+
+def terminal() -> None:
+    width, line_h, top = 900, 24, 62
+    height = top + line_h * len(TERMINAL) + 34
+    rows = []
+    for i, (kind, text) in enumerate(TERMINAL):
+        y = top + i * line_h
+        delay = 0.35 + i * 0.45
+        if kind == "cmd":
+            body = (
+                f'<tspan fill="{ACCENT}">$ </tspan>'
+                f'<tspan fill="{TEXT}">{escape(text)}</tspan>'
+            )
+        elif kind == "now":
+            body = f'<tspan fill="{AMBER}">{escape(text)}</tspan>'
+        else:
+            body = f'<tspan fill="{MUTED}">{escape(text)}</tspan>'
+        rows.append(
+            f'<text class="l" x="28" y="{y}">{body}</text>'
+        )
+    cursor_y = top + line_h * len(TERMINAL)
+    cursor_delay = 0.35 + len(TERMINAL) * 0.45
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="whoami: Muhammad Hammad, IT Infrastructure Engineer">
+  <title>whoami</title>
+  {gradient_defs("t")}
+  <style>
+    text {{ font-family: {MONO}; font-size: 14px; }}
+  </style>
+  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="url(#t-edge)"/>
+  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="url(#t-glow)"/>
+  <rect x="24" y="19" width="8" height="8" rx="1" fill="{ACCENT}"/>
+  <text x="40" y="28" fill="{MUTED}" style="font-size:12px">~/muhammad-hammad</text>
+  <text x="{width - 24}" y="28" text-anchor="end" fill="{MUTED}" style="font-size:12px">bash</text>
+  <line x1="1" y1="44" x2="{width - 1}" y2="44" stroke="{LINE}"/>
+  {"".join(rows)}
+  <text class="cur" x="28" y="{cursor_y}"><tspan fill="{ACCENT}">$ </tspan><tspan fill="{TEXT}">▌</tspan></text>
+</svg>"""
+    write("terminal.svg", svg)
+
+
+# --------------------------------------------------------------------------
+# Project cards
+# --------------------------------------------------------------------------
+
+PROJECTS = [
+    {
+        "slug": "aws-terraform-platform",
+        "kind": "PLATFORM · DEVSECOPS",
+        "title": "aws-terraform-platform",
+        "lines": [
+            "Self-healing AWS in Terraform across two AZs.",
+            "Keyless OIDC CI/CD, KMS, GuardDuty, CloudTrail.",
+        ],
+        "flow": ["git push", "OIDC", "terraform", "AWS · 2 AZ"],
+        "stack": ["Terraform", "AWS", "GitHub Actions", "Checkov"],
+        "proof": "15 tests · 0 failed checks",
+    },
+    {
+        "slug": "Infotech-Wizard",
+        "kind": "AIOPS · RAG",
+        "title": "Infotech-Wizard",
+        "lines": [
+            "Private GenAI helpdesk: retrieval over 3,531",
+            "resolved tickets in 5 languages, local LLM.",
+        ],
+        "flow": ["ticket", "embed", "FAISS", "local LLM", "answer"],
+        "stack": ["FastAPI", "FAISS", "PyTorch", "React"],
+        "proof": "3,531 tickets · 5 languages",
+    },
+    {
+        "slug": "pfSense-Firewall-Lab",
+        "kind": "NETWORK SECURITY",
+        "title": "pfSense-Firewall-Lab",
+        "lines": [
+            "Firewall policy as code, rendered to pfSense XML",
+            "and audited for risky rules before deployment.",
+        ],
+        "flow": ["policy.toml", "render", "audit", "pfSense"],
+        "stack": ["pfSense", "Python", "OpenVPN", "CI"],
+        "proof": "22 tests · 0 findings",
+    },
+    {
+        "slug": "nova2labs",
+        "kind": "FULL-STACK · CLOUD",
+        "title": "nova2labs",
+        "lines": [
+            "AI and cloud engineering studio: server-rendered",
+            "React, generative artwork, SMTP lead pipeline.",
+        ],
+        "flow": ["visitor", "SSR", "Vercel edge", "SMTP", "inbox"],
+        "stack": ["React 19", "TanStack Start", "SSR", "Vercel"],
+        "proof": "live · nova2labs.com",
+    },
+    {
+        "slug": "velqatechnologies",
+        "kind": "WEB · EDGE",
+        "title": "velqatechnologies",
+        "lines": [
+            "Company website for a BPO firm: 33 statically",
+            "exported routes served from the edge.",
+        ],
+        "flow": ["next build", "33 routes", "edge CDN", "visitor"],
+        "stack": ["Next.js", "TypeScript", "Tailwind"],
+        "proof": "live · CI",
+    },
+    {
+        "slug": "nnapprox",
+        "kind": "AI RESEARCH",
+        "title": "nnapprox",
+        "lines": [
+            "Deep ReLU network approximation: closed-form",
+            "constructions against greedy growing axons.",
+        ],
+        "flow": None,  # drawn as a curve and its ReLU approximation
+        "stack": ["PyTorch", "NumPy", "Python"],
+        "proof": "33 tests · O(n⁻²)",
+    },
+]
+
+
+def chip_width(label: str) -> int:
+    return int(len(label) * 7.1) + 20
+
+
+def card_defs(uid: str) -> str:
+    return f"""
+  <defs>
+    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
+    <radialGradient id="{uid}-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".08"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+    <filter id="{uid}-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>"""
+
+
+def flow_diagram(uid: str, nodes: list[str], cy: int, x0: int, x1: int) -> str:
+    """A pipeline of boxes with a packet travelling through them."""
+    widths = [len(t) * 6.5 + 18 for t in nodes]
+    gap = (x1 - x0 - sum(widths)) / (len(nodes) - 1)
+    xs, x = [], float(x0)
+    for wd in widths:
+        xs.append(x)
+        x += wd + gap
+    first, last = xs[0] + widths[0] / 2, xs[-1] + widths[-1] / 2
+    out = [f'<line x1="{first:.1f}" y1="{cy}" x2="{last:.1f}" y2="{cy}" stroke="{MUTED}" stroke-opacity=".55" stroke-width="1.5"/>']
+    for i, (t, bx, wd) in enumerate(zip(nodes, xs, widths)):
+        end = i == len(nodes) - 1
+        stroke = ACCENT if end else LINE
+        fill_t = ACCENT if end else TEXT
+        out.append(
+            f'<g class="node">'
+            f'<rect x="{bx:.1f}" y="{cy - 13}" width="{wd:.1f}" height="26" rx="6" fill="{BG}" stroke="{stroke}"/>'
+            f'<text x="{bx + wd / 2:.1f}" y="{cy + 4}" text-anchor="middle" class="nd" fill="{fill_t}">{escape(t)}</text></g>'
+        )
+    return "".join(out)
+
+
+def relu_diagram(uid: str, cy: int, x0: int, x1: int) -> str:
+    """A smooth target function and the piecewise-linear ReLU net that approximates it."""
+    import math
+
+    top, bot = cy - 20, cy + 20
+
+    def f(t: float) -> float:
+        return 0.5 + 0.32 * math.sin(2 * math.pi * 1.15 * t + 0.4) + 0.12 * math.sin(2 * math.pi * 3 * t)
+
+    def pt(t: float) -> tuple[float, float]:
+        return x0 + t * (x1 - x0 - 70), bot - f(t) * (bot - top)
+
+    smooth = " ".join(f"{'M' if i == 0 else 'L'}{pt(i / 80)[0]:.1f},{pt(i / 80)[1]:.1f}" for i in range(81))
+    knots = [pt(i / 8) for i in range(9)]
+    relu = " ".join(f"{'M' if i == 0 else 'L'}{x:.1f},{y:.1f}" for i, (x, y) in enumerate(knots))
+    dots = "".join(
+        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="{BG}" stroke="{ACCENT}" stroke-width="1.5" class="node"/>'
+        for i, (x, y) in enumerate(knots)
+    )
+    return (
+        f'<path d="{smooth}" fill="none" stroke="{MUTED}" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="2 3"/>'
+        f'<path d="{relu}" fill="none" stroke="{ACCENT}" stroke-width="2" pathLength="100" class="drawn" filter="url(#{uid}-glow)"/>'
+        f"{dots}"
+        f'<text x="{x1}" y="{cy - 6}" text-anchor="end" class="nd" fill="{MUTED}">f(x)</text>'
+        f'<text x="{x1}" y="{cy + 12}" text-anchor="end" class="nd" fill="{ACCENT}">ReLU net</text>'
+    )
+
+
+def card(p: dict) -> None:
+    w, h = 430, 236
+    uid = p["slug"].lower()
+    chips, x = [], 22
+    for i, s in enumerate(p["stack"]):
+        cw = chip_width(s)
+        chips.append(
+            f'<g class="chipg">'
+            f'<rect x="{x}" y="194" width="{cw}" height="24" rx="12" fill="{PANEL}" stroke="{LINE}"/>'
+            f'<text x="{x + cw / 2}" y="210" text-anchor="middle" class="chip">{escape(s)}</text></g>'
+        )
+        x += cw + 8
+    desc = "".join(
+        f'<text x="22" y="{88 + i * 19}" class="d">{escape(line)}</text>' for i, line in enumerate(p["lines"])
+    )
+    band_y, cy = 124, 153
+    diagram = flow_diagram(uid, p["flow"], cy, 34, w - 34) if p["flow"] else relu_diagram(uid, cy, 34, w - 34)
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(p['title'])}">
+  <title>{escape(p['title'])}</title>
+  {card_defs(uid)}
+  <style>
+    text {{ font-family: {SANS}; }}
+    .k, .t, .chip, .p, .nd {{ font-family: {MONO}; }}
+    .k {{ font-size: 10.5px; letter-spacing: 1.4px; fill: {MUTED}; }}
+    .t {{ font-size: 20px; fill: {TEXT}; font-weight: 700; }}
+    .d {{ font-size: 12.5px; fill: {MUTED}; }}
+    .chip {{ font-size: 11px; fill: {TEXT}; }}
+    .p {{ font-size: 11px; fill: {ACCENT}; }}
+    .nd {{ font-size: 10.5px; }}
+  </style>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="{BG}" stroke="{LINE}"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-dots)"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-halo)"/>
+  <circle cx="26" cy="28" r="3.5" fill="{ACCENT}" class="led"/>
+  <text x="38" y="32" class="k">{escape(p['kind'])}</text>
+  <text x="{w - 22}" y="32" text-anchor="end" class="p">{escape(p['proof'])}</text>
+  <text x="22" y="64" class="t">{escape(p['title'])}</text>
+  {desc}
+  <rect x="16" y="{band_y}" width="{w - 32}" height="58" rx="9" fill="{PANEL}" fill-opacity=".55" stroke="{LINE}" stroke-dasharray="2 4"/>
+  {diagram}
+  {"".join(chips)}
+</svg>"""
+    write(f"projects/{p['slug']}.svg", svg)
+
+
+# --------------------------------------------------------------------------
+# Impact panel
+# --------------------------------------------------------------------------
+
+IMPACT = [
+    ("25 h/wk", ["onboarding, provisioning", "and patching automated"], "TESTSOLUTIONS"),
+    ("−75%", ["device setup time on", "180+ endpoints, 12 sites"], "TESTSOLUTIONS"),
+    ("4h→35m", ["ML infrastructure", "deploys through CI/CD"], "UNI GÖTTINGEN"),
+    ("−85%", ["vulnerabilities, through", "automated scan gates"], "UNI GÖTTINGEN"),
+    ("265+", ["government endpoints at", "100% patch compliance"], "KTDMC"),
+]
+
+
+def impact() -> None:
+    w, top, th, gap = 900, 64, 126, 10
+    h = top + th + 24
+    tw = (w - 56 - gap * (len(IMPACT) - 1)) / len(IMPACT)
+    tiles = []
+    for i, (metric, lines, where) in enumerate(IMPACT):
+        x = 28 + i * (tw + gap)
+        d = 0.2 + i * 0.13
+        body = "".join(
+            f'<text x="{x + 14:.1f}" y="{top + 70 + j * 16}" class="lb">{escape(line)}</text>' for j, line in enumerate(lines)
+        )
+        tiles.append(
+            f'<g class="tile">'
+            f'<rect x="{x:.1f}" y="{top}" width="{tw:.1f}" height="{th}" rx="10" fill="{PANEL}" fill-opacity=".7" stroke="{LINE}"/>'
+            f'<rect x="{x + 14:.1f}" y="{top}" width="{tw - 28:.1f}" height="2" fill="{ACCENT}" class="bar"/>'
+            f'<text x="{x + 14:.1f}" y="{top + 44}" class="m">{escape(metric)}</text>'
+            f"{body}"
+            f'<text x="{x + 14:.1f}" y="{top + th - 14}" class="wh">{escape(where)}</text></g>'
+        )
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Selected impact">
+  <title>Selected impact</title>
+  <defs>
+    <pattern id="i-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
+    <radialGradient id="i-halo" cx="0.5" cy="0" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".07"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+  </defs>
+  <style>
+    text {{ font-family: {SANS}; }}
+    .cmd, .m, .wh, .meta {{ font-family: {MONO}; }}
+    .cmd {{ font-size: 13px; fill: {TEXT}; }}
+    .meta {{ font-size: 11px; fill: {MUTED}; }}
+    .m {{ font-size: 25px; font-weight: 700; fill: {ACCENT}; }}
+    .lb {{ font-size: 11.5px; fill: {TEXT}; opacity: .85; }}
+    .wh {{ font-size: 9.5px; letter-spacing: 1.3px; fill: {MUTED}; }}
+  </style>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-dots)"/>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-halo)"/>
+  <text x="28" y="38" class="cmd"><tspan fill="{ACCENT}">~/impact</tspan><tspan fill="{MUTED}"> $ </tspan>cat outcomes.log</text>
+  <rect x="{28 + 27 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{ACCENT}" class="cur"/>
+  <text x="{w - 30}" y="38" text-anchor="end" class="meta">measured in production</text>
+  {"".join(tiles)}
+</svg>"""
+    write("impact.svg", svg)
+
+
+# --------------------------------------------------------------------------
+# Certifications
+# --------------------------------------------------------------------------
+
+OU = "https://www.open.edu/openlearn/"
+UDEMY = "https://www.udemy.com/certificate/"
+COURSERA = "https://www.coursera.org/account/accomplishments/verify/"
+
+# Featured credentials, grouped into tracks. (name, issuer, mark, year, hours, link, link label)
+TRACKS = [
+    ("infrastructure · networking · security", [
+        ("System Administration and IT Infrastructure Services", "Google · Coursera", "G", 2025, "23 h", COURSERA + "29N5ZLK6BVWW", "verify"),
+        ("Discovering Computer Networks: hands-on in the Open Networking Lab", "The Open University", "OU", 2023, "24 h",
+         OU + "digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview", "course"),
+        ("Information Security Basics for IT Support Technicians", "Udemy", "U", 2022, "", UDEMY + "UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/", "verify"),
+        ("Successful IT Systems", "The Open University", "OU", 2023, "", OU + "digital-computing/successful-it-systems/content-section-0", "course"),
+    ]),
+    ("software engineering", [
+        ("Full Stack Software Developer Assessment", "IBM · Coursera", "IBM", 2023, "", COURSERA + "74NSF2JALFZV", "verify"),
+        ("The Complete React, Redux, Node, Express and MySQL Developer Course", "Udemy", "U", 2022, "8 h", UDEMY + "UC-0b67e267-2b09-40d7-a980-d2f5b62876fe/", "verify"),
+        ("The Database Development Life Cycle", "The Open University", "OU", 2023, "12 h", OU + "digital-computing/the-database-development-life-cycle/content-section-0", "course"),
+        ("SQL: The Complete Introduction to SQL Programming", "Udemy", "U", 2022, "3.5 h", UDEMY + "UC-be70fe74-aa67-4e6c-afad-5cacc8d371ae/", "verify"),
+    ]),
+    ("data · machine learning · ai", [
+        ("The Data Science Course: Complete Data Science Bootcamp", "Udemy", "U", 2022, "30 h", UDEMY + "UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/", "verify"),
+        ("Python for Machine Learning with NumPy, Pandas and Matplotlib", "Udemy", "U", 2022, "7 h", UDEMY + "UC-b6509a21-528b-43bf-b0ae-f7458612d212/", "verify"),
+        ("Python: Introduction to Data Science and Machine Learning A–Z", "Udemy", "U", 2022, "7.5 h", UDEMY + "UC-4c5d2d2a-dade-4cee-a7c4-0fd2ad689c90/", "verify"),
+        ("Exploring Data: Graphs and Numerical Summaries", "The Open University", "OU", 2023, "20 h",
+         OU + "science-maths-technology/mathematics-statistics/exploring-data-graphs-and-numerical-summaries/content-section-0", "course"),
+    ]),
+]
+TOTAL_CREDENTIALS = 29
+MORE = "Java · C++ · PHP · R · HTML & CSS · Android · big data · Python ×2 · AI & the future of work · mathematics · modelling"
+
+
+def _wrap(text: str, limit: int) -> list[str]:
+    lines, cur = [], ""
+    for word in text.split():
+        if cur and len(cur) + 1 + len(word) > limit:
+            lines.append(cur)
+            cur = word
+        else:
+            cur = f"{cur} {word}".strip()
+    lines.append(cur)
+    return lines
+
+
+def _hexagon(cx: float, cy: float, r: float) -> str:
+    import math
+
+    return " ".join(
+        f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
+    )
+
+
+_CERT_STYLE = f"""
+  <style>
+    text {{ font-family: {SANS}; }}
+    .m, .cmd, .meta, .tag, .tr, .mk {{ font-family: {MONO}; }}
+    .cmd {{ font-size: 13px; fill: {TEXT}; }}
+    .meta {{ font-size: 11px; fill: {MUTED}; }}
+    .nm {{ font-size: 13px; font-weight: 600; fill: {TEXT}; }}
+    .is {{ font-size: 11px; fill: {MUTED}; }}
+    .mk {{ font-size: 10px; font-weight: 700; fill: {ACCENT}; }}
+    .tag {{ font-size: 10px; fill: {MUTED}; }}
+    .tr {{ font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
+  </style>"""
+
+
+def _cert_frame(w: int, h: int, uid: str) -> str:
+    return f"""
+  <defs>
+    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
+    <radialGradient id="{uid}-halo" cx="0" cy="0" r="0.9"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".06"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
+  </defs>{_CERT_STYLE}
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="{BG}" stroke="{LINE}"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-dots)"/>
+  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-halo)"/>"""
+
+
+def certs() -> None:
+    """Header, track labels and one small card per credential, laid out as a table in the README."""
+    shown = sum(len(items) for _, items in TRACKS)
+
+    w, h = 900, 60
+    write("certifications/header.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
+  <title>Certifications</title>{_cert_frame(w, h, "hd")}
+  <text x="26" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>ls --featured</text>
+  <rect x="{26 + 24 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
+  <text x="{w - 26}" y="35" text-anchor="end" class="meta">{TOTAL_CREDENTIALS} credentials · Google · IBM · Open University · Udemy · 6 shown</text>
+</svg>""")
+
+    for t, (track, items) in enumerate(TRACKS, 1):
+        w, h = 880, 40
+        write(f"certifications/track-{t}.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(track)}">
+  <title>{escape(track)}</title>{_cert_frame(w, h, f"tr{t}")}
+  <text x="20" y="25" class="tr in"><tspan fill="{ACCENT}">{t:02d}</tspan>  {escape(track.upper())}</text>
+  <line x1="{20 + (len(track) + 4) * 8.3:.0f}" y1="21" x2="{w - 150}" y2="21" stroke="{LINE}"/>
+  <text x="{w - 20}" y="25" text-anchor="end" class="tr">{len(items)} credentials</text>
+</svg>""")
+
+        for k, (name, issuer, mark, year, hours, _link, label) in enumerate(items, 1):
+            w, h = 430, 92
+            uid = f"t{t}c{k}"
+            d = 0.1 + (k - 1) * 0.1
+            lines = _wrap(name, 46)[:2]
+            meta = " · ".join(x for x in (issuer, str(year), hours) if x)
+            title = "".join(f'<text x="24" y="{34 + j * 18}" class="nm">{escape(line)}</text>' for j, line in enumerate(lines))
+            tag_w = len(label) * 6.2 + 34
+            write(f"certifications/{t}-{k}.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
+  <title>{escape(name)}</title>{_cert_frame(w, h, uid)}
+  <g class="hx">
+    <rect x="0" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
+  </g>
+  <g class="in">
+    {title}
+    <text x="24" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
+  </g>
+  <rect x="{w - 16 - tag_w:.1f}" y="{h - 30}" width="{tag_w:.1f}" height="20" rx="10" fill="none" stroke="{LINE}"/>
+  <text x="{w - 16 - tag_w / 2:.1f}" y="{h - 16}" text-anchor="middle" class="tag">{label} ↗</text>
+</svg>""")
+
+    w, h = 880, 46
+    write("certifications/more.svg", f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="More courses">
+  <title>More courses</title>{_cert_frame(w, h, "mo")}
+  <text x="26" y="28" class="meta"><tspan fill="{ACCENT}">+ {TOTAL_CREDENTIALS - shown} more</tspan>   {escape(MORE)}</text>
+</svg>""")
+
+
+# --------------------------------------------------------------------------
+# Career timeline
+# --------------------------------------------------------------------------
+
+# The career is drawn as `git log --graph`: every role is a commit on main,
+# growing upwards from the first job, and the M.Sc. is a branch that forks
+# at the university internship and merges back in.
+
+# (role, organisation, tag, years shown, start, end or None for current)
+# Newest first. Dates are year + (month - 1) / 12 and only size the uptime bars.
+# Roles only, newest first; education is listed separately below so the
+# employment sequence reads straight down without a degree interrupting it.
+# (role, organisation, tag, years shown, start, end or None for current)
+CAREER = [
+    # (role, organisation, location, type, dates shown, start, end or None)
+    ("IT Engineer", "Kontinental Establishment", "Germany / US · hybrid", "Full-time", "Jan 2025 — now", 2025.0, None),
+    ("IT Engineer", "TestSolutions GmbH", "Frankfurt, Germany · hybrid", "Contract", "Feb 2023 — Dec 2024", 2023.08, 2024.92),
+    ("DevOps Engineer", "University of Göttingen", "Göttingen, Germany", "Internship", "Apr 2024 — Sep 2024", 2024.25, 2024.75),
+    ("IT Specialist", "Liberty Books", "Karachi, Pakistan", "Full-time", "Jun 2022 — Oct 2022", 2022.42, 2022.75),
+    ("IT Specialist", "KTDMC", "Karachi, Pakistan", "Full-time", "Oct 2021 — May 2022", 2021.75, 2022.33),
+    ("IT Specialist", "Target Logistics International", "Karachi, Pakistan", "Full-time", "Jul 2020 — Sep 2021", 2020.5, 2021.67),
+    ("IT Engineer", "The Active Solutions", "Karachi, Pakistan", "Full-time", "Apr 2019 — Mar 2020", 2019.25, 2020.17),
+]
+CAREER.sort(key=lambda r: (r[6] is None, r[5]), reverse=True)
+
+# (degree, institution, years)
+EDUCATION = [
+    ("M.Sc. Data Science & Computer Science", "University of Göttingen, Germany", "2023 — 2026"),
+    ("B.Sc. Computer Science", "University of Karachi, Pakistan", "2016 — 2018"),
+]
+
+
+def timeline() -> None:
+    """Career drawn the way the portfolio draws it: a quiet rail, the year on
+    the left, one dot per role. No git-log chrome, no glow."""
+    w, row_h, top = 900, 62, 96
+    n = len(CAREER)
+    edu_h = 30 + len(EDUCATION) * 38
+    h = top + row_h * (n - 1) + 70 + edu_h + 46
+    rail_x, year_x, text_x = 112, 92, 140
+    today = date.today()
+    now = today.year + (today.month - 1) / 12
+    longest = max((e or now) - s for *_, s, e in CAREER)
+    step = 0.06
+
+    def y(i: int) -> int:
+        return top + i * row_h
+
+    rows = []
+    for i, (role, org, loc, kind, years, s, e) in enumerate(CAREER):
+        yc = y(i)
+        d = 0.15 + i * step
+        head = i == 0
+
+        node = (
+            f'<circle cx="{rail_x}" cy="{yc}" r="4.5" fill="{ACCENT if head else BG}" '
+            f'stroke="{ACCENT if head else LINE}" stroke-width="2"/>'
+        )
+
+        cx0 = text_x + len(role) * 7.4 + 14
+        cw = len(kind) * 6.3 + 18
+        chips = (
+            f'<rect x="{cx0:.1f}" y="{yc - 17}" width="{cw:.1f}" height="18" rx="9" '
+            f'fill="none" stroke="{ACCENT if head else LINE}"/>'
+            f'<text x="{cx0 + cw / 2:.1f}" y="{yc - 4}" text-anchor="middle" class="chip" '
+            f'fill="{ACCENT if head else MUTED}">{escape(kind)}</text>'
+        )
+        months = round(((e or now) - s) * 12)
+        dur = f"{months // 12} yr {months % 12} mo" if months >= 12 else f"{months} mo"
+        dur = dur.replace(" 0 mo", "")
+
+        span = (e or now) - s
+
+        rows.append(
+            f'<g class="r">'
+            f'<text x="{year_x}" y="{yc + 4}" text-anchor="end" class="yrs" '
+            f'fill="{ACCENT if head else MUTED}">{years.split(" — ")[0]}</text>'
+            f'<text x="{text_x}" y="{yc - 3}" class="role">{escape(role)}</text>{chips}'
+            f'<text x="{text_x}" y="{yc + 14}" class="org">{escape(org)} · {escape(loc)}</text>'
+            f'<text x="{w - 30}" y="{yc - 3}" text-anchor="end" class="yrs" '
+            f'fill="{TEXT if head else MUTED}">{years}</text>'
+            f'<text x="{w - 30}" y="{yc + 14}" text-anchor="end" class="org">{dur}</text>'
+            f'</g>{node}'
+        )
+
+    edu_y = y(n - 1) + 62
+    edu_rows = "".join(
+        f'<text x="{text_x}" y="{edu_y + 20 + j * 38}" class="role" font-size="13.5">{escape(deg)}</text>'
+        f'<text x="{text_x}" y="{edu_y + 37 + j * 38}" class="org">{escape(inst)}</text>'
+        f'<text x="{w - 30}" y="{edu_y + 20 + j * 38}" text-anchor="end" class="yrs" fill="{MUTED}">{yrs}</text>'
+        f'<circle cx="{rail_x}" cy="{edu_y + 16 + j * 38}" r="3.5" fill="{BG}" stroke="{LINE}" stroke-width="2"/>'
+        for j, (deg, inst, yrs) in enumerate(EDUCATION)
+    )
+    fy = h - 30
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Career, newest first">
+  <title>Career</title>
+  <style>
+    text {{ font-family: {SANS}; }}
+    .chip, .yrs, .lbl, .foot {{ font-family: {MONO}; }}
+    .lbl {{ font-size: 12px; fill: {ACCENT}; letter-spacing: 1.6px; }}
+    .role {{ font-size: 14.5px; font-weight: 600; fill: {TEXT}; }}
+    .org {{ font-size: 12px; fill: {MUTED}; }}
+    .chip {{ font-size: 10px; }}
+    .yrs {{ font-size: 11.5px; }}
+    .foot {{ font-size: 11px; fill: {MUTED}; }}
+  </style>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{PANEL}" stroke="{LINE}"/>
+  <rect x="1" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
+
+
+  <text x="30" y="44" class="lbl" font-size="11">INDUSTRY EXPERIENCE</text>
+  <text x="{w - 30}" y="44" text-anchor="end" class="foot">{n} roles · since 2019 · open to roles worldwide</text>
+  <line x1="30" y1="62" x2="{w - 30}" y2="62" stroke="{LINE}"/>
+
+  <line x1="{rail_x}" y1="{y(0)}" x2="{rail_x}" y2="{y(n - 1)}" stroke="{LINE}" stroke-width="1"/>
+  {"".join(rows)}
+
+  <line x1="30" y1="{edu_y - 26}" x2="{w - 30}" y2="{edu_y - 26}" stroke="{LINE}"/>
+  <text x="30" y="{edu_y - 6}" class="lbl" font-size="11">EDUCATION</text>
+  {edu_rows}
+
+  <line x1="30" y1="{fy - 20}" x2="{w - 30}" y2="{fy - 20}" stroke="{LINE}"/>
+  <text x="30" y="{fy + 2}" class="foot">Karachi → Göttingen · 5,617 km</text>
+  <text x="{w - 30}" y="{fy + 2}" text-anchor="end" class="foot">muhammadhammad.vercel.app</text>
+</svg>"""
+
+    write("career.svg", svg)
+
+
+# --------------------------------------------------------------------------
+# Toolbox
+# --------------------------------------------------------------------------
+# Brand logos are vendored in scripts/icons: Simple Icons (CC0) as "si-*.svg",
+# Devicon (MIT) as "dev-*.svg", Microsoft's official Azure and Entra
+# architecture icons as "ms-*.svg", and a few supplied as-is. Trademarks belong
+# to their owners. The light build shows every logo exactly as published;
+# the dark build swaps near-black marks for their light, dark-mode form.
+
+ICONS = Path(__file__).resolve().parent / "icons"
+
+# (category, [(label, icon)])
+TOOLBOX = [
+    ("Cloud & virtualisation", [
+        ("Azure", "dev-azure-original"), ("AWS", "dev-amazonwebservices-original-wordmark"), ("Google Cloud", "dev-googlecloud-original"),
+        ("VMware", "vmware"), ("Virtual Desktop", "ms-virtual-desktop"), ("Docker", "si-docker"),
+        ("Kubernetes", "dev-kubernetes-original"), ("Terraform", "terraform"),
+    ]),
+    ("Operating systems", [
+        ("Windows", "dev-windows11-original"), ("Linux", "dev-linux-original"), ("Ubuntu", "si-ubuntu"), ("Red Hat", "redhat"),
+        ("CentOS", "dev-centos-original"), ("macOS", "dev-apple-original"), ("iOS", "si-ios"), ("Android", "si-android"),
+    ]),
+    ("Identity & endpoints", [
+        ("Entra ID", "ms-entra-id"), ("Active Directory", "ms-active-directory"), ("Intune", "ms-intune"), ("Defender", "ms-defender"),
+        ("Jamf Pro", "jamf"), ("Okta", "okta"), ("TeamViewer", "si-teamviewer"),
+    ]),
+    ("Network & security", [
+        ("Cisco", "cisco"), ("Juniper", "si-junipernetworks"), ("Fortinet", "si-fortinet"), ("pfSense", "pfsense"),
+        ("SonicWall", "si-sonicwall"), ("Palo Alto", "si-paloaltonetworks"), ("CrowdStrike", "crowdstrike"),
+    ]),
+    ("Automation & delivery", [
+        ("PowerShell", "dev-powershell-original"), ("Python", "dev-python-original"), ("Bash", "bash"), ("Ansible", "si-ansible"),
+        ("Chocolatey", "si-chocolatey"), ("YAML", "si-yaml"), ("GitHub Actions", "si-githubactions"), ("Git", "dev-git-original"),
+    ]),
+    ("Monitoring & backup", [
+        ("Splunk", "si-splunk"), ("Datadog", "datadog"), ("New Relic", "si-newrelic"), ("Grafana", "dev-grafana-original"),
+        ("Prometheus", "dev-prometheus-original"), ("Wireshark", "wireshark"), ("Veeam", "veeam"),
+    ]),
+    ("Service & collaboration", [
+        ("ServiceNow", "servicenow"), ("Jira", "dev-jira-original"), ("Confluence", "confluence"), ("Zendesk", "si-zendesk"),
+        ("Microsoft 365", "ms-365"), ("Google Workspace", "dev-google-original"), ("Slack", "dev-slack-original"), ("Zoom", "si-zoom"),
+    ]),
+]
+
+# Simple Icons wordmarks sit small in their square; draw them larger.
+WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
+WIDE = {"cisco", "crowdstrike", "okta"}  # supplied logos that are wider than tall
+KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark backgrounds
+
+# Official brand colours for the single-colour Simple Icons marks.
+SI_COLOURS = {
+    "vmware": "#607078", "ios": "#000000", "junipernetworks": "#84B135", "fortinet": "#EE3124", "sonicwall": "#000000", "githubactions": "#2088FF",
+    "paloaltonetworks": "#F04E23", "wireshark": "#1679A7", "splunk": "#000000", "newrelic": "#1CE783", "veeam": "#00B336",
+    "zendesk": "#03363D", "zoom": "#0B5CFF", "docker": "#1D63ED", "android": "#34A853", "chocolatey": "#80B5E3", "yaml": "#CB171E",
+    "teamviewer": "#050A52", "ubuntu": "#E95420", "ansible": "#EE0000",
+}
+
+
+def _on_dark(hex_colour: str) -> str:
+    """Near-black brand colours become light so they read on a dark background."""
+    h = hex_colour.lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return TEXT if max(r, g, b) < 0.35 else hex_colour
+
+
+def _logo(icon: str, x: float, y: float, size: float, uid: str, dark: bool) -> str:
+    """Inline one brand logo inside a size x size box at (x, y).
+
+    Light mode draws every logo exactly as published. Dark mode swaps only
+    near-black parts for their light, dark-mode form.
+    """
+    import re
+
+    raw = (ICONS / f"{icon}.svg").read_text(encoding="utf-8")
+    view = re.search(r'viewBox="([^"]+)"', raw)
+    inner = re.sub(r"^.*?<svg[^>]*>|</svg>\s*$", "", raw, flags=re.S)
+    inner = re.sub(r"<title>.*?</title>", "", inner, flags=re.S)
+    # keep ids unique when several logos share one document
+    inner = re.sub(r'id="([^"]+)"', lambda m: f'id="{uid}-{m.group(1)}"', inner)
+    inner = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{uid}-{m.group(1)})", inner)
+    inner = re.sub(r'href="#([^"]+)"', lambda m: f'href="#{uid}-{m.group(1)}"', inner)
+    colour = SI_COLOURS.get(icon[3:], "#000000") if icon.startswith("si-") else "#000000"
+    if dark and icon not in KEEP_COLOURS:
+        inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
+        colour = _on_dark(colour)
+    vb = view.group(1) if view else "0 0 24 24"
+    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}" fill="{colour}">{inner}</svg>'
+
+
+# Panel colours per GitHub theme; the logos themselves stay as published.
+THEMES = {
+    "dark": {"bg": BG, "line": LINE, "text": TEXT, "muted": MUTED, "accent": ACCENT, "prompt": ACCENT},
+    "light": {"bg": "#ffffff", "line": "#d0d7de", "text": "#1f2328", "muted": "#59636e", "accent": ACCENT, "prompt": "#4d7c0f"},
+}
+
+
+def toolbox() -> None:
+    """Two builds of the same panel; the README picks one with prefers-color-scheme."""
+    for mode, t in THEMES.items():
+        dark = mode == "dark"
+        w, top, row_h, label_w, step = 900, 72, 84, 196, 81
+        h = top + row_h * len(TOOLBOX) + 10
+        total = sum(len(items) for _, items in TOOLBOX)
+        rows = []
+        for r, (cat, items) in enumerate(TOOLBOX):
+            y = top + r * row_h
+            if r:
+                rows.append(f'<line x1="26" y1="{y - 10}" x2="{w - 26}" y2="{y - 10}" stroke="{t["line"]}" stroke-dasharray="2 5"/>')
+            rows.append(
+                f'<g class="in">'
+                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led"/>'
+                f'<text x="44" y="{y + 26}" class="cat">{escape(cat)}</text>'
+                f'<text x="44" y="{y + 44}" class="cnt">{len(items):02d} tools</text></g>'
+            )
+            for c, (label, icon) in enumerate(items):
+                cx = label_w + c * step + step / 2
+                d = 0.2 + r * 0.08 + c * 0.04
+                if icon == "servicenow":  # long wordmark
+                    size = 72
+                elif icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
+                    size = 44
+                else:
+                    size = 32
+                logo = _logo(icon, cx - size / 2, y + 20 - size / 2, size, f"{mode[0]}{r}{c}", dark)
+                labels = "".join(
+                    f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
+                    for k, part in enumerate(_wrap(label, 12))
+                )
+                rows.append(f'<g class="logo">{logo}{labels}</g>')
+        svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Toolbox">
+  <title>Toolbox</title>
+  <style>
+    text {{ font-family: {SANS}; }}
+    .cmd, .meta, .cnt, .lb {{ font-family: {MONO}; }}
+    .cmd {{ font-size: 13px; fill: {t["text"]}; }}
+    .meta {{ font-size: 11px; fill: {t["muted"]}; }}
+    .cat {{ font-size: 13.5px; font-weight: 600; fill: {t["text"]}; }}
+    .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
+    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
+  </style>
+  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
+  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{t["accent"]}" class="cur"/>
+  <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
+  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
+  {"".join(rows)}
+</svg>"""
+        write(f"brands-{mode}.svg", svg)
+
+
+if __name__ == "__main__":
+    terminal()
+    impact()
+    for project in PROJECTS:
+        card(project)
+    certs()
+    timeline()
+    toolbox()
+
+
+# ---------------------------------------------------------------------------
+# Section headings
+# ---------------------------------------------------------------------------
+# GitHub renders markdown in its own typeface, so a `## Heading` is the one
+# place the profile stops matching the site. Drawing them keeps every visible
+# word in IBM Plex.
+
+HEADINGS = [
+    ("what-i-do", "What I do"),
+    ("environment", "The environment I run"),
+    ("toolbox", "Toolbox"),
+    ("projects", "Projects"),
+    ("toolbox", "Toolbox"),
+    ("career", "Career"),
+    ("certifications", "Certifications"),
+]
+
+
+def build_headings() -> None:
+    for slug, label in HEADINGS:
+        w, h = 900, 50
+        svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" role="img" aria-label="{escape(label)}">
+  <style>
+    text {{ font-family: {SANS}; }}
+    .h {{ font-size: 21px; font-weight: 600; fill: {TEXT}; letter-spacing: -0.4px; }}
+  </style>
+  <text x="0" y="30" class="h">{escape(label)}</text>
+  <line x1="0" y1="43" x2="{w}" y2="43" stroke="{LINE}"/>
+</svg>"""
+        write(f"headings/{slug}.svg", svg)
+
+
+build_headings()
+
+
+# ---------------------------------------------------------------------------
+# Prose blocks
+# ---------------------------------------------------------------------------
+# The last markdown left on the page was its running text, which GitHub sets
+# in its own face. Drawing it puts every word in Plex. Blocks whose only link
+# is a single destination are wrapped in an <a> in the README, so nothing that
+# was clickable stops being clickable.
+
+W_PROSE = 900
+
+
+def _wrap(text: str, size: float, width: int, weight: int = 400) -> list:
+    """Greedy wrap on an estimated advance width; Plex sits near 0.52 em."""
+    per = size * (0.545 if weight >= 600 else 0.515)
+    limit = max(8, int(width / per))
+    words, lines, cur = text.split(), [], ""
+    for wd in words:
+        trial = f"{cur} {wd}".strip()
+        if len(trial) <= limit:
+            cur = trial
+        else:
+            lines.append(cur)
+            cur = wd
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def prose(slug: str, blocks: list, align: str = "middle", label: str = "") -> None:
+    """blocks: [(text, size, weight, colour, gap_before)]"""
+    inner = W_PROSE - 8
+    lines, widest = [], 1.0
+    for text, size, weight, colour, gap in blocks:
+        chunk = _wrap(text, size, inner, weight)
+        per = size * (0.545 if weight >= 600 else 0.515)
+        for ln in chunk:
+            widest = max(widest, len(ln) * per)
+        lines.append((chunk, size, weight, colour, gap))
+
+    # The viewBox is the widest line, not the nominal measure. The advance
+    # estimate is systematically a few percent off, so cropping the box with
+    # that same estimate cancels the error: whatever the real metrics are,
+    # the longest line lands on the right edge and the block fills its column.
+    W = round(widest + 2)
+    rows, y = [], 0
+    for chunk, size, weight, colour, gap in lines:
+        y += gap
+        for ln in chunk:
+            y += size * 1.55
+            x = W / 2 if align == "middle" else 0
+            rows.append(
+                f'<text x="{x:.0f}" y="{y:.0f}" text-anchor="{align}" '
+                f'font-size="{size}" font-weight="{weight}" fill="{colour}">{escape(ln)}</text>'
+            )
+    h = int(y + 10)
+    svg = f"""
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {h}" width="{W}" height="{h}" role="img" aria-label="{escape(label)}">
+  <style>text {{ font-family: {SANS}; }}</style>
+  {"".join(rows)}
+</svg>"""
+    write(f"prose/{slug}.svg", svg)
+
+
+def build_prose() -> None:
+    prose(
+        "name",
+        [
+            ("Muhammad Hammad · IT Infrastructure Engineer", 25, 600, TEXT, 4),
+            ("Cloud infrastructure (Azure / AWS) · DevOps & automation · Network engineering · Systems administration", 14, 400, TEXT, 14),
+            ("Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen", 12, 400, MUTED, 6),
+        ],
+        label="Muhammad Hammad, IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS), DevOps and automation, network engineering, systems administration. Göttingen, Germany. IT engineering since 2019. M.Sc. Data Science, University of Göttingen.",
+    )
     prose(
         "what-i-do",
         [
@@ -926,207 +939,207 @@ def build_prose() -> None:
         align="start",
         label="IT Infrastructure Engineer with 7 years of experience bridging traditional system administration and cloud native approaches. I manage 500+ endpoints across Azure, and AWS, with a strong foundation in Windows and Linux server administration, enterprise networking, and GDPR aligned Zero Trust security. I build infrastructure that runs quietly in the background, scales without drama, stays secure, and rarely needs anyone to step in. If your systems feel messy, manual, or held together by too many late night fixes, that is the kind of problem I like solving. Bring me the chaos, I will hand back something clean and self reliant. Reach out anytime, let's build something together.",
     )
-    prose(
-        "ci-note",
-        [
-            ("Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app", 13.5, 400, MUTED, 0),
-        ],
-        align="start",
-        label="Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app",
-    )
-    prose(
-        "footer",
-        [
-            ("Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate.", 15, 600, TEXT, 4),
-            ("English (C1) · German (B1) · muhammad24997@gmail.com", 12.5, 400, MUTED, 8),
-        ],
-        label="Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate. English C1, German B1, muhammad24997@gmail.com",
-    )
-
-
-build_prose()
-
-
-# ---------------------------------------------------------------------------
-# The environment
-# ---------------------------------------------------------------------------
-# The same drawing the portfolio opens with: a request crossing a managed
-# estate end to end, and beside it the control plane that put every box there.
-# A box is a thing that runs, a solid line is traffic, a dashed line happened
-# at build time, a dotted frame is a boundary.
-
-RUNTIME = [
-    ("Managed endpoint", "Intune · Autopilot · Jamf", "device attested"),
-    ("Identity", "Entra ID · MFA · Conditional Access", "identity proven"),
-    ("Zero-trust edge", "ZTNA · firewall · DNS · segmentation", "least privilege"),
-    ("Workload", "Azure · AWS · Kubernetes · containers", "scheduled"),
-    ("Data & recovery", "PostgreSQL · SQL · immutable backup", "read, replicated"),
-    ("Observability", "SIEM · metrics · alerting · runbooks", "accounted for"),
-]
-
-CONTROL = [
-    ("Git", "single source"),
-    ("CI/CD", "build, scan, ship"),
-    ("IaC", "Terraform"),
-    ("Policy", "ISO 27001 · GDPR"),
-]
-
-
-def environment() -> None:
-    w, pad = 900, 26
-    nx, nw, nh, gap, top = 300, 574, 58, 14, 76
-    cx, cw, ch = pad, 196, 50
-    rows = []
-
-    cspan = (len(RUNTIME) * (nh + gap) - gap)
-    cgap = (cspan - len(CONTROL) * ch) / (len(CONTROL) - 1)
-    rows.append(
-        '<rect x="%d" y="%d" width="%d" height="%d" rx="10" fill="none" stroke="%s" stroke-width="1" stroke-dasharray="4 4"/>'
-        % (cx - 8, top - 26, cw + 16, cspan + 34, LINE)
-    )
-    rows.append('<text x="%d" y="%d" class="z">CONTROL PLANE</text>' % (cx, top - 12))
-
-    for i, (name, sub) in enumerate(CONTROL):
-        y = top + i * (ch + cgap)
-        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="7" fill="%s" stroke="%s"/>' % (cx, y, cw, ch, PANEL, LINE))
-        rows.append('<text x="%d" y="%.0f" class="cn">%s</text>' % (cx + 12, y + 22, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="cs">%s</text>' % (cx + 12, y + 38, escape(sub)))
-        rows.append('<path d="M%d %.0f H%d" stroke="%s" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eh)"/>' % (cx + cw, y + ch / 2, nx - 14, LINE))
-
-    # A request crossing the stack, the way the site shows it: the rail it
-    # travels, then each stage lit in turn with what it did to the request.
-    n = len(RUNTIME)
-    step, hold = 0.9, 0.9
-    cycle = n * step + hold
-    rail_x = nx - 26
-    rows.append('<path d="M%d %d V%d" stroke="%s" stroke-width="1"/>'
-                % (rail_x, top + nh // 2, top + (n - 1) * (nh + gap) + nh // 2, LINE))
-    frames = []
-    for i in range(n):
-        a, b = i * step / cycle * 100, (i + 1) * step / cycle * 100
-        frames.append(".s%d{animation:lit%d %.2fs infinite;}" % (i, i, cycle))
-        frames.append("@keyframes lit%d{0%%,%.3f%%{opacity:0}%.3f%%,%.3f%%{opacity:1}%.3f%%,100%%{opacity:0}}"
-                      % (i, max(0.001, a - 0.001), a, b, min(99.999, b + 0.001)))
-    dy = nh + gap
-    stops = "".join("%.3f%%{transform:translateY(%dpx)}" % (i * step / cycle * 100, i * dy) for i in range(n))
-    frames.append(".dot{animation:ride %.2fs steps(1) infinite;}" % cycle)
-    frames.append("@keyframes ride{%s100%%{transform:translateY(%dpx)}}" % (stops, (n - 1) * dy))
-    frames.append("@media (prefers-reduced-motion:reduce){.dot,.s0,.s1,.s2,.s3,.s4,.s5{animation:none;opacity:0}}")
-    anim_css = "".join(frames)
-
-    for i, (name, sub, does) in enumerate(RUNTIME):
-        y = top + i * (nh + gap)
-        if i:
-            rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1" marker-end="url(#eh)"/>' % (nx + nw // 2, int(y - gap), y - 3, LINE))
-        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"/>' % (nx, y, nw, nh, PANEL, LINE))
-        rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, LINE))
-        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 24, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 42, escape(sub)))
-        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 24, i + 1))
-        # Lit overlay for the moment the request is inside this stage.
-        rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
-                    '<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>'
-                    '<text x="%d" y="%.0f" text-anchor="end" class="dz">%s</text></g>'
-                    % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT, nx + nw - 44, y + 24, escape(does)))
-
-    rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
-    h = top + cspan + 46
-    alt = ("The environment I run, one request end to end: " +
-           " then ".join(r[0] for r in RUNTIME) +
-           ". Built and governed by a control plane of " +
-           ", ".join(n for n, _ in CONTROL) + ".")
-    svg = (
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
-        + '<defs><marker id="eh" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="%s"/></marker></defs>' % LINE
-        + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}.cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}.dz{font-size:10px;fill:%s;}%s</style>" % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, MONO, LINE, MUTED, TEXT, anim_css)
-        + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
-        + '<text x="%d" y="34" text-anchor="end" class="ft">one request, end to end</text>' % (w - pad)
-        + "".join(rows)
-        + '<text x="%d" y="%d" class="ft">Dashed lines are how it got there; solid lines are traffic. I have built and run every box on this diagram.</text>' % (pad, h - 16)
-        + "</svg>"
-    )
-    write("environment.svg", svg)
-
-
-environment()
-
-
-# ---------------------------------------------------------------------------
-# Portfolio cards
-# ---------------------------------------------------------------------------
-# The site's own project and certificate cards, drawn to the same spec: one
-# surface, a 14px radius, a hairline border, the figure in mono. Each is its
-# own image so each can keep its link.
-
-import re as _re
-
-CARD_BG, CARD_LINE = "#0B0B0D", "rgba(255,255,255,0.17)"
-
-PROJECT_CARDS = [
-    ("aws-terraform-platform", "Platform · DevSecOps", "0 failed", "Checkov checks · 196 passed", "OPEN SOURCE"),
-    ("Infotech-Wizard", "AIOps · RAG", "3,531 tickets", "indexed in 5 languages", "OPEN SOURCE"),
-    ("pfSense-Firewall-Lab", "Network Security", "0 findings", "on the hardened rule set", "OPEN SOURCE"),
-    ("nova2labs", "Full-Stack · Cloud", "29 pages", "server-rendered, SEO-complete", "LIVE"),
-    ("velqatechnologies", "Web · Edge", "33 routes", "statically generated", "LIVE"),
-    ("nnapprox", "AI Research", "33 tests", "verify the error bounds", "OPEN SOURCE"),
-]
-
-CERT_CARDS = [
-    ("SysAdmin & IT Infrastructure", "Google", "Verified"),
-    ("Full Stack Developer", "IBM", "Verified"),
-    ("Computer Networks", "The Open University", "2023"),
-    ("Successful IT Systems", "The Open University", "2023"),
-    ("Cyber Security", "Udemy", "2022"),
-    ("Information Security", "Udemy", "2022"),
-    ("Database Development", "The Open University", "2023"),
-    ("Computer Systems", "The Open University", "2023"),
-    ("Exploring Data", "The Open University", "2023"),
-]
-
-
-def _pill(x, y, label, size=9):
-    """The site's bordered capsule, measured off the label."""
-    w = len(label) * size * 0.68 + 18
-    return (
-        '<rect x="%.0f" y="%.0f" width="%.0f" height="18" rx="9" fill="none" stroke="%s"/>'
-        '<text x="%.0f" y="%.0f" text-anchor="middle" class="pl">%s</text>'
-        % (x - w, y - 13, w, CARD_LINE, x - w / 2, y, escape(label))
-    )
-
-
-def _card(w, h, inner):
-    return (
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img">' % (w, h, w, h)
-        + "<style>text{font-family:%s;}.ti{font-size:15px;font-weight:600;fill:%s;}.su{font-size:11.5px;fill:%s;}"
-          ".mt{font-family:%s;font-size:14px;font-weight:600;fill:%s;}.ml{font-size:10.5px;fill:%s;}"
-          ".pl{font-size:9px;fill:%s;letter-spacing:.5px;}.ar{font-size:13px;fill:%s;}</style>"
-          % (SANS, TEXT, MUTED, MONO, TEXT, MUTED, MUTED, MUTED)
-        + '<rect x="0.5" y="0.5" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 1, h - 1, CARD_BG, CARD_LINE)
-        + inner + "</svg>"
-    )
-
-
-def portfolio_cards() -> None:
-    w, h = 900, 112
-    for title, cat, metric, label, badge in PROJECT_CARDS:
-        inner = (
-            '<text x="22" y="34" class="ti">%s</text>' % escape(title)
-            + '<text x="%d" y="34" text-anchor="end" class="ar">\u2197</text>' % (w - 20)
-            + '<text x="22" y="52" class="su">%s</text>' % escape(cat)
-            + '<text x="22" y="92" class="mt">%s</text>' % escape(metric)
-            + '<text x="%d" y="92" class="ml">%s</text>' % (22 + len(metric) * 8.6 + 10, escape(label))
-            + _pill(22 + len(badge) * 6.1 + 18, 126, badge)
-        )
-        write("cards/%s.svg" % _re.sub(r"[^A-Za-z0-9-]", "-", title), _card(w, h, inner))
-
-    ch = 80
-    for title, issuer, badge in CERT_CARDS:
-        inner = (
-            '<text x="22" y="34" class="ti">%s</text>' % escape(title)
-            + '<text x="22" y="58" class="su">%s</text>' % escape(issuer)
-            + _pill(w - 20, 58, badge)
-        )
-        write("cards/cert-%s.svg" % _re.sub(r"[^A-Za-z0-9-]", "-", title), _card(w, ch, inner))
-
-
-portfolio_cards()
+    prose(
+        "ci-note",
+        [
+            ("Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app", 13.5, 400, MUTED, 0),
+        ],
+        align="start",
+        label="Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app",
+    )
+    prose(
+        "footer",
+        [
+            ("Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate.", 15, 600, TEXT, 4),
+            ("English (C1) · German (B1) · muhammad24997@gmail.com", 12.5, 400, MUTED, 8),
+        ],
+        label="Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate. English C1, German B1, muhammad24997@gmail.com",
+    )
+
+
+build_prose()
+
+
+# ---------------------------------------------------------------------------
+# The environment
+# ---------------------------------------------------------------------------
+# The same drawing the portfolio opens with: a request crossing a managed
+# estate end to end, and beside it the control plane that put every box there.
+# A box is a thing that runs, a solid line is traffic, a dashed line happened
+# at build time, a dotted frame is a boundary.
+
+RUNTIME = [
+    ("Managed endpoint", "Intune · Autopilot · Jamf", "device attested"),
+    ("Identity", "Entra ID · MFA · Conditional Access", "identity proven"),
+    ("Zero-trust edge", "ZTNA · firewall · DNS · segmentation", "least privilege"),
+    ("Workload", "Azure · AWS · Kubernetes · containers", "scheduled"),
+    ("Data & recovery", "PostgreSQL · SQL · immutable backup", "read, replicated"),
+    ("Observability", "SIEM · metrics · alerting · runbooks", "accounted for"),
+]
+
+CONTROL = [
+    ("Git", "single source"),
+    ("CI/CD", "build, scan, ship"),
+    ("IaC", "Terraform"),
+    ("Policy", "ISO 27001 · GDPR"),
+]
+
+
+def environment() -> None:
+    w, pad = 900, 26
+    nx, nw, nh, gap, top = 300, 574, 58, 14, 76
+    cx, cw, ch = pad, 196, 50
+    rows = []
+
+    cspan = (len(RUNTIME) * (nh + gap) - gap)
+    cgap = (cspan - len(CONTROL) * ch) / (len(CONTROL) - 1)
+    rows.append(
+        '<rect x="%d" y="%d" width="%d" height="%d" rx="10" fill="none" stroke="%s" stroke-width="1" stroke-dasharray="4 4"/>'
+        % (cx - 8, top - 26, cw + 16, cspan + 34, LINE)
+    )
+    rows.append('<text x="%d" y="%d" class="z">CONTROL PLANE</text>' % (cx, top - 12))
+
+    for i, (name, sub) in enumerate(CONTROL):
+        y = top + i * (ch + cgap)
+        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="7" fill="%s" stroke="%s"/>' % (cx, y, cw, ch, PANEL, LINE))
+        rows.append('<text x="%d" y="%.0f" class="cn">%s</text>' % (cx + 12, y + 22, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="cs">%s</text>' % (cx + 12, y + 38, escape(sub)))
+        rows.append('<path d="M%d %.0f H%d" stroke="%s" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eh)"/>' % (cx + cw, y + ch / 2, nx - 14, LINE))
+
+    # A request crossing the stack, the way the site shows it: the rail it
+    # travels, then each stage lit in turn with what it did to the request.
+    n = len(RUNTIME)
+    step, hold = 0.9, 0.9
+    cycle = n * step + hold
+    rail_x = nx - 26
+    rows.append('<path d="M%d %d V%d" stroke="%s" stroke-width="1"/>'
+                % (rail_x, top + nh // 2, top + (n - 1) * (nh + gap) + nh // 2, LINE))
+    frames = []
+    for i in range(n):
+        a, b = i * step / cycle * 100, (i + 1) * step / cycle * 100
+        frames.append(".s%d{animation:lit%d %.2fs infinite;}" % (i, i, cycle))
+        frames.append("@keyframes lit%d{0%%,%.3f%%{opacity:0}%.3f%%,%.3f%%{opacity:1}%.3f%%,100%%{opacity:0}}"
+                      % (i, max(0.001, a - 0.001), a, b, min(99.999, b + 0.001)))
+    dy = nh + gap
+    stops = "".join("%.3f%%{transform:translateY(%dpx)}" % (i * step / cycle * 100, i * dy) for i in range(n))
+    frames.append(".dot{animation:ride %.2fs steps(1) infinite;}" % cycle)
+    frames.append("@keyframes ride{%s100%%{transform:translateY(%dpx)}}" % (stops, (n - 1) * dy))
+    frames.append("@media (prefers-reduced-motion:reduce){.dot,.s0,.s1,.s2,.s3,.s4,.s5{animation:none;opacity:0}}")
+    anim_css = "".join(frames)
+
+    for i, (name, sub, does) in enumerate(RUNTIME):
+        y = top + i * (nh + gap)
+        if i:
+            rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1" marker-end="url(#eh)"/>' % (nx + nw // 2, int(y - gap), y - 3, LINE))
+        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"/>' % (nx, y, nw, nh, PANEL, LINE))
+        rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, LINE))
+        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 24, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 42, escape(sub)))
+        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 24, i + 1))
+        # Lit overlay for the moment the request is inside this stage.
+        rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
+                    '<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>'
+                    '<text x="%d" y="%.0f" text-anchor="end" class="dz">%s</text></g>'
+                    % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT, nx + nw - 44, y + 24, escape(does)))
+
+    rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
+    h = top + cspan + 46
+    alt = ("The environment I run, one request end to end: " +
+           " then ".join(r[0] for r in RUNTIME) +
+           ". Built and governed by a control plane of " +
+           ", ".join(n for n, _ in CONTROL) + ".")
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
+        + '<defs><marker id="eh" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="%s"/></marker></defs>' % LINE
+        + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}.cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}.dz{font-size:10px;fill:%s;}%s</style>" % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, MONO, LINE, MUTED, TEXT, anim_css)
+        + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
+        + '<text x="%d" y="34" text-anchor="end" class="ft">one request, end to end</text>' % (w - pad)
+        + "".join(rows)
+        + '<text x="%d" y="%d" class="ft">Dashed lines are how it got there; solid lines are traffic. I have built and run every box on this diagram.</text>' % (pad, h - 16)
+        + "</svg>"
+    )
+    write("environment.svg", svg)
+
+
+environment()
+
+
+# ---------------------------------------------------------------------------
+# Portfolio cards
+# ---------------------------------------------------------------------------
+# The site's own project and certificate cards, drawn to the same spec: one
+# surface, a 14px radius, a hairline border, the figure in mono. Each is its
+# own image so each can keep its link.
+
+import re as _re
+
+CARD_BG, CARD_LINE = "#0B0B0D", "rgba(255,255,255,0.17)"
+
+PROJECT_CARDS = [
+    ("aws-terraform-platform", "Platform · DevSecOps", "0 failed", "Checkov checks · 196 passed", "OPEN SOURCE"),
+    ("Infotech-Wizard", "AIOps · RAG", "3,531 tickets", "indexed in 5 languages", "OPEN SOURCE"),
+    ("pfSense-Firewall-Lab", "Network Security", "0 findings", "on the hardened rule set", "OPEN SOURCE"),
+    ("nova2labs", "Full-Stack · Cloud", "29 pages", "server-rendered, SEO-complete", "LIVE"),
+    ("velqatechnologies", "Web · Edge", "33 routes", "statically generated", "LIVE"),
+    ("nnapprox", "AI Research", "33 tests", "verify the error bounds", "OPEN SOURCE"),
+]
+
+CERT_CARDS = [
+    ("SysAdmin & IT Infrastructure", "Google", "Verified"),
+    ("Full Stack Developer", "IBM", "Verified"),
+    ("Computer Networks", "The Open University", "2023"),
+    ("Successful IT Systems", "The Open University", "2023"),
+    ("Cyber Security", "Udemy", "2022"),
+    ("Information Security", "Udemy", "2022"),
+    ("Database Development", "The Open University", "2023"),
+    ("Computer Systems", "The Open University", "2023"),
+    ("Exploring Data", "The Open University", "2023"),
+]
+
+
+def _pill(x, y, label, size=9):
+    """The site's bordered capsule, measured off the label."""
+    w = len(label) * size * 0.68 + 18
+    return (
+        '<rect x="%.0f" y="%.0f" width="%.0f" height="18" rx="9" fill="none" stroke="%s"/>'
+        '<text x="%.0f" y="%.0f" text-anchor="middle" class="pl">%s</text>'
+        % (x - w, y - 13, w, CARD_LINE, x - w / 2, y, escape(label))
+    )
+
+
+def _card(w, h, inner):
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img">' % (w, h, w, h)
+        + "<style>text{font-family:%s;}.ti{font-size:15px;font-weight:600;fill:%s;}.su{font-size:11.5px;fill:%s;}"
+          ".mt{font-family:%s;font-size:14px;font-weight:600;fill:%s;}.ml{font-size:10.5px;fill:%s;}"
+          ".pl{font-size:9px;fill:%s;letter-spacing:.5px;}.ar{font-size:13px;fill:%s;}</style>"
+          % (SANS, TEXT, MUTED, MONO, TEXT, MUTED, MUTED, MUTED)
+        + '<rect x="0.5" y="0.5" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 1, h - 1, CARD_BG, CARD_LINE)
+        + inner + "</svg>"
+    )
+
+
+def portfolio_cards() -> None:
+    w, h = 900, 112
+    for title, cat, metric, label, badge in PROJECT_CARDS:
+        inner = (
+            '<text x="22" y="34" class="ti">%s</text>' % escape(title)
+            + '<text x="%d" y="34" text-anchor="end" class="ar">\u2197</text>' % (w - 20)
+            + '<text x="22" y="52" class="su">%s</text>' % escape(cat)
+            + '<text x="22" y="92" class="mt">%s</text>' % escape(metric)
+            + '<text x="%d" y="92" class="ml">%s</text>' % (22 + len(metric) * 8.6 + 10, escape(label))
+            + _pill(22 + len(badge) * 6.1 + 18, 126, badge)
+        )
+        write("cards/%s.svg" % _re.sub(r"[^A-Za-z0-9-]", "-", title), _card(w, h, inner))
+
+    ch = 80
+    for title, issuer, badge in CERT_CARDS:
+        inner = (
+            '<text x="22" y="34" class="ti">%s</text>' % escape(title)
+            + '<text x="22" y="58" class="su">%s</text>' % escape(issuer)
+            + _pill(w - 20, 58, badge)
+        )
+        write("cards/cert-%s.svg" % _re.sub(r"[^A-Za-z0-9-]", "-", title), _card(w, ch, inner))
+
+
+portfolio_cards()
