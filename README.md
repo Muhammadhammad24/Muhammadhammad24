@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/prose/name.svg?v=44" alt="Muhammad Hammad · IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration. Germany" width="100%" />
+  <img src="assets/prose/title.svg" alt="Muhammad Hammad · IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration. Germany" width="100%" />
 </p>
 
 <p align="center">

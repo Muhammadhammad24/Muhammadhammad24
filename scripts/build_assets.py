@@ -501,13 +501,13 @@ def prose(slug: str, blocks: list, align: str = "middle", label: str = "") -> No
 
 def build_prose() -> None:
     prose(
-        "name",
+        "title",
         [
             ("Muhammad Hammad · IT Infrastructure Engineer", 25, 600, TEXT, 4),
             ("Cloud infrastructure (Azure / AWS) · DevOps & automation · Network engineering · Systems administration", 14, 400, TEXT, 14),
-            ("Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen", 12, 400, MUTED, 6),
+            ("Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen", 12, 400, MUTED, 6),
         ],
-        label="Muhammad Hammad, IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS), DevOps and automation, network engineering, systems administration. Göttingen, Germany. IT engineering since 2019. M.Sc. Data Science, University of Göttingen.",
+        label="Muhammad Hammad, IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS), DevOps and automation, network engineering, systems administration. Germany.",
     )
     prose(
         "about",
