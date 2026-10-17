@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/final.png?v=44" alt="Automating IT operations with AI-driven precision" width="100%" />
+  <img src="assets/banner.png" alt="Automating IT operations with AI-driven precision" width="100%" />
 </p>
 
 <p align="center">
