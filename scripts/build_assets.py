@@ -82,458 +82,6 @@ def write(name: str, svg: str) -> None:
     print(f"wrote assets/{name}")
 
 
-def gradient_defs(uid: str) -> str:
-    """Flat frame paints: a hairline border and no glow."""
-    return f"""
-  <defs>
-    <linearGradient id="{uid}-edge"><stop offset="0" stop-color="{LINE}"/></linearGradient>
-    <linearGradient id="{uid}-glow"><stop offset="0" stop-color="{BG}" stop-opacity="0"/></linearGradient>
-  </defs>"""
-
-
-# --------------------------------------------------------------------------
-# Terminal card
-# --------------------------------------------------------------------------
-
-TERMINAL = [
-    ("cmd", "whoami"),
-    ("out", "Muhammad Hammad · IT Infrastructure Engineer · Göttingen, Germany"),
-    ("cmd", "cat focus.txt"),
-    ("out", "Cloud infrastructure (Azure / AWS) · DevOps & automation"),
-    ("out", "Network engineering · Systems administration · Security"),
-    ("cmd", "cat principles.md"),
-    ("out", "Automate the second time · No SSH, no long-lived keys · Every alarm has a runbook"),
-    ("cmd", "ls ~/now"),
-    ("now", "it-engineer@kontinental   msc-data-science@uni-goettingen   open-to-roles: worldwide"),
-]
-
-
-def terminal() -> None:
-    width, line_h, top = 900, 24, 62
-    height = top + line_h * len(TERMINAL) + 34
-    rows = []
-    for i, (kind, text) in enumerate(TERMINAL):
-        y = top + i * line_h
-        delay = 0.35 + i * 0.45
-        if kind == "cmd":
-            body = (
-                f'<tspan fill="{ACCENT}">$ </tspan>'
-                f'<tspan fill="{TEXT}">{escape(text)}</tspan>'
-            )
-        elif kind == "now":
-            body = f'<tspan fill="{AMBER}">{escape(text)}</tspan>'
-        else:
-            body = f'<tspan fill="{MUTED}">{escape(text)}</tspan>'
-        rows.append(
-            f'<text class="l" x="28" y="{y}">{body}</text>'
-        )
-    cursor_y = top + line_h * len(TERMINAL)
-    cursor_delay = 0.35 + len(TERMINAL) * 0.45
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="whoami: Muhammad Hammad, IT Infrastructure Engineer">
-  <title>whoami</title>
-  {gradient_defs("t")}
-  <style>
-    text {{ font-family: {MONO}; font-size: 14px; }}
-  </style>
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="{BG}" stroke="url(#t-edge)"/>
-  <rect x="1" y="1" width="{width - 2}" height="{height - 2}" rx="14" fill="url(#t-glow)"/>
-  <rect x="24" y="19" width="8" height="8" rx="1" fill="{ACCENT}"/>
-  <text x="40" y="28" fill="{MUTED}" style="font-size:12px">~/muhammad-hammad</text>
-  <text x="{width - 24}" y="28" text-anchor="end" fill="{MUTED}" style="font-size:12px">bash</text>
-  <line x1="1" y1="44" x2="{width - 1}" y2="44" stroke="{LINE}"/>
-  {"".join(rows)}
-  <text class="cur" x="28" y="{cursor_y}"><tspan fill="{ACCENT}">$ </tspan><tspan fill="{TEXT}">▌</tspan></text>
-</svg>"""
-    write("terminal.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Project cards
-# --------------------------------------------------------------------------
-
-PROJECTS = [
-    {
-        "slug": "aws-terraform-platform",
-        "kind": "PLATFORM · DEVSECOPS",
-        "title": "aws-terraform-platform",
-        "lines": [
-            "Self-healing AWS in Terraform across two AZs.",
-            "Keyless OIDC CI/CD, KMS, GuardDuty, CloudTrail.",
-        ],
-        "flow": ["git push", "OIDC", "terraform", "AWS · 2 AZ"],
-        "stack": ["Terraform", "AWS", "GitHub Actions", "Checkov"],
-        "proof": "15 tests · 0 failed checks",
-    },
-    {
-        "slug": "Infotech-Wizard",
-        "kind": "AIOPS · RAG",
-        "title": "Infotech-Wizard",
-        "lines": [
-            "Private GenAI helpdesk: retrieval over 3,531",
-            "resolved tickets in 5 languages, local LLM.",
-        ],
-        "flow": ["ticket", "embed", "FAISS", "local LLM", "answer"],
-        "stack": ["FastAPI", "FAISS", "PyTorch", "React"],
-        "proof": "3,531 tickets · 5 languages",
-    },
-    {
-        "slug": "pfSense-Firewall-Lab",
-        "kind": "NETWORK SECURITY",
-        "title": "pfSense-Firewall-Lab",
-        "lines": [
-            "Firewall policy as code, rendered to pfSense XML",
-            "and audited for risky rules before deployment.",
-        ],
-        "flow": ["policy.toml", "render", "audit", "pfSense"],
-        "stack": ["pfSense", "Python", "OpenVPN", "CI"],
-        "proof": "22 tests · 0 findings",
-    },
-    {
-        "slug": "nova2labs",
-        "kind": "FULL-STACK · CLOUD",
-        "title": "nova2labs",
-        "lines": [
-            "AI and cloud engineering studio: server-rendered",
-            "React, generative artwork, SMTP lead pipeline.",
-        ],
-        "flow": ["visitor", "SSR", "Vercel edge", "SMTP", "inbox"],
-        "stack": ["React 19", "TanStack Start", "SSR", "Vercel"],
-        "proof": "live · nova2labs.com",
-    },
-    {
-        "slug": "velqatechnologies",
-        "kind": "WEB · EDGE",
-        "title": "velqatechnologies",
-        "lines": [
-            "Company website for a BPO firm: 33 statically",
-            "exported routes served from the edge.",
-        ],
-        "flow": ["next build", "33 routes", "edge CDN", "visitor"],
-        "stack": ["Next.js", "TypeScript", "Tailwind"],
-        "proof": "live · CI",
-    },
-    {
-        "slug": "nnapprox",
-        "kind": "AI RESEARCH",
-        "title": "nnapprox",
-        "lines": [
-            "Deep ReLU network approximation: closed-form",
-            "constructions against greedy growing axons.",
-        ],
-        "flow": None,  # drawn as a curve and its ReLU approximation
-        "stack": ["PyTorch", "NumPy", "Python"],
-        "proof": "33 tests · O(n⁻²)",
-    },
-]
-
-
-def chip_width(label: str) -> int:
-    return int(len(label) * 7.1) + 20
-
-
-def card_defs(uid: str) -> str:
-    return f"""
-  <defs>
-    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
-    <radialGradient id="{uid}-halo" cx="0.95" cy="0" r="0.8"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".08"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-    <filter id="{uid}-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>"""
-
-
-def flow_diagram(uid: str, nodes: list[str], cy: int, x0: int, x1: int) -> str:
-    """A pipeline of boxes with a packet travelling through them."""
-    widths = [len(t) * 6.5 + 18 for t in nodes]
-    gap = (x1 - x0 - sum(widths)) / (len(nodes) - 1)
-    xs, x = [], float(x0)
-    for wd in widths:
-        xs.append(x)
-        x += wd + gap
-    first, last = xs[0] + widths[0] / 2, xs[-1] + widths[-1] / 2
-    out = [f'<line x1="{first:.1f}" y1="{cy}" x2="{last:.1f}" y2="{cy}" stroke="{MUTED}" stroke-opacity=".55" stroke-width="1.5"/>']
-    for i, (t, bx, wd) in enumerate(zip(nodes, xs, widths)):
-        end = i == len(nodes) - 1
-        stroke = ACCENT if end else LINE
-        fill_t = ACCENT if end else TEXT
-        out.append(
-            f'<g class="node">'
-            f'<rect x="{bx:.1f}" y="{cy - 13}" width="{wd:.1f}" height="26" rx="6" fill="{BG}" stroke="{stroke}"/>'
-            f'<text x="{bx + wd / 2:.1f}" y="{cy + 4}" text-anchor="middle" class="nd" fill="{fill_t}">{escape(t)}</text></g>'
-        )
-    return "".join(out)
-
-
-def relu_diagram(uid: str, cy: int, x0: int, x1: int) -> str:
-    """A smooth target function and the piecewise-linear ReLU net that approximates it."""
-    import math
-
-    top, bot = cy - 20, cy + 20
-
-    def f(t: float) -> float:
-        return 0.5 + 0.32 * math.sin(2 * math.pi * 1.15 * t + 0.4) + 0.12 * math.sin(2 * math.pi * 3 * t)
-
-    def pt(t: float) -> tuple[float, float]:
-        return x0 + t * (x1 - x0 - 70), bot - f(t) * (bot - top)
-
-    smooth = " ".join(f"{'M' if i == 0 else 'L'}{pt(i / 80)[0]:.1f},{pt(i / 80)[1]:.1f}" for i in range(81))
-    knots = [pt(i / 8) for i in range(9)]
-    relu = " ".join(f"{'M' if i == 0 else 'L'}{x:.1f},{y:.1f}" for i, (x, y) in enumerate(knots))
-    dots = "".join(
-        f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="{BG}" stroke="{ACCENT}" stroke-width="1.5" class="node"/>'
-        for i, (x, y) in enumerate(knots)
-    )
-    return (
-        f'<path d="{smooth}" fill="none" stroke="{MUTED}" stroke-opacity=".6" stroke-width="1.5" stroke-dasharray="2 3"/>'
-        f'<path d="{relu}" fill="none" stroke="{ACCENT}" stroke-width="2" pathLength="100" class="drawn" filter="url(#{uid}-glow)"/>'
-        f"{dots}"
-        f'<text x="{x1}" y="{cy - 6}" text-anchor="end" class="nd" fill="{MUTED}">f(x)</text>'
-        f'<text x="{x1}" y="{cy + 12}" text-anchor="end" class="nd" fill="{ACCENT}">ReLU net</text>'
-    )
-
-
-def card(p: dict) -> None:
-    w, h = 430, 236
-    uid = p["slug"].lower()
-    chips, x = [], 22
-    for i, s in enumerate(p["stack"]):
-        cw = chip_width(s)
-        chips.append(
-            f'<g class="chipg">'
-            f'<rect x="{x}" y="194" width="{cw}" height="24" rx="12" fill="{PANEL}" stroke="{LINE}"/>'
-            f'<text x="{x + cw / 2}" y="210" text-anchor="middle" class="chip">{escape(s)}</text></g>'
-        )
-        x += cw + 8
-    desc = "".join(
-        f'<text x="22" y="{88 + i * 19}" class="d">{escape(line)}</text>' for i, line in enumerate(p["lines"])
-    )
-    band_y, cy = 124, 153
-    diagram = flow_diagram(uid, p["flow"], cy, 34, w - 34) if p["flow"] else relu_diagram(uid, cy, 34, w - 34)
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(p['title'])}">
-  <title>{escape(p['title'])}</title>
-  {card_defs(uid)}
-  <style>
-    text {{ font-family: {SANS}; }}
-    .k, .t, .chip, .p, .nd {{ font-family: {MONO}; }}
-    .k {{ font-size: 10.5px; letter-spacing: 1.4px; fill: {MUTED}; }}
-    .t {{ font-size: 20px; fill: {TEXT}; font-weight: 700; }}
-    .d {{ font-size: 12.5px; fill: {MUTED}; }}
-    .chip {{ font-size: 11px; fill: {TEXT}; }}
-    .p {{ font-size: 11px; fill: {ACCENT}; }}
-    .nd {{ font-size: 10.5px; }}
-  </style>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="{BG}" stroke="{LINE}"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-dots)"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="12" fill="url(#{uid}-halo)"/>
-  <circle cx="26" cy="28" r="3.5" fill="{ACCENT}" class="led"/>
-  <text x="38" y="32" class="k">{escape(p['kind'])}</text>
-  <text x="{w - 22}" y="32" text-anchor="end" class="p">{escape(p['proof'])}</text>
-  <text x="22" y="64" class="t">{escape(p['title'])}</text>
-  {desc}
-  <rect x="16" y="{band_y}" width="{w - 32}" height="58" rx="9" fill="{PANEL}" fill-opacity=".55" stroke="{LINE}" stroke-dasharray="2 4"/>
-  {diagram}
-  {"".join(chips)}
-</svg>"""
-    write(f"projects/{p['slug']}.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Impact panel
-# --------------------------------------------------------------------------
-
-IMPACT = [
-    ("25 h/wk", ["onboarding, provisioning", "and patching automated"], "TESTSOLUTIONS"),
-    ("−75%", ["device setup time on", "180+ endpoints, 12 sites"], "TESTSOLUTIONS"),
-    ("4h→35m", ["ML infrastructure", "deploys through CI/CD"], "UNI GÖTTINGEN"),
-    ("−85%", ["vulnerabilities, through", "automated scan gates"], "UNI GÖTTINGEN"),
-    ("265+", ["government endpoints at", "100% patch compliance"], "KTDMC"),
-]
-
-
-def impact() -> None:
-    w, top, th, gap = 900, 64, 126, 10
-    h = top + th + 24
-    tw = (w - 56 - gap * (len(IMPACT) - 1)) / len(IMPACT)
-    tiles = []
-    for i, (metric, lines, where) in enumerate(IMPACT):
-        x = 28 + i * (tw + gap)
-        d = 0.2 + i * 0.13
-        body = "".join(
-            f'<text x="{x + 14:.1f}" y="{top + 70 + j * 16}" class="lb">{escape(line)}</text>' for j, line in enumerate(lines)
-        )
-        tiles.append(
-            f'<g class="tile">'
-            f'<rect x="{x:.1f}" y="{top}" width="{tw:.1f}" height="{th}" rx="10" fill="{PANEL}" fill-opacity=".7" stroke="{LINE}"/>'
-            f'<rect x="{x + 14:.1f}" y="{top}" width="{tw - 28:.1f}" height="2" fill="{ACCENT}" class="bar"/>'
-            f'<text x="{x + 14:.1f}" y="{top + 44}" class="m">{escape(metric)}</text>'
-            f"{body}"
-            f'<text x="{x + 14:.1f}" y="{top + th - 14}" class="wh">{escape(where)}</text></g>'
-        )
-    svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Selected impact">
-  <title>Selected impact</title>
-  <defs>
-    <pattern id="i-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".55"/></pattern>
-    <radialGradient id="i-halo" cx="0.5" cy="0" r="0.7"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".07"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-  </defs>
-  <style>
-    text {{ font-family: {SANS}; }}
-    .cmd, .m, .wh, .meta {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {TEXT}; }}
-    .meta {{ font-size: 11px; fill: {MUTED}; }}
-    .m {{ font-size: 25px; font-weight: 700; fill: {ACCENT}; }}
-    .lb {{ font-size: 11.5px; fill: {TEXT}; opacity: .85; }}
-    .wh {{ font-size: 9.5px; letter-spacing: 1.3px; fill: {MUTED}; }}
-  </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{BG}" stroke="{LINE}"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-dots)"/>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="url(#i-halo)"/>
-  <text x="28" y="38" class="cmd"><tspan fill="{ACCENT}">~/impact</tspan><tspan fill="{MUTED}"> $ </tspan>cat outcomes.log</text>
-  <rect x="{28 + 27 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 30}" y="38" text-anchor="end" class="meta">measured in production</text>
-  {"".join(tiles)}
-</svg>"""
-    write("impact.svg", svg)
-
-
-# --------------------------------------------------------------------------
-# Certifications
-# --------------------------------------------------------------------------
-
-OU = "https://www.open.edu/openlearn/"
-UDEMY = "https://www.udemy.com/certificate/"
-COURSERA = "https://www.coursera.org/account/accomplishments/verify/"
-
-# Featured credentials, grouped into tracks. (name, issuer, mark, year, hours, link, link label)
-TRACKS = [
-    ("infrastructure · networking · security", [
-        ("System Administration and IT Infrastructure Services", "Google · Coursera", "G", 2025, "23 h", COURSERA + "29N5ZLK6BVWW", "verify"),
-        ("Discovering Computer Networks: hands-on in the Open Networking Lab", "The Open University", "OU", 2023, "24 h",
-         OU + "digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview", "course"),
-        ("Information Security Basics for IT Support Technicians", "Udemy", "U", 2022, "", UDEMY + "UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/", "verify"),
-        ("Successful IT Systems", "The Open University", "OU", 2023, "", OU + "digital-computing/successful-it-systems/content-section-0", "course"),
-    ]),
-    ("software engineering", [
-        ("Full Stack Software Developer Assessment", "IBM · Coursera", "IBM", 2023, "", COURSERA + "74NSF2JALFZV", "verify"),
-        ("The Complete React, Redux, Node, Express and MySQL Developer Course", "Udemy", "U", 2022, "8 h", UDEMY + "UC-0b67e267-2b09-40d7-a980-d2f5b62876fe/", "verify"),
-        ("The Database Development Life Cycle", "The Open University", "OU", 2023, "12 h", OU + "digital-computing/the-database-development-life-cycle/content-section-0", "course"),
-        ("SQL: The Complete Introduction to SQL Programming", "Udemy", "U", 2022, "3.5 h", UDEMY + "UC-be70fe74-aa67-4e6c-afad-5cacc8d371ae/", "verify"),
-    ]),
-    ("data · machine learning · ai", [
-        ("The Data Science Course: Complete Data Science Bootcamp", "Udemy", "U", 2022, "30 h", UDEMY + "UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/", "verify"),
-        ("Python for Machine Learning with NumPy, Pandas and Matplotlib", "Udemy", "U", 2022, "7 h", UDEMY + "UC-b6509a21-528b-43bf-b0ae-f7458612d212/", "verify"),
-        ("Python: Introduction to Data Science and Machine Learning A–Z", "Udemy", "U", 2022, "7.5 h", UDEMY + "UC-4c5d2d2a-dade-4cee-a7c4-0fd2ad689c90/", "verify"),
-        ("Exploring Data: Graphs and Numerical Summaries", "The Open University", "OU", 2023, "20 h",
-         OU + "science-maths-technology/mathematics-statistics/exploring-data-graphs-and-numerical-summaries/content-section-0", "course"),
-    ]),
-]
-TOTAL_CREDENTIALS = 29
-MORE = "Java · C++ · PHP · R · HTML & CSS · Android · big data · Python ×2 · AI & the future of work · mathematics · modelling"
-
-
-def _wrap(text: str, limit: int) -> list[str]:
-    lines, cur = [], ""
-    for word in text.split():
-        if cur and len(cur) + 1 + len(word) > limit:
-            lines.append(cur)
-            cur = word
-        else:
-            cur = f"{cur} {word}".strip()
-    lines.append(cur)
-    return lines
-
-
-def _hexagon(cx: float, cy: float, r: float) -> str:
-    import math
-
-    return " ".join(
-        f"{cx + r * math.cos(math.radians(60 * k - 90)):.1f},{cy + r * math.sin(math.radians(60 * k - 90)):.1f}" for k in range(6)
-    )
-
-
-_CERT_STYLE = f"""
-  <style>
-    text {{ font-family: {SANS}; }}
-    .m, .cmd, .meta, .tag, .tr, .mk {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {TEXT}; }}
-    .meta {{ font-size: 11px; fill: {MUTED}; }}
-    .nm {{ font-size: 13px; font-weight: 600; fill: {TEXT}; }}
-    .is {{ font-size: 11px; fill: {MUTED}; }}
-    .mk {{ font-size: 10px; font-weight: 700; fill: {ACCENT}; }}
-    .tag {{ font-size: 10px; fill: {MUTED}; }}
-    .tr {{ font-size: 11px; letter-spacing: 1.6px; fill: {MUTED}; }}
-  </style>"""
-
-
-def _cert_frame(w: int, h: int, uid: str) -> str:
-    return f"""
-  <defs>
-    <pattern id="{uid}-dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="{LINE}" opacity=".5"/></pattern>
-    <radialGradient id="{uid}-halo" cx="0" cy="0" r="0.9"><stop offset="0" stop-color="{ACCENT}" stop-opacity=".06"/><stop offset="1" stop-color="{ACCENT}" stop-opacity="0"/></radialGradient>
-  </defs>{_CERT_STYLE}
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="{BG}" stroke="{LINE}"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-dots)"/>
-  <rect x="0.5" y="0.5" width="{w - 1}" height="{h - 1}" rx="10" fill="url(#{uid}-halo)"/>"""
-
-
-def certs() -> None:
-    """Header, track labels and one small card per credential, laid out as a table in the README."""
-    shown = sum(len(items) for _, items in TRACKS)
-
-    w, h = 900, 60
-    write("certifications/header.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Certifications">
-  <title>Certifications</title>{_cert_frame(w, h, "hd")}
-  <text x="26" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>ls --featured</text>
-  <rect x="{26 + 24 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 26}" y="35" text-anchor="end" class="meta">{TOTAL_CREDENTIALS} credentials · Google · IBM · Open University · Udemy · 6 shown</text>
-</svg>""")
-
-    for t, (track, items) in enumerate(TRACKS, 1):
-        w, h = 880, 40
-        write(f"certifications/track-{t}.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(track)}">
-  <title>{escape(track)}</title>{_cert_frame(w, h, f"tr{t}")}
-  <text x="20" y="25" class="tr in"><tspan fill="{ACCENT}">{t:02d}</tspan>  {escape(track.upper())}</text>
-  <line x1="{20 + (len(track) + 4) * 8.3:.0f}" y1="21" x2="{w - 150}" y2="21" stroke="{LINE}"/>
-  <text x="{w - 20}" y="25" text-anchor="end" class="tr">{len(items)} credentials</text>
-</svg>""")
-
-        for k, (name, issuer, mark, year, hours, _link, label) in enumerate(items, 1):
-            w, h = 430, 92
-            uid = f"t{t}c{k}"
-            d = 0.1 + (k - 1) * 0.1
-            lines = _wrap(name, 46)[:2]
-            meta = " · ".join(x for x in (issuer, str(year), hours) if x)
-            title = "".join(f'<text x="24" y="{34 + j * 18}" class="nm">{escape(line)}</text>' for j, line in enumerate(lines))
-            tag_w = len(label) * 6.2 + 34
-            write(f"certifications/{t}-{k}.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="{escape(name)}">
-  <title>{escape(name)}</title>{_cert_frame(w, h, uid)}
-  <g class="hx">
-    <rect x="0" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
-  </g>
-  <g class="in">
-    {title}
-    <text x="24" y="{34 + len(lines) * 18 + 4}" class="is">{escape(meta)}</text>
-  </g>
-  <rect x="{w - 16 - tag_w:.1f}" y="{h - 30}" width="{tag_w:.1f}" height="20" rx="10" fill="none" stroke="{LINE}"/>
-  <text x="{w - 16 - tag_w / 2:.1f}" y="{h - 16}" text-anchor="middle" class="tag">{label} ↗</text>
-</svg>""")
-
-    w, h = 880, 46
-    write("certifications/more.svg", f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="More courses">
-  <title>More courses</title>{_cert_frame(w, h, "mo")}
-  <text x="26" y="28" class="meta"><tspan fill="{ACCENT}">+ {TOTAL_CREDENTIALS - shown} more</tspan>   {escape(MORE)}</text>
-</svg>""")
-
-
-# --------------------------------------------------------------------------
-# Career timeline
-# --------------------------------------------------------------------------
-
-# The career is drawn as `git log --graph`: every role is a commit on main,
 # growing upwards from the first job, and the M.Sc. is a branch that forks
 # at the university internship and merges back in.
 
@@ -655,7 +203,7 @@ def timeline() -> None:
   <text x="{w - 30}" y="{fy + 2}" text-anchor="end" class="foot">muhammadhammad.vercel.app</text>
 </svg>"""
 
-    write("career.svg", svg)
+    write("career-panel.svg", svg)
 
 
 # --------------------------------------------------------------------------
@@ -756,6 +304,21 @@ THEMES = {
 }
 
 
+def _wrap_chars(text: str, limit: int) -> list:
+    """Greedy wrap on a character count, for the short labels under each logo."""
+    words, lines, cur = text.split(), [], ""
+    for wd in words:
+        trial = f"{cur} {wd}".strip()
+        if not cur or len(trial) <= limit:
+            cur = trial
+        else:
+            lines.append(cur)
+            cur = wd
+    if cur:
+        lines.append(cur)
+    return lines
+
+
 def toolbox() -> None:
     """Two builds of the same panel; the README picks one with prefers-color-scheme."""
     for mode, t in THEMES.items():
@@ -786,7 +349,7 @@ def toolbox() -> None:
                 logo = _logo(icon, cx - size / 2, y + 20 - size / 2, size, f"{mode[0]}{r}{c}", dark)
                 labels = "".join(
                     f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
-                    for k, part in enumerate(_wrap(label, 12))
+                    for k, part in enumerate(_wrap_chars(label, 12))
                 )
                 rows.append(f'<g class="logo">{logo}{labels}</g>')
         svg = f"""
@@ -809,14 +372,8 @@ def toolbox() -> None:
         write(f"brands-{mode}.svg", svg)
 
 
-if __name__ == "__main__":
-    terminal()
-    impact()
-    for project in PROJECTS:
-        card(project)
-    certs()
-    timeline()
-    toolbox()
+timeline()
+toolbox()
 
 
 # ---------------------------------------------------------------------------
@@ -831,7 +388,6 @@ HEADINGS = [
     ("environment", "The environment I run"),
     ("toolbox", "Toolbox"),
     ("projects", "Projects"),
-    ("toolbox", "Toolbox"),
     ("career", "Career"),
     ("certifications", "Certifications"),
 ]
@@ -1116,7 +672,6 @@ CERT_CARDS = [
     ("Information Security", "Udemy", "2022"),
     ("Database Development", "The Open University", "2023"),
     ("Computer Systems", "The Open University", "2023"),
-    ("Exploring Data", "The Open University", "2023"),
 ]
 
 
