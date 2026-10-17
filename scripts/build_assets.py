@@ -830,6 +830,8 @@ if __name__ == "__main__":
 
 HEADINGS = [
     ("what-i-do", "What I do"),
+    ("environment", "The environment I run"),
+    ("toolbox", "Toolbox"),
     ("featured-work", "Featured work"),
     ("toolbox", "Toolbox"),
     ("career", "Career"),
@@ -1018,7 +1020,7 @@ def environment() -> None:
         if i:
             rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1" marker-end="url(#eh)"/>' % (nx + nw // 2, int(y - gap), y - 3, LINE))
         rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"/>' % (nx, y, nw, nh, PANEL, LINE))
-        rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, ACCENT if i == 0 else LINE))
+        rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, LINE))
         rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 24, escape(name)))
         rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 42, escape(sub)))
         rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 24, i + 1))
@@ -1039,7 +1041,6 @@ def environment() -> None:
         + '<defs><marker id="eh" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="%s"/></marker></defs>' % LINE
         + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}.cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}.dz{font-size:10px;fill:%s;}%s</style>" % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, MONO, LINE, MUTED, TEXT, anim_css)
         + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
-        + '<text x="%d" y="34" class="z">THE ENVIRONMENT I RUN</text>' % pad
         + '<text x="%d" y="34" text-anchor="end" class="ft">one request, end to end</text>' % (w - pad)
         + "".join(rows)
         + '<text x="%d" y="%d" class="ft">Dashed lines are how it got there; solid lines are traffic. I have built and run every box on this diagram.</text>' % (pad, h - 16)

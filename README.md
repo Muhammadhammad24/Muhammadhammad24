@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="assets/final.png?v=23" alt="Automating IT operations with AI-driven precision" width="100%" />
+  <img src="assets/final.png?v=24" alt="Automating IT operations with AI-driven precision" width="100%" />
 </p>
 
 <p align="center">
-  <img src="assets/prose/name.svg?v=23" alt="Muhammad Hammad · IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration. Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen." width="100%" />
+  <img src="assets/prose/name.svg?v=24" alt="Muhammad Hammad · IT Infrastructure Engineer. Cloud infrastructure (Azure / AWS) · DevOps &amp; automation · Network engineering · Systems administration. Göttingen, Germany · IT engineering since 2019 · M.Sc. Data Science, University of Göttingen." width="100%" />
 </p>
 
 <p align="center">
@@ -12,63 +12,67 @@
   <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-Get%20in%20touch-0B0B0D?style=for-the-badge&logo=gmail&logoColor=FFFFFF&labelColor=000000" alt="Email"/></a>
 </p>
 
-<img src="assets/headings/what-i-do.svg?v=23" alt="What I do" width="100%" />
+<img src="assets/headings/what-i-do.svg?v=24" alt="What I do" width="100%" />
 
-<img src="assets/prose/what-i-do.svg?v=23" alt="I keep infrastructure boring, meaning secure, observable and automated, so the people who depend on it never have to think about it. I work across the whole stack: identity (Active Directory, Entra ID, Okta), endpoints (Intune, Autopilot, Jamf), networks (Cisco, Juniper, pfSense, VPN), cloud (Azure, AWS) and the service desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines." width="100%" />
+<img src="assets/prose/what-i-do.svg?v=24" alt="I keep infrastructure boring, meaning secure, observable and automated, so the people who depend on it never have to think about it. I work across the whole stack: identity (Active Directory, Entra ID, Okta), endpoints (Intune, Autopilot, Jamf), networks (Cisco, Juniper, pfSense, VPN), cloud (Azure, AWS) and the service desk on top. The repetitive parts become code: PowerShell, Python, Terraform and pipelines." width="100%" />
+
+<img src="assets/headings/environment.svg?v=24" alt="The environment I run" width="100%" />
 
 <p align="center">
-  <img src="assets/environment.svg?v=23" alt="The environment I run, one request end to end: managed endpoint, identity, zero-trust edge, workload, data and recovery, observability. Built and governed by a control plane of Git, CI/CD, infrastructure as code and policy." width="100%" />
+  <img src="assets/environment.svg?v=24" alt="The environment I run, one request end to end: managed endpoint, identity, zero-trust edge, workload, data and recovery, observability. Built and governed by a control plane of Git, CI/CD, infrastructure as code and policy." width="100%" />
 </p>
 
 <p align="center">
-  <img src="assets/impact.svg?v=23" alt="Selected impact: 25 hours a week of onboarding, provisioning and patching automated on the TestSolutions contract; 75% faster device setup for 180+ endpoints across 12 locations on the TestSolutions contract; ML infrastructure deployment cut from 4 hours to 35 minutes at the University of Göttingen; 85% fewer vulnerabilities through automated scanning gates at the University of Göttingen; 265+ government endpoints at 100% patch compliance at KTDMC." width="100%"/>
+  <img src="assets/impact.svg?v=24" alt="Selected impact: 25 hours a week of onboarding, provisioning and patching automated on the TestSolutions contract; 75% faster device setup for 180+ endpoints across 12 locations on the TestSolutions contract; ML infrastructure deployment cut from 4 hours to 35 minutes at the University of Göttingen; 85% fewer vulnerabilities through automated scanning gates at the University of Göttingen; 265+ government endpoints at 100% patch compliance at KTDMC." width="100%"/>
 </p>
 
-<img src="assets/headings/featured-work.svg?v=23" alt="Featured work" width="100%" />
+<img src="assets/headings/featured-work.svg?v=24" alt="Featured work" width="100%" />
 
 <table>
   <tr>
-    <td width="50%"><a href="https://github.com/Muhammadhammad24/aws-terraform-platform"><img src="assets/projects/aws-terraform-platform.svg?v=23" alt="aws-terraform-platform: self-healing AWS in Terraform with keyless CI/CD" width="100%"/></a></td>
-    <td width="50%"><a href="https://github.com/Muhammadhammad24/Infotech-Wizard"><img src="assets/projects/Infotech-Wizard.svg?v=23" alt="Infotech-Wizard: private GenAI helpdesk with multilingual RAG" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/aws-terraform-platform"><img src="assets/projects/aws-terraform-platform.svg?v=24" alt="aws-terraform-platform: self-healing AWS in Terraform with keyless CI/CD" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/Infotech-Wizard"><img src="assets/projects/Infotech-Wizard.svg?v=24" alt="Infotech-Wizard: private GenAI helpdesk with multilingual RAG" width="100%"/></a></td>
   </tr>
   <tr>
-    <td width="50%"><a href="https://github.com/Muhammadhammad24/pfSense-Firewall-Lab"><img src="assets/projects/pfSense-Firewall-Lab.svg?v=23" alt="pfSense-Firewall-Lab: firewall policy as code with automated audits" width="100%"/></a></td>
-    <td width="50%"><a href="https://www.nova2labs.com"><img src="assets/projects/nova2labs.svg?v=23" alt="nova2labs: AI and cloud engineering studio website" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/pfSense-Firewall-Lab"><img src="assets/projects/pfSense-Firewall-Lab.svg?v=24" alt="pfSense-Firewall-Lab: firewall policy as code with automated audits" width="100%"/></a></td>
+    <td width="50%"><a href="https://www.nova2labs.com"><img src="assets/projects/nova2labs.svg?v=24" alt="nova2labs: AI and cloud engineering studio website" width="100%"/></a></td>
   </tr>
   <tr>
-    <td width="50%"><a href="https://github.com/Muhammadhammad24/velqatechnologies"><img src="assets/projects/velqatechnologies.svg?v=23" alt="velqatechnologies: edge-delivered company website" width="100%"/></a></td>
-    <td width="50%"><a href="https://github.com/Muhammadhammad24/nnapprox"><img src="assets/projects/nnapprox.svg?v=23" alt="nnapprox: deep ReLU network approximation research" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/velqatechnologies"><img src="assets/projects/velqatechnologies.svg?v=24" alt="velqatechnologies: edge-delivered company website" width="100%"/></a></td>
+    <td width="50%"><a href="https://github.com/Muhammadhammad24/nnapprox"><img src="assets/projects/nnapprox.svg?v=24" alt="nnapprox: deep ReLU network approximation research" width="100%"/></a></td>
   </tr>
 </table>
 
-<a href="https://muhammadhammad.vercel.app"><img src="assets/prose/ci-note.svg?v=23" alt="Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app" width="100%" /></a>
+<a href="https://muhammadhammad.vercel.app"><img src="assets/prose/ci-note.svg?v=24" alt="Every public repository is tested in CI, and each README states what exists and what is on the roadmap. More work at muhammadhammad.vercel.app" width="100%" /></a>
+
+<img src="assets/headings/toolbox.svg?v=24" alt="Toolbox" width="100%" />
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=23"/>
-  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=23"/>
-  <img src="assets/brands-dark.svg?v=23" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=24"/>
+  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=24"/>
+  <img src="assets/brands-dark.svg?v=24" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
 </picture>
 
-<img src="assets/headings/career.svg?v=23" alt="Career" width="100%" />
+<img src="assets/headings/career.svg?v=24" alt="Career" width="100%" />
 
 <p align="center">
-  <img src="assets/career.svg?v=23" alt="Career, newest first, all roles full-time except the TestSolutions contract and the internship: IT Engineer at Kontinental Establishment since 2025; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevOps internship, University of Göttingen 2024; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
+  <img src="assets/career.svg?v=24" alt="Career, newest first, all roles full-time except the TestSolutions contract and the internship: IT Engineer at Kontinental Establishment since 2025; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevOps internship, University of Göttingen 2024; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
 </p>
 
-<img src="assets/headings/certifications.svg?v=23" alt="Certifications" width="100%" />
+<img src="assets/headings/certifications.svg?v=24" alt="Certifications" width="100%" />
 
 <p align="center">
-  <img src="assets/certifications/header.svg?v=23" alt="Certifications: 29 credentials from Google, IBM, The Open University and Udemy; 12 featured below" width="100%"/>
+  <img src="assets/certifications/header.svg?v=24" alt="Certifications: 29 credentials from Google, IBM, The Open University and Udemy; 12 featured below" width="100%"/>
 </p>
 
 <table>
-  <tr><td width="50%"><a href="https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW"><img src="assets/certifications/1-1.svg?v=23" alt="System Administration and IT Infrastructure Services, Google · Coursera, 2025. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV"><img src="assets/certifications/2-1.svg?v=23" alt="Full Stack Software Developer Assessment, IBM · Coursera, 2023. Verify." width="100%"/></a></td></tr>
-  <tr><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview"><img src="assets/certifications/1-2.svg?v=23" alt="Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023. Course page." width="100%"/></a></td><td width="50%"><a href="https://www.udemy.com/certificate/UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/"><img src="assets/certifications/1-3.svg?v=23" alt="Information Security Basics for IT Support Technicians, Udemy, 2022. Verify." width="100%"/></a></td></tr>
-  <tr><td width="50%"><a href="https://www.udemy.com/certificate/UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/"><img src="assets/certifications/3-1.svg?v=23" alt="The Data Science Course: Complete Data Science Bootcamp, Udemy, 2022. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/the-database-development-life-cycle/content-section-0"><img src="assets/certifications/2-3.svg?v=23" alt="The Database Development Life Cycle, The Open University, 2023. Course page." width="100%"/></a></td></tr>
+  <tr><td width="50%"><a href="https://www.coursera.org/account/accomplishments/verify/29N5ZLK6BVWW"><img src="assets/certifications/1-1.svg?v=24" alt="System Administration and IT Infrastructure Services, Google · Coursera, 2025. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.coursera.org/account/accomplishments/verify/74NSF2JALFZV"><img src="assets/certifications/2-1.svg?v=24" alt="Full Stack Software Developer Assessment, IBM · Coursera, 2023. Verify." width="100%"/></a></td></tr>
+  <tr><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/discovering-computer-networks-hands-on-the-open-networking-lab/content-section-overview"><img src="assets/certifications/1-2.svg?v=24" alt="Discovering Computer Networks: hands-on in the Open Networking Lab, The Open University, 2023. Course page." width="100%"/></a></td><td width="50%"><a href="https://www.udemy.com/certificate/UC-7c6ee425-74e1-489d-908c-d0b201c4ff3c/"><img src="assets/certifications/1-3.svg?v=24" alt="Information Security Basics for IT Support Technicians, Udemy, 2022. Verify." width="100%"/></a></td></tr>
+  <tr><td width="50%"><a href="https://www.udemy.com/certificate/UC-b72e7563-4360-4d02-abf9-47bf7b9dc046/"><img src="assets/certifications/3-1.svg?v=24" alt="The Data Science Course: Complete Data Science Bootcamp, Udemy, 2022. Verify." width="100%"/></a></td><td width="50%"><a href="https://www.open.edu/openlearn/digital-computing/the-database-development-life-cycle/content-section-0"><img src="assets/certifications/2-3.svg?v=24" alt="The Database Development Life Cycle, The Open University, 2023. Course page." width="100%"/></a></td></tr>
 </table>
 
 ---
 
 <p align="center">
-  <a href="mailto:muhammad24997@gmail.com"><img src="assets/prose/footer.svg?v=23" alt="Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate. English (C1) · German (B1) · muhammad24997@gmail.com" width="100%" /></a>
+  <a href="mailto:muhammad24997@gmail.com"><img src="assets/prose/footer.svg?v=24" alt="Open to IT infrastructure, cloud and DevOps roles worldwide, remote or on-site, and happy to relocate. English (C1) · German (B1) · muhammad24997@gmail.com" width="100%" /></a>
 </p>
