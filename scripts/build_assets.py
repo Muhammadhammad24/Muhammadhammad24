@@ -486,7 +486,7 @@ def certs() -> None:
   <title>Certifications</title>{_cert_frame(w, h, "hd")}
   <text x="26" y="35" class="cmd"><tspan fill="{ACCENT}">~/certs</tspan><tspan fill="{MUTED}"> $ </tspan>ls --featured</text>
   <rect x="{26 + 24 * 7.8 + 6:.0f}" y="24" width="8" height="14" fill="{ACCENT}" class="cur"/>
-  <text x="{w - 26}" y="35" text-anchor="end" class="meta">{TOTAL_CREDENTIALS} credentials · Google · IBM · Open University · Udemy · {shown} shown</text>
+  <text x="{w - 26}" y="35" text-anchor="end" class="meta">{TOTAL_CREDENTIALS} credentials · Google · IBM · Open University · Udemy · 6 shown</text>
 </svg>""")
 
     for t, (track, items) in enumerate(TRACKS, 1):
