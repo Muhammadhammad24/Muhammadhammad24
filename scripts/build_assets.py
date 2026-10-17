@@ -794,68 +794,38 @@ THEMES = {
 }
 
 
-def toolbox() -> None:
-    """Two builds of the same panel; the README picks one with prefers-color-scheme."""
-    for mode, t in THEMES.items():
-        dark = mode == "dark"
-        w, top, row_h, label_w, step = 880, 72, 84, 196, 81
-        h = top + row_h * len(TOOLBOX) + 10
-        total = sum(len(items) for _, items in TOOLBOX)
-        rows = []
-        for r, (cat, items) in enumerate(TOOLBOX):
-            y = top + r * row_h
-            if r:
-                rows.append(f'<line x1="26" y1="{y - 10}" x2="{w - 26}" y2="{y - 10}" stroke="{t["line"]}" stroke-dasharray="2 5"/>')
-            rows.append(
-                f'<g class="in" style="animation-delay:{0.1 + r * 0.08:.2f}s">'
-                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led" style="animation-delay:{r * 0.3:.1f}s"/>'
-                f'<text x="44" y="{y + 26}" class="cat">{escape(cat)}</text>'
-                f'<text x="44" y="{y + 44}" class="cnt">{len(items):02d} tools</text></g>'
-            )
-            for c, (label, icon) in enumerate(items):
-                cx = label_w + c * step + step / 2
-                d = 0.2 + r * 0.08 + c * 0.04
-                if icon == "servicenow":  # long wordmark
-                    size = 72
-                elif icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
-                    size = 44
-                else:
-                    size = 32
-                logo = _logo(icon, cx - size / 2, y + 20 - size / 2, size, f"{mode[0]}{r}{c}", dark)
-                labels = "".join(
-                    f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
-                    for k, part in enumerate(_wrap(label, 12))
-                )
-                rows.append(f'<g class="logo" style="animation-delay:{d:.2f}s">{logo}{labels}</g>')
-        svg = f"""
-<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-label="Toolbox">
-  <title>Toolbox</title>
-  <style>
-    text {{ font-family: {SANS}; }}
-    .cmd, .meta, .cnt, .lb {{ font-family: {MONO}; }}
-    .cmd {{ font-size: 13px; fill: {t["text"]}; }}
-    .meta {{ font-size: 11px; fill: {t["muted"]}; }}
-    .cat {{ font-size: 13.5px; font-weight: 600; fill: {t["text"]}; }}
-    .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
-    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
-    .in {{ animation: rin .5s ease-out both; }}
-    .logo {{ transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3,1.6,.5,1) both; }}
-    .led {{ animation: led 2.4s ease-in-out infinite; }}
-    .cur {{ animation: blink 1.05s steps(1) infinite; }}
-    @keyframes rin {{ from {{ opacity: 0; transform: translateX(-10px); }} }}
-    @keyframes pop {{ from {{ opacity: 0; transform: scale(.5); }} }}
-    @keyframes led {{ 50% {{ opacity: .25; }} }}
-    @keyframes blink {{ 50% {{ opacity: 0; }} }}
-    @media (prefers-reduced-motion: reduce) {{ * {{ animation: none !important; }} }}
-  </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
-  <text x="26" y="38" class="cmd"><tspan fill="{t["prompt"]}">~/toolbox</tspan><tspan fill="{t["muted"]}"> $ </tspan>ls --all</text>
-  <rect x="{26 + 20 * 7.8 + 6:.0f}" y="27" width="8" height="14" fill="{t["accent"]}" class="cur"/>
-  <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
-  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
-  {"".join(rows)}
-</svg>"""
-        write(f"brands-{mode}.svg", svg)
+def toolbox() -> None:
+    # Two builds of the same panel; the README picks one with
+    # prefers-color-scheme. Set as type, the way the portfolio Skills section
+    # is: this used to inline 840 brand logo paths, 613 KB in one image and
+    # more than half the whole profile, for decoration the names already carry.
+    alt = "Toolbox. " + ". ".join(
+        cat + ": " + ", ".join(label for label, _ in items) for cat, items in TOOLBOX
+    ) + "."
+    for mode, t in THEMES.items():
+        w, pad, col = 900, 26, 212
+        y = 92
+        rows = []
+        for cat, items in TOOLBOX:
+            rows.append('<text x="%d" y="%d" class="g">%s</text>' % (pad, y, escape(cat)))
+            names = "  ·  ".join(label for label, _ in items)
+            for ln in _wrap(names, 88):
+                rows.append('<text x="%d" y="%d" class="n">%s</text>' % (pad + col, y, escape(ln)))
+                y += 21
+            y += 20
+        h = int(y + 4)
+        total = sum(len(items) for _, items in TOOLBOX)
+        svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
+            + "<style>text{font-family:%s;}.cmd{font-family:%s;font-size:13px;fill:%s;}.meta{font-family:%s;font-size:11px;fill:%s;}.g{font-size:13.5px;font-weight:600;fill:%s;}.n{font-size:13.5px;fill:%s;}</style>" % (SANS, MONO, t["text"], MONO, t["muted"], t["text"], t["muted"])
+            + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, t["bg"], t["line"])
+            + '<text x="%d" y="38" class="cmd"><tspan fill="%s">~/toolbox</tspan><tspan fill="%s"> $ </tspan>ls --all</text>' % (pad, t["prompt"], t["muted"])
+            + '<text x="%d" y="38" text-anchor="end" class="meta">%d tools · %d domains · hands-on</text>' % (w - pad, total, len(TOOLBOX))
+            + '<line x1="%d" y1="54" x2="%d" y2="54" stroke="%s"/>' % (pad, w - pad, t["line"])
+            + "".join(rows)
+            + "</svg>"
+        )
+        write(f"brands-{mode}.svg", svg)
 
 
 if __name__ == "__main__":
