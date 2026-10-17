@@ -867,14 +867,41 @@ build_headings()
 W_PROSE = 900
 
 
+# Text is measured, not estimated. Every guess at an average character
+# advance was wrong in the same direction -- Plex Sans actually runs near
+# 0.445 em, not the 0.515 assumed here for months -- so lines broke early
+# and each block stopped well short of the column it sat in. These are the
+# same woff2 subsets embedded in the SVGs, so the width computed here is
+# the width the browser draws.
+from fontTools.ttLib import TTFont
+
+
+@lru_cache(maxsize=4)
+def _metrics(family: str, weight: int):
+    fname = next(
+        (n for fam, w, n in _FACES if fam == family and w == weight), None
+    )
+    font = TTFont(FONT_DIR / fname)
+    return font["head"].unitsPerEm, font["hmtx"].metrics, font.getBestCmap()
+
+
+def text_width(text: str, size: float, weight: int = 400, mono: bool = False) -> float:
+    """Advance width of `text` in px, from the real font tables."""
+    family = "IBM Plex Mono" if mono else "IBM Plex Sans"
+    upm, hmtx, cmap = _metrics(family, 600 if weight >= 600 else 400)
+    total = 0
+    for ch in text:
+        glyph = cmap.get(ord(ch))
+        total += hmtx[glyph][0] if glyph else int(upm * 0.5)
+    return total / upm * size
+
+
 def _wrap(text: str, size: float, width: int, weight: int = 400) -> list:
-    """Greedy wrap on an estimated advance width; Plex sits near 0.52 em."""
-    per = size * (0.545 if weight >= 600 else 0.515)
-    limit = max(8, int(width / per))
+    """Greedy wrap on the measured advance width."""
     words, lines, cur = text.split(), [], ""
     for wd in words:
         trial = f"{cur} {wd}".strip()
-        if len(trial) <= limit:
+        if not cur or text_width(trial, size, weight) <= width:
             cur = trial
         else:
             lines.append(cur)
@@ -890,16 +917,14 @@ def prose(slug: str, blocks: list, align: str = "middle", label: str = "") -> No
     lines, widest = [], 1.0
     for text, size, weight, colour, gap in blocks:
         chunk = _wrap(text, size, inner, weight)
-        per = size * (0.545 if weight >= 600 else 0.515)
         for ln in chunk:
-            widest = max(widest, len(ln) * per)
+            widest = max(widest, text_width(ln, size, weight))
         lines.append((chunk, size, weight, colour, gap))
 
-    # The viewBox is the widest line, not the nominal measure. The advance
-    # estimate is systematically a few percent off, so cropping the box with
-    # that same estimate cancels the error: whatever the real metrics are,
-    # the longest line lands on the right edge and the block fills its column.
-    W = round(widest + 2)
+    # Back on the shared 900 measure that every other asset uses: now that
+    # the wrap is measured rather than guessed, the longest line genuinely
+    # reaches it instead of stopping short.
+    W = W_PROSE
     rows, y = [], 0
     for chunk, size, weight, colour, gap in lines:
         y += gap
