@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/greybanner.png?v=14" alt="Automating IT operations with AI-driven precision" width="100%" />
+  <img src="assets/final.png?v=14" alt="Automating IT operations with AI-driven precision" width="100%" />
 </p>
 
 <h2 align="center">Muhammad Hammad · IT Infrastructure Engineer</h2>
