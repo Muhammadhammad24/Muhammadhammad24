@@ -21,7 +21,9 @@
 </p>
 
 <p>
-  IT Infrastructure Engineer with 7 years of experience bridging traditional system administration and cloud-native approaches. I manage 500+ endpoints across Azure and AWS, with a strong foundation in Windows and Linux server administration, enterprise networking, and GDPR-aligned Zero Trust security. I build infrastructure that runs quietly in the background, scales without drama, stays secure, and rarely needs anyone to step in. If your systems feel messy, manual, or held together by too many late-night fixes, that is the kind of problem I like solving. Bring me the chaos, I will hand back something clean and self-reliant. Reach out anytime, let's build something together.
+  IT Infrastructure Engineer with 7 years of experience bridging traditional system administration and cloud-native approaches. I manage 500+ endpoints across Azure and AWS, with a strong foundation in Windows and Linux server administration, enterprise networking, and GDPR-aligned Zero Trust security. 
+
+I build infrastructure that runs quietly in the background, scales without drama, stays secure, and rarely needs anyone to step in. If your systems feel messy, manual, or held together by too many late-night fixes, that is the kind of problem I like solving. Bring me the chaos, I will hand back something clean and self-reliant. Reach out anytime, let's build something together.
 </p>
 
 
