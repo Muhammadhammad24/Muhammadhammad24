@@ -12,13 +12,7 @@
   <a href="mailto:muhammad24997@gmail.com"><img src="https://img.shields.io/badge/Email-Get%20in%20touch-0B0B0D?style=for-the-badge&amp;logo=gmail&amp;logoColor=FFFFFF&amp;labelColor=000000" alt="Email"/></a>
 </p>
 
-<p align="center">
-  <img
-    src="assets/headings/what-i-do.svg?v=37"
-    alt="What I do"
-    width="100%"
-  />
-</p>
+<img src="assets/headings/what-i-do.svg?v=37" alt="What I do" width="100%" />
 
 <p>
   IT Infrastructure Engineer with 7 years of experience bridging traditional system administration and cloud-native approaches. I manage 500+ endpoints across Azure and AWS, with a strong foundation in Windows and Linux server administration, enterprise networking, and GDPR-aligned Zero Trust security.
