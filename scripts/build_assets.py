@@ -677,7 +677,7 @@ def timeline() -> None:
   <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{PANEL}" stroke="{LINE}"/>
   <rect x="1" y="1" width="3" height="{h - 2}" rx="1.5" fill="{ACCENT}"/>
 
-  <text x="30" y="44" class="lbl">CAREER</text>
+
   <text x="{w - 30}" y="44" text-anchor="end" class="foot">{n} roles · since 2019 · open to roles worldwide</text>
   <line x1="30" y1="62" x2="{w - 30}" y2="62" stroke="{LINE}"/>
 
