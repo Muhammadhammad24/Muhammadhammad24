@@ -4,7 +4,7 @@
 
   <style>
     text {
-      font-family: Arial, sans-serif;
+      font-family: IBM Plex Sans;
       font-size: 14.5px;
       font-weight: 400;
       fill: #F7F8FA;
