@@ -7,7 +7,11 @@
 
 
 
+
+
   <title>Career</title>
+
+
 
 
 
@@ -25,7 +29,11 @@
 
 
 
+
+
     text { font-family: 'IBM Plex Sans', 'Segoe UI', Ubuntu, 'Helvetica Neue', Arial, sans-serif; }
+
+
 
 
 
@@ -43,7 +51,11 @@
 
 
 
+
+
     .lbl { font-size: 12px; fill: #FFFFFF; letter-spacing: 1.6px; }
+
+
 
 
 
@@ -61,7 +73,11 @@
 
 
 
+
+
     .org { font-size: 12px; fill: #777982; }
+
+
 
 
 
@@ -79,7 +95,11 @@
 
 
 
+
+
     .yrs { font-size: 11.5px; }
+
+
 
 
 
@@ -113,6 +133,8 @@
 
 
 
+
+
   </style>
 
 
@@ -122,7 +144,11 @@
 
 
 
+
+
   <rect x="1" y="1" width="878" height="688" rx="14" fill="#0B0B0D" stroke="#4A4A55"/>
+
+
 
 
 
@@ -158,12 +184,22 @@
 
 
 
+
+
+
+
+
+
   <text x="30" y="44" class="lbl" font-size="11">INDUSTRY EXPERIENCE</text>
 
 
 
 
+
+
   <text x="850" y="44" text-anchor="end" class="foot">7 roles · since 2019 · open to roles worldwide</text>
+
+
 
 
 
@@ -190,7 +226,13 @@
 
 
 
+
+
+
+
   <line x1="112" y1="96" x2="112" y2="468" stroke="#4A4A55" stroke-width="1"/>
+
+
 
 
 
@@ -217,6 +259,10 @@
 
 
 
+
+
+
+
   <line x1="30" y1="504" x2="850" y2="504" stroke="#4A4A55"/>
 
 
@@ -226,7 +272,11 @@
 
 
 
+
+
   <text x="30" y="524" class="lbl" font-size="11">EDUCATION</text>
+
+
 
 
 
@@ -253,7 +303,13 @@
 
 
 
+
+
+
+
   <line x1="30" y1="640" x2="850" y2="640" stroke="#4A4A55"/>
+
+
 
 
 
@@ -271,7 +327,11 @@
 
 
 
+
+
   <text x="850" y="662" text-anchor="end" class="foot">muhammadhammad.vercel.app</text>
+
+
 
 
 
