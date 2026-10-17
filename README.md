@@ -22,7 +22,7 @@
   <img src="assets/environment.svg?v=30" alt="The environment I run, one request end to end: managed endpoint, identity, zero-trust edge, workload, data and recovery, observability. Built and governed by a control plane of Git, CI/CD, infrastructure as code and policy." width="100%" />
 </p>
 
-<img src="assets/headings/featured-work.svg?v=30" alt="Projects" width="100%" />
+<img src="assets/headings/Projects.svg?v=30" alt="Projects" width="100%" />
 
 <table>
   <tr><td width="50%"><a href="https://github.com/Muhammadhammad24/aws-terraform-platform"><img src="assets/cards/aws-terraform-platform.svg?v=30" alt="aws-terraform-platform. Platform · DevSecOps. 0 failed Checkov checks, 196 passed." width="100%"/></a></td><td width="50%"><a href="https://github.com/Muhammadhammad24/Infotech-Wizard"><img src="assets/cards/Infotech-Wizard.svg?v=30" alt="Infotech-Wizard. AIOps · RAG. 3,531 tickets indexed in 5 languages." width="100%"/></a></td></tr>
