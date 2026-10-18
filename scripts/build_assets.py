@@ -782,3 +782,50 @@ def portfolio_cards() -> None:
 
 
 portfolio_cards()
+
+
+# ---------------------------------------------------------------------------
+# Contact badges
+# ---------------------------------------------------------------------------
+# These three were shields.io badges, which draw their logo at a fixed 14px.
+# Gmail and the Vercel triangle already filled that, so there was no way to
+# make the marks any larger without drawing the badges here instead — which
+# is what the rest of this profile does anyway. Each is its own image so each
+# keeps its own link.
+
+BADGES = [
+    ("linkedin", "LinkedIn"),
+    ("portfolio", "Portfolio"),
+    ("gmail", "Gmail"),
+]
+BADGE_H, MARK, PAD, GAP, TRACK = 34, 20, 15, 11, 1.4
+
+
+def contact_badges() -> None:
+    for slug, label in BADGES:
+        art = (ICONS / ("_badge_%s.svg" % slug)).read_text(encoding="utf-8")
+        vb = _re.search(r'viewBox="([^"]+)"', art).group(1)
+        inner = _re.sub(r"^.*?<svg[^>]*>", "", art, flags=_re.S)
+        inner = _re.sub(r"</svg>\s*$", "", inner, flags=_re.S).strip()
+
+        word = label.upper()
+        # Letter-spacing is not in the font metrics, so it is added by hand.
+        tw = text_width(word, 12, 600) + TRACK * len(word)
+        w = PAD + MARK + GAP + tw + PAD
+
+        svg = (
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %.0f %d" width="%.0f" height="%d" '
+            'role="img" aria-label="%s">' % (w, BADGE_H, w, BADGE_H, label)
+            + "<style>text{font-family:%s;}</style>" % SANS
+            + '<rect x="0.5" y="0.5" width="%.0f" height="%d" rx="6" fill="%s" stroke="%s"/>'
+            % (w - 1, BADGE_H - 1, CARD_BG, CARD_LINE)
+            + '<svg x="%d" y="%.1f" width="%d" height="%d" viewBox="%s">%s</svg>'
+            % (PAD, (BADGE_H - MARK) / 2, MARK, MARK, vb, inner)
+            + '<text x="%.1f" y="%.1f" font-size="12" font-weight="600" letter-spacing="%.1f" fill="%s">%s</text>'
+            % (PAD + MARK + GAP, BADGE_H / 2 + 4.2, TRACK, TEXT, escape(word))
+            + "</svg>"
+        )
+        write("badges/%s.svg" % slug, svg)
+
+
+contact_badges()
