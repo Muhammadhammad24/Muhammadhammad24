@@ -385,7 +385,7 @@ toolbox()
 
 HEADINGS = [
     ("what-i-do", "What I do"),
-    ("environment", "The environment I run"),
+    ("day", "A day on the job"),
     ("toolbox", "Toolbox"),
     ("projects", "Projects"),
     ("career", "Career"),
@@ -540,59 +540,73 @@ build_prose()
 
 
 # ---------------------------------------------------------------------------
-# The environment
+# A day on the job
 # ---------------------------------------------------------------------------
-# The same drawing the portfolio opens with: a request crossing a managed
-# estate end to end, and beside it the control plane that put every box there.
-# A box is a thing that runs, a solid line is traffic, a dashed line happened
-# at build time, a dotted frame is a boundary.
+# The same drawing the portfolio opens with: not the estate, but the person
+# running it — the order the work actually happens in, from the first twenty
+# minutes of the morning to the note left for tomorrow. Down the left runs the
+# half of the job that never stops while any of it is going on.
+#
+# A box is a thing that happens, a solid line is the day moving forward, a
+# dashed line is something running on its own, a dotted frame is a boundary.
 
-RUNTIME = [
-    ("Managed endpoint", "Intune · Autopilot · Jamf", "device attested"),
-    ("Identity", "Entra ID · MFA · Conditional Access", "identity proven"),
-    ("Zero-trust edge", "ZTNA · firewall · DNS · segmentation", "least privilege"),
-    ("Workload", "Azure · AWS · Kubernetes · containers", "scheduled"),
-    ("Data & recovery", "PostgreSQL · SQL · immutable backup", "read, replicated"),
-    ("Observability", "SIEM · metrics · alerting · runbooks", "accounted for"),
+# (time, name, tools, more tools, what the hour produced)
+DAY = [
+    ("08:00", "Morning check", "PRTG \u00b7 SolarWinds \u00b7 Datadog \u00b7 Veeam",
+     "Defender \u00b7 patch compliance \u00b7 SLA breaches", "nothing on fire"),
+    ("09:00", "Triage the queue", "ServiceNow \u00b7 Jira SM \u00b7 Freshservice \u00b7 ITIL",
+     "L1/L2/L3 \u00b7 P1\u2013P4 \u00b7 incident & change mgmt", "sorted by impact"),
+    ("10:00", "Change window", "Group Policy \u00b7 WSUS \u00b7 SCCM \u00b7 change mgmt",
+     "maintenance window \u00b7 rollback \u00b7 CAB", "shipped safely"),
+    ("12:00", "Build & automate", "PowerShell \u00b7 Python \u00b7 Ansible \u00b7 Terraform",
+     "Intune \u00b7 Autopilot \u00b7 SCCM \u00b7 Power Automate", "tomorrow's tickets deleted"),
+    ("14:00", "Security & identity", "Entra ID \u00b7 Active Directory \u00b7 Okta \u00b7 MFA/SSO",
+     "CrowdStrike \u00b7 Splunk \u00b7 Zero Trust \u00b7 GDPR", "least privilege held"),
+    ("when it comes", "Incident", "Defender \u00b7 CrowdStrike \u00b7 Splunk \u00b7 Wireshark",
+     "isolate \u00b7 revoke access \u00b7 Veeam restore", "contained, then fixed"),
+    ("17:30", "Close the loop", "Confluence \u00b7 runbooks \u00b7 ITIL postmortem",
+     "M365 \u00b7 Teams \u00b7 handover \u00b7 asset records", "written down"),
 ]
 
-CONTROL = [
-    ("Git", "single source"),
-    ("CI/CD", "build, scan, ship"),
-    ("IaC", "Terraform"),
-    ("Policy", "ISO 27001 · GDPR"),
+ALWAYS = [
+    ("Monitor", "PRTG \u00b7 SolarWinds"),
+    ("Backup", "Veeam \u00b7 Acronis"),
+    ("Patch", "WSUS \u00b7 Intune"),
+    ("Logs", "Splunk SIEM"),
 ]
 
 
-def environment() -> None:
+def day() -> None:
     w, pad = 900, 26
-    nx, nw, nh, gap, top = 300, 574, 58, 14, 76
-    cx, cw, ch = pad, 196, 50
+    nx, nw, nh, gap, top = 300, 574, 68, 12, 84
+    cx, cw, ch = pad, 196, 54
     rows = []
 
-    cspan = (len(RUNTIME) * (nh + gap) - gap)
-    cgap = (cspan - len(CONTROL) * ch) / (len(CONTROL) - 1)
+    cspan = (len(DAY) * (nh + gap) - gap)
+    cgap = (cspan - len(ALWAYS) * ch) / (len(ALWAYS) - 1)
     rows.append(
         '<rect x="%d" y="%d" width="%d" height="%d" rx="10" fill="none" stroke="%s" stroke-width="1" stroke-dasharray="4 4"/>'
-        % (cx - 8, top - 26, cw + 16, cspan + 34, LINE)
+        % (cx - 8, top - 38, cw + 16, cspan + 46, LINE)
     )
-    rows.append('<text x="%d" y="%d" class="z">CONTROL PLANE</text>' % (cx, top - 12))
+    rows.append('<text x="%d" y="%d" class="z">ALWAYS RUNNING</text>' % (cx, top - 24))
+    rows.append('<text x="%d" y="%d" class="cs">no hour of the day owns these</text>' % (cx, top - 11))
 
-    for i, (name, sub) in enumerate(CONTROL):
+    for i, (name, sub) in enumerate(ALWAYS):
         y = top + i * (ch + cgap)
         rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="7" fill="%s" stroke="%s"/>' % (cx, y, cw, ch, PANEL, LINE))
-        rows.append('<text x="%d" y="%.0f" class="cn">%s</text>' % (cx + 12, y + 22, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="cs">%s</text>' % (cx + 12, y + 38, escape(sub)))
-        rows.append('<path d="M%d %.0f H%d" stroke="%s" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eh)"/>' % (cx + cw, y + ch / 2, nx - 14, LINE))
+        rows.append('<text x="%d" y="%.0f" class="cn">%s</text>' % (cx + 12, y + 23, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="cs">%s</text>' % (cx + 12, y + 40, escape(sub)))
+        # Dashed: it happens on its own, underneath the day.
+        rows.append('<path d="M%d %.0f H%d" stroke="%s" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eh)"/>'
+                    % (cx + cw, y + ch / 2, nx - 14, LINE))
 
-    # A request crossing the stack, the way the site shows it: the rail it
-    # travels, then each stage lit in turn with what it did to the request.
-    n = len(RUNTIME)
-    step, hold = 0.9, 0.9
+    n = len(DAY)
+    step, hold = 1.1, 0.9
     cycle = n * step + hold
     rail_x = nx - 26
     rows.append('<path d="M%d %d V%d" stroke="%s" stroke-width="1"/>'
                 % (rail_x, top + nh // 2, top + (n - 1) * (nh + gap) + nh // 2, LINE))
+
     frames = []
     for i in range(n):
         a, b = i * step / cycle * 100, (i + 1) * step / cycle * 100
@@ -603,44 +617,56 @@ def environment() -> None:
     stops = "".join("%.3f%%{transform:translateY(%dpx)}" % (i * step / cycle * 100, i * dy) for i in range(n))
     frames.append(".dot{animation:ride %.2fs steps(1) infinite;}" % cycle)
     frames.append("@keyframes ride{%s100%%{transform:translateY(%dpx)}}" % (stops, (n - 1) * dy))
-    frames.append("@media (prefers-reduced-motion:reduce){.dot,.s0,.s1,.s2,.s3,.s4,.s5{animation:none;opacity:0}}")
+    frames.append("@media (prefers-reduced-motion:reduce){.dot,%s{animation:none;opacity:0}}"
+                  % ",".join(".s%d" % i for i in range(n)))
     anim_css = "".join(frames)
 
-    for i, (name, sub, does) in enumerate(RUNTIME):
+    for i, (clock, name, sub, sub2, does) in enumerate(DAY):
         y = top + i * (nh + gap)
         if i:
-            rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1" marker-end="url(#eh)"/>' % (nx + nw // 2, int(y - gap), y - 3, LINE))
-        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"/>' % (nx, y, nw, nh, PANEL, LINE))
+            # The incident is the one hour nobody schedules, so it arrives dashed.
+            dash = ' stroke-dasharray="3 3"' if name == "Incident" else ""
+            rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1"%s marker-end="url(#eh)"/>'
+                        % (nx + nw // 2, int(y - gap), y - 3, LINE, dash))
+        dash_box = ' stroke-dasharray="6 5"' if name == "Incident" else ""
+        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"%s/>' % (nx, y, nw, nh, PANEL, LINE, dash_box))
         rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, LINE))
-        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 24, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 42, escape(sub)))
-        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 24, i + 1))
-        # Lit overlay for the moment the request is inside this stage.
+        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 25, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 43, escape(sub)))
+        rows.append('<text x="%d" y="%.0f" class="rs2">%s</text>' % (nx + 16, y + 58, escape(sub2)))
+        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%s</text>' % (nx + nw - 14, y + 25, escape(clock)))
+        # Lit overlay: the hour the day is in, and what it leaves behind. The
+        # patch of panel under it hides the clock while the result is showing.
         rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
                     '<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>'
+                    '<rect x="%d" y="%.0f" width="%d" height="16" fill="%s"/>'
                     '<text x="%d" y="%.0f" text-anchor="end" class="dz">%s</text></g>'
-                    % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT, nx + nw - 44, y + 24, escape(does)))
+                    % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT,
+                       nx + nw - 204, y + 13, 190, PANEL,
+                       nx + nw - 14, y + 25, escape(does)))
 
     rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
-    h = top + cspan + 46
-    alt = ("The environment I run, one request end to end: " +
-           " then ".join(r[0] for r in RUNTIME) +
-           ". Built and governed by a control plane of " +
-           ", ".join(n for n, _ in CONTROL) + ".")
+    h = top + cspan + 50
+    alt = ("A day on the job: " + " then ".join(d[1] for d in DAY) +
+           ". Underneath all of it, always running: " + ", ".join(a for a, _ in ALWAYS) + ".")
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
         + '<defs><marker id="eh" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="%s"/></marker></defs>' % LINE
-        + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}.cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}.dz{font-size:10px;fill:%s;}%s</style>" % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, MONO, LINE, MUTED, TEXT, anim_css)
+        + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}"
+          ".cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}"
+          ".rs2{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}"
+          ".dz{font-size:10px;fill:%s;}%s</style>"
+          % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, LINE, MONO, LINE, MUTED, TEXT, anim_css)
         + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
-        + '<text x="%d" y="34" text-anchor="end" class="ft">one request, end to end</text>' % (w - pad)
+        + '<text x="%d" y="34" text-anchor="end" class="ft">08:00 &#8594; 17:30, and whatever the night sends</text>' % (w - pad)
         + "".join(rows)
-        + '<text x="%d" y="%d" class="ft">Dashed lines are how it got there; solid lines are traffic. I have built and run every box on this diagram.</text>' % (pad, h - 16)
+        + '<text x="%d" y="%d" class="ft">Dashed lines run on their own; solid lines are the day moving forward. This is the job, hour by hour.</text>' % (pad, h - 16)
         + "</svg>"
     )
-    write("environment.svg", svg)
+    write("day.svg", svg)
 
 
-environment()
+day()
 
 
 # ---------------------------------------------------------------------------
