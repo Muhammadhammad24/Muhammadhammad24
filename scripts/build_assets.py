@@ -550,21 +550,21 @@ build_prose()
 # A box is a thing that happens, a solid line is the day moving forward, a
 # dashed line is something running on its own, a dotted frame is a boundary.
 
-# (time, name, tools, more tools, what the hour produced)
+# (name, tools, more tools, what the step produced)
 DAY = [
-    ("08:00", "Morning check", "PRTG \u00b7 SolarWinds \u00b7 Datadog \u00b7 Veeam",
+    ("Morning check", "PRTG \u00b7 SolarWinds \u00b7 Datadog \u00b7 Veeam",
      "Defender \u00b7 patch compliance \u00b7 SLA breaches", "nothing on fire"),
-    ("09:00", "Triage the queue", "ServiceNow \u00b7 Jira SM \u00b7 Freshservice \u00b7 ITIL",
+    ("Triage the queue", "ServiceNow \u00b7 Jira SM \u00b7 Freshservice \u00b7 ITIL",
      "L1/L2/L3 \u00b7 P1\u2013P4 \u00b7 incident & change mgmt", "sorted by impact"),
-    ("10:00", "Change window", "Group Policy \u00b7 WSUS \u00b7 SCCM \u00b7 change mgmt",
+    ("Change window", "Group Policy \u00b7 WSUS \u00b7 SCCM \u00b7 change mgmt",
      "maintenance window \u00b7 rollback \u00b7 CAB", "shipped safely"),
-    ("12:00", "Build & automate", "PowerShell \u00b7 Python \u00b7 Ansible \u00b7 Terraform",
+    ("Build & automate", "PowerShell \u00b7 Python \u00b7 Ansible \u00b7 Terraform",
      "Intune \u00b7 Autopilot \u00b7 SCCM \u00b7 Power Automate", "tomorrow's tickets deleted"),
-    ("14:00", "Security & identity", "Entra ID \u00b7 Active Directory \u00b7 Okta \u00b7 MFA/SSO",
+    ("Security & identity", "Entra ID \u00b7 Active Directory \u00b7 Okta \u00b7 MFA/SSO",
      "CrowdStrike \u00b7 Splunk \u00b7 Zero Trust \u00b7 GDPR", "least privilege held"),
-    ("when it comes", "Incident", "Defender \u00b7 CrowdStrike \u00b7 Splunk \u00b7 Wireshark",
+    ("Incident", "Defender \u00b7 CrowdStrike \u00b7 Splunk \u00b7 Wireshark",
      "isolate \u00b7 revoke access \u00b7 Veeam restore", "contained, then fixed"),
-    ("17:30", "Close the loop", "Confluence \u00b7 runbooks \u00b7 ITIL postmortem",
+    ("Close the loop", "Confluence \u00b7 runbooks \u00b7 ITIL postmortem",
      "M365 \u00b7 Teams \u00b7 handover \u00b7 asset records", "written down"),
 ]
 
@@ -621,7 +621,7 @@ def day() -> None:
                   % ",".join(".s%d" % i for i in range(n)))
     anim_css = "".join(frames)
 
-    for i, (clock, name, sub, sub2, does) in enumerate(DAY):
+    for i, (name, sub, sub2, does) in enumerate(DAY):
         y = top + i * (nh + gap)
         if i:
             # The incident is the one hour nobody schedules, so it arrives dashed.
@@ -634,7 +634,7 @@ def day() -> None:
         rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 25, escape(name)))
         rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 43, escape(sub)))
         rows.append('<text x="%d" y="%.0f" class="rs2">%s</text>' % (nx + 16, y + 58, escape(sub2)))
-        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%s</text>' % (nx + nw - 14, y + 25, escape(clock)))
+        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 25, i + 1))
         # Lit overlay: the hour the day is in, and what it leaves behind. The
         # patch of panel under it hides the clock while the result is showing.
         rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
@@ -647,7 +647,7 @@ def day() -> None:
 
     rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
     h = top + cspan + 50
-    alt = ("A day on the job: " + " then ".join(d[1] for d in DAY) +
+    alt = ("A day on the job, in order: " + " then ".join(d[1] for d in DAY) +
            ". Underneath all of it, always running: " + ", ".join(a for a, _ in ALWAYS) + ".")
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
@@ -658,9 +658,9 @@ def day() -> None:
           ".dz{font-size:10px;fill:%s;}%s</style>"
           % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, LINE, MONO, LINE, MUTED, TEXT, anim_css)
         + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
-        + '<text x="%d" y="34" text-anchor="end" class="ft">08:00 &#8594; 17:30, and whatever the night sends</text>' % (w - pad)
+        + '<text x="%d" y="34" text-anchor="end" class="ft">the order the work actually happens in</text>' % (w - pad)
         + "".join(rows)
-        + '<text x="%d" y="%d" class="ft">Dashed lines run on their own; solid lines are the day moving forward. This is the job, hour by hour.</text>' % (pad, h - 16)
+        + '<text x="%d" y="%d" class="ft">Dashed lines run on their own; solid lines are the day moving forward. This is the job, step by step.</text>' % (pad, h - 16)
         + "</svg>"
     )
     write("environment.svg", svg)
