@@ -552,27 +552,58 @@ build_prose()
 
 # (name, tools, more tools, what the step produced)
 DAY = [
-    ("Morning check", "PRTG \u00b7 SolarWinds \u00b7 Datadog \u00b7 Veeam",
-     "Defender \u00b7 patch compliance \u00b7 SLA breaches", "nothing on fire"),
-    ("Triage the queue", "ServiceNow \u00b7 Jira SM \u00b7 Freshservice \u00b7 ITIL",
-     "L1/L2/L3 \u00b7 P1\u2013P4 \u00b7 incident & change mgmt", "sorted by impact"),
-    ("Change window", "Group Policy \u00b7 WSUS \u00b7 SCCM \u00b7 change mgmt",
-     "maintenance window \u00b7 rollback \u00b7 CAB", "shipped safely"),
-    ("Build & automate", "PowerShell \u00b7 Python \u00b7 Ansible \u00b7 Terraform",
-     "Intune \u00b7 Autopilot \u00b7 SCCM \u00b7 Power Automate", "tomorrow's tickets deleted"),
-    ("Security & identity", "Entra ID \u00b7 Active Directory \u00b7 Okta \u00b7 MFA/SSO",
-     "CrowdStrike \u00b7 Splunk \u00b7 Zero Trust \u00b7 GDPR", "least privilege held"),
-    ("Incident", "Defender \u00b7 CrowdStrike \u00b7 Splunk \u00b7 Wireshark",
-     "isolate \u00b7 revoke access \u00b7 Veeam restore", "contained, then fixed"),
-    ("Close the loop", "Confluence \u00b7 runbooks \u00b7 ITIL postmortem",
-     "M365 \u00b7 Teams \u00b7 handover \u00b7 asset records", "written down"),
+    ("Monitoring & alerts", "SRE", "Grafana · Datadog · Splunk",
+     "overnight alerts · backup jobs · disk headroom", "all green"),
+    ("Service desk", "IT SUPPORT", "Jira SM · ServiceNow · Slack routing",
+     "L1–L3 triage · P1–P4 · 40% less manual triage", "sorted by impact"),
+    ("Change management", "DEVOPS", "Git · GitHub Actions · Terraform · CI/CD",
+     "ITIL change window · tested, staged, rollback first", "shipped safely"),
+    ("Automation & IaC", "AUTOMATION", "PowerShell · Python · Ansible · Terraform",
+     "onboarding · provisioning · patching, as code", "25 h/week returned"),
+    ("Identity & access", "SECURITY", "Entra ID · Active Directory · Okta",
+     "RBAC · MFA · GDPR and ISO 27001 controls", "least privilege"),
+    ("Incident response", "ON-CALL", "Defender · CrowdStrike · Veeam",
+     "isolate · revoke · IDS/IPS · restore to RTO", "contained first"),
+    ("Endpoint management", "ENDPOINTS", "Intune · Jamf Pro · Autopilot · MDM",
+     "180+ macOS, Windows and iOS · setup 75% faster", "fleet in line"),
 ]
 
+# One mark per block, on the same 24-unit grid the portfolio draws them on:
+# no fill, round caps, one stroke weight. Each draws what its block does
+# rather than a company that happens to sell a product for it.
+GLYPH = {
+    "Monitoring & alerts": ["M2 12h4l2.5-6 3.5 12 2.5-6H22"],
+    "Service desk": ["M3 5h18M3 10h18M3 15h11", "M18.5 14.3a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4Z"],
+    "Change management": [
+        "M6 2.6a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z",
+        "M6 16.6a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z",
+        "M18 9.6a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z",
+        "M6 7.4v9.2M8.4 5h4.6a2.6 2.6 0 0 1 2.6 2.6v2",
+    ],
+    "Automation & IaC": ["M8.5 6 3.5 12l5 6M15.5 6l5 6-5 6"],
+    "Identity & access": ["M12 3 20 6v6c0 4.4-3.3 7.9-8 9-4.7-1.1-8-4.6-8-9V6Z", "M9.3 12.2l1.9 1.9 3.5-3.8"],
+    "Incident response": ["M12 3.5 22 20H2Z", "M12 10v4M12 17h.01"],
+    "Endpoint management": [
+        "M3.6 4.5h9.8a1.6 1.6 0 0 1 1.6 1.6v6.3a1.6 1.6 0 0 1-1.6 1.6H3.6A1.6 1.6 0 0 1 2 12.4V6.1a1.6 1.6 0 0 1 1.6-1.6Z",
+        "M1 18h15",
+        "M18.4 9h3.1a1.4 1.4 0 0 1 1.4 1.4v8.2a1.4 1.4 0 0 1-1.4 1.4h-3.1a1.4 1.4 0 0 1-1.4-1.4v-8.2A1.4 1.4 0 0 1 18.4 9Z",
+    ],
+}
+
+
+def _glyph(name: str, x: float, y: float, size: float, colour: str) -> str:
+    """The block's mark, scaled off its own 24-unit grid."""
+    paths = "".join('<path d="%s"/>' % d for d in GLYPH[name])
+    return ('<g transform="translate(%.1f %.1f) scale(%.4f)" fill="none" stroke="%s" '
+            'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">%s</g>'
+            % (x, y, size / 24.0, colour, paths))
+
+
 ALWAYS = [
-    ("Monitor", "PRTG \u00b7 SolarWinds"),
-    ("Backup", "Veeam \u00b7 Acronis"),
-    ("Patch", "WSUS \u00b7 Intune"),
-    ("Logs", "Splunk SIEM"),
+    ("Monitor", "Grafana · Datadog"),
+    ("Network", "Fortinet · Cisco"),
+    ("Systems", "Windows · Linux"),
+    ("Cloud", "Azure · AWS"),
 ]
 
 
@@ -589,7 +620,7 @@ def day() -> None:
         % (cx - 8, top - 38, cw + 16, cspan + 46, LINE)
     )
     rows.append('<text x="%d" y="%d" class="z">ALWAYS RUNNING</text>' % (cx, top - 24))
-    rows.append('<text x="%d" y="%d" class="cs">no hour of the day owns these</text>' % (cx, top - 11))
+    rows.append('<text x="%d" y="%d" class="cs">underneath every hour</text>' % (cx, top - 11))
 
     for i, (name, sub) in enumerate(ALWAYS):
         y = top + i * (ch + cgap)
@@ -621,33 +652,37 @@ def day() -> None:
                   % ",".join(".s%d" % i for i in range(n)))
     anim_css = "".join(frames)
 
-    for i, (name, sub, sub2, does) in enumerate(DAY):
+    for i, (name, tag, sub, sub2, does) in enumerate(DAY):
         y = top + i * (nh + gap)
         if i:
             # The incident is the one hour nobody schedules, so it arrives dashed.
-            dash = ' stroke-dasharray="3 3"' if name == "Incident" else ""
+            dash = ' stroke-dasharray="3 3"' if name == "Incident response" else ""
             rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1"%s marker-end="url(#eh)"/>'
                         % (nx + nw // 2, int(y - gap), y - 3, LINE, dash))
-        dash_box = ' stroke-dasharray="6 5"' if name == "Incident" else ""
+        dash_box = ' stroke-dasharray="6 5"' if name == "Incident response" else ""
         rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"%s/>' % (nx, y, nw, nh, PANEL, LINE, dash_box))
         rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, LINE))
-        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 16, y + 25, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 16, y + 43, escape(sub)))
-        rows.append('<text x="%d" y="%.0f" class="rs2">%s</text>' % (nx + 16, y + 58, escape(sub2)))
-        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%02d</text>' % (nx + nw - 14, y + 25, i + 1))
+        rows.append(_glyph(name, nx + 16, y + (nh - 24) / 2, 24, LINE))
+        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 50, y + 25, escape(name)))
+        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 50, y + 43, escape(sub)))
+        rows.append('<text x="%d" y="%.0f" class="rs2">%s</text>' % (nx + 50, y + 58, escape(sub2)))
+        # The hat worn for this block, the way the portfolio labels them.
+        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%s</text>' % (nx + nw - 14, y + 25, escape(tag)))
         # Lit overlay: the hour the day is in, and what it leaves behind. The
         # patch of panel under it hides the clock while the result is showing.
         rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
                     '<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>'
+                    '%s'
                     '<rect x="%d" y="%.0f" width="%d" height="16" fill="%s"/>'
                     '<text x="%d" y="%.0f" text-anchor="end" class="dz">%s</text></g>'
                     % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT,
+                       _glyph(name, nx + 16, y + (nh - 24) / 2, 24, ACCENT),
                        nx + nw - 204, y + 13, 190, PANEL,
                        nx + nw - 14, y + 25, escape(does)))
 
     rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
     h = top + cspan + 50
-    alt = ("A day on the job, in order: " + " then ".join(d[1] for d in DAY) +
+    alt = ("A day in production, in order: " + " then ".join(d[0] for d in DAY) +
            ". Underneath all of it, always running: " + ", ".join(a for a, _ in ALWAYS) + ".")
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
