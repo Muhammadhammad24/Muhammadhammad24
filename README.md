@@ -17,10 +17,10 @@
 <img src="assets/prose/about.svg" alt="IT Infrastructure Engineer with 7 years of experience bridging traditional system administration and cloud native approaches. I manage 500+ endpoints across Azure, and AWS, with a strong foundation in Windows and Linux server administration, enterprise networking, and GDPR aligned Zero Trust security.
 I build infrastructure that runs quietly in the background, scales without drama, stays secure, and rarely needs anyone to step in. If your systems feel messy, manual, or held together by too many late night fixes, that is the kind of problem I like solving. Bring me the chaos, I will hand back something clean and self reliant. Reach out anytime, let's build something together." width="100%" />
 
-<img src="assets/headings/day.svg?v=45" alt="A day on the job" width="100%" />
+<img src="assets/headings/environment.svg?v=46" alt="The environment I run" width="100%" />
 
 <p align="center">
-  <img src="assets/day.svg?v=45" alt="A day on the job: morning check, triage the queue, change window, build and automate, security and identity, an incident when it comes, and closing the loop — with monitoring, backup, patching and logging running underneath all of it." width="100%" />
+  <img src="assets/environment.svg?v=46" alt="The environment I run, hour by hour: morning check, triage the queue, change window, build and automate, security and identity, an incident when it comes, and closing the loop — with monitoring, backup, patching and logging running underneath all of it." width="100%" />
 </p>
 
 <img src="assets/headings/projects.svg?v=44" alt="Projects" width="100%" />

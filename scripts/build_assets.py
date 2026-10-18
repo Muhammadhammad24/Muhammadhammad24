@@ -385,7 +385,7 @@ toolbox()
 
 HEADINGS = [
     ("what-i-do", "What I do"),
-    ("day", "A day on the job"),
+    ("environment", "The environment I run"),
     ("toolbox", "Toolbox"),
     ("projects", "Projects"),
     ("career", "Career"),
@@ -610,12 +610,12 @@ def day() -> None:
     frames = []
     for i in range(n):
         a, b = i * step / cycle * 100, (i + 1) * step / cycle * 100
-        frames.append(".s%d{animation:lit%d %.2fs infinite;}" % (i, i, cycle))
+        frames.append(".s%d{animation:lit%d %.2fs step-end infinite;}" % (i, i, cycle))
         frames.append("@keyframes lit%d{0%%,%.3f%%{opacity:0}%.3f%%,%.3f%%{opacity:1}%.3f%%,100%%{opacity:0}}"
                       % (i, max(0.001, a - 0.001), a, b, min(99.999, b + 0.001)))
     dy = nh + gap
     stops = "".join("%.3f%%{transform:translateY(%dpx)}" % (i * step / cycle * 100, i * dy) for i in range(n))
-    frames.append(".dot{animation:ride %.2fs steps(1) infinite;}" % cycle)
+    frames.append(".dot{animation:ride %.2fs step-end infinite;}" % cycle)
     frames.append("@keyframes ride{%s100%%{transform:translateY(%dpx)}}" % (stops, (n - 1) * dy))
     frames.append("@media (prefers-reduced-motion:reduce){.dot,%s{animation:none;opacity:0}}"
                   % ",".join(".s%d" % i for i in range(n)))
@@ -663,7 +663,7 @@ def day() -> None:
         + '<text x="%d" y="%d" class="ft">Dashed lines run on their own; solid lines are the day moving forward. This is the job, hour by hour.</text>' % (pad, h - 16)
         + "</svg>"
     )
-    write("day.svg", svg)
+    write("environment.svg", svg)
 
 
 day()
