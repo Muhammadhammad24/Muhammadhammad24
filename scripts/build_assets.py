@@ -930,19 +930,31 @@ HERO_W = 900
 # heading's ascenders above the top of the box and ran the left-hand text into
 # the left edge; a drawing needs the same margin a paragraph does.
 PAD = 26
-ART_SCALE = (HERO_W - PAD * 2) / ART_W
 
 
-# On the portfolio the drawing's 470-unit viewBox renders 693 CSS px wide, so
-# one CSS pixel is 0.678 of a unit. Everything around the drawing is styled in
-# CSS pixels, and is converted here rather than being read as units — which is
-# what makes the type come out the size the page sets it, and the two columns
-# fit the width they fit there.
-PX = 470 / 693.0
+# The drawing and the text around it are scaled separately, because tying them
+# together cannot satisfy both ends. Stretch the whole block to the column and
+# the drawing's labels come out half again larger than the prose above it;
+# shrink it until they match and the two columns of text drop below the page's
+# own body size, which is the half that actually has to be read.
+#
+# So: the text is set at this profile's body size, 14.5, and laid out across
+# the full column; the drawing is scaled so its labels sit just above the
+# prose, the way they do on the portfolio, and centred in that column. Sizes
+# below are the portfolio's CSS pixels carried over at K.
+
+PAGE_BODY = 14.5          # assets/prose/about.svg, the profile's body text
+K = PAGE_BODY / 12.0      # the portfolio sets this block's body text at 12px
+LABEL = 18.0              # drawing labels, a step above the prose
+DRAW_SCALE = LABEL / 12.5  # the drawing sets its box labels at 12.5 units
+
+
+def S(px):
+    return px * K
 
 
 def _t(x, y, text, px, fill, weight=400, mono=False, anchor="start", track_em=0.0):
-    size = px * PX
+    size = S(px)
     cls = ' class="mono"' if mono else ""
     w = ' font-weight="%d"' % weight if weight != 400 else ""
     a = ' text-anchor="%s"' % anchor if anchor != "start" else ""
@@ -952,30 +964,32 @@ def _t(x, y, text, px, fill, weight=400, mono=False, anchor="start", track_em=0.
 
 
 def _w(text, px, weight=400):
-    return text_width(text, px * PX, weight)
+    return text_width(text, S(px), weight)
 
 
-def _hero_block(art: str) -> tuple:
+def _hero_block(art: str, cw: float) -> tuple:
     """The whole figure: heading, drawing, the two columns, the band, the hats."""
     T, MUT, DANGER = HERO_VARS["--text"], HERO_VARS["--text-muted"], HERO_VARS["--danger"]
     o = []
 
     # ── the heading row, mb-2 above the drawing ──
-    o.append(_t(0, 9.0 * PX, "BRING ME THE CHAOS", 12, MUT, 500, track_em=0.14))
-    o.append(_t(ART_W, 9.0 * PX, "IN AT THE TOP \u00b7 OUT AT THE BOTTOM", 10,
+    o.append(_t(0, S(11), "BRING ME THE CHAOS", 12, MUT, 500, track_em=0.14))
+    o.append(_t(cw, S(11), "IN AT THE TOP \u00b7 OUT AT THE BOTTOM", 10,
                 "rgba(255,255,255,0.3)", mono=True, anchor="end"))
-    head_h = (12 + 8) * PX
+    y = S(12 + 8)
 
-    o.append('<g transform="translate(0 %.2f)">%s</g>' % (head_h, art))
-    y = head_h + ART_H + 7 * PX
+    # ── the drawing, centred at its own scale ──
+    o.append('<g transform="translate(%.2f %.2f) scale(%.6f)">%s</g>'
+             % ((cw - ART_W * DRAW_SCALE) / 2, y, DRAW_SCALE, art))
+    y += ART_H * DRAW_SCALE + S(7)
 
     # ── each failure on the row of the thing that replaced it ──
-    col = (ART_W - 20 * PX) / 2
-    cols = (0.0, col + 20 * PX)
-    o.append(_t(cols[0], y + 8 * PX, "WHAT I WALK INTO", 10.5, DANGER, 500, track_em=0.1))
-    o.append(_t(cols[1], y + 8 * PX, "WHAT I HAND BACK", 10.5, T, 500, track_em=0.1))
-    rows_y = y + (8 + 10.5 + 5) * PX
-    pitch = (12 * 1.4 + 3) * PX
+    col = (cw - S(20)) / 2
+    cols = (0.0, col + S(20))
+    o.append(_t(cols[0], y + S(8), "WHAT I WALK INTO", 10.5, DANGER, 500, track_em=0.1))
+    o.append(_t(cols[1], y + S(8), "WHAT I HAND BACK", 10.5, T, 500, track_em=0.1))
+    rows_y = y + S(8 + 10.5 + 5)
+    pitch = S(12 * 1.4 + 3)
     for i, (bad, good) in enumerate(zip(FOUND, LEFT_BEHIND)):
         ry = rows_y + i * pitch
         for cx, mark, mcol, text, tcol in (
@@ -983,40 +997,41 @@ def _hero_block(art: str) -> tuple:
             (cols[1], "\u2713", T, good, "rgba(255,255,255,0.6)"),
         ):
             o.append(_t(cx, ry, mark, 12, mcol))
-            o.append(_t(cx + _w(mark, 12) + 7 * PX, ry, text, 12, tcol))
-    y = rows_y + 3 * pitch + 4 * PX
+            o.append(_t(cx + _w(mark, 12) + S(7), ry, text, 12, tcol))
+    y = rows_y + 3 * pitch + S(4)
 
     # ── the one forward-looking claim, in its own band ──
-    by = y + 6 * PX
-    pad_x, pad_y = 11 * PX, 8 * PX
-    bh = pad_y * 2 + 13.5 * 1.3 * PX + 3 * PX + 11 * 1.45 * PX
-    o.append('<rect x="0.4" y="%.2f" width="%.2f" height="%.2f" rx="%.2f" '
-             'fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)" '
-             'stroke-width="0.8"/>' % (by + 0.4, ART_W - 0.8, bh, 10 * PX))
-    o.append('<path d="M0.7 %.2f V%.2f" stroke="%s" stroke-width="1.4"/>'
-             % (by + 4 * PX, by + bh - 4 * PX, T))
-    o.append(_t(pad_x, by + pad_y + 9 * PX, "NEXT", 10, MUT, mono=True, track_em=0.14))
-    tx = pad_x + _w("NEXT", 10) + 10 * PX * 0.14 * 4 + 9 * PX
-    o.append(_t(tx, by + pad_y + 10.5 * PX, "Answer it before it becomes a ticket",
+    by = y + S(6)
+    pad_x, pad_y = S(11), S(8)
+    bh = pad_y * 2 + S(13.5 * 1.3) + S(3) + S(11 * 1.45)
+    o.append('<rect x="0.5" y="%.2f" width="%.2f" height="%.2f" rx="%.2f" '
+             'fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)"/>'
+             % (by + 0.5, cw - 1, bh, S(10)))
+    o.append('<path d="M1.5 %.2f V%.2f" stroke="%s" stroke-width="2.4"/>'
+             % (by + S(4), by + bh - S(4), T))
+    o.append(_t(pad_x, by + pad_y + S(9), "NEXT", 10, MUT, mono=True, track_em=0.14))
+    tx = pad_x + _w("NEXT", 10) + S(10) * 0.14 * 4 + S(9)
+    o.append(_t(tx, by + pad_y + S(10.5), "Answer it before it becomes a ticket",
                 13.5, T, 500))
-    o.append(_t(tx, by + pad_y + (13.5 * 1.3 + 3 + 9) * PX,
+    o.append(_t(tx, by + pad_y + S(13.5 * 1.3 + 3 + 9),
                 "Infotech-Wizard \u2014 FAISS retrieval over 3,531 resolved tickets, "
                 "local LLM, on-prem", 11, "rgba(255,255,255,0.48)"))
     y = by + bh
 
     # ── the hats, one line ──
-    hy = y + (5 + 8) * PX
+    hy = y + S(5 + 8)
     o.append(_t(0, hy, "HATS", 10.5, MUT, mono=True))
-    o.append(_t(_w("HATS", 10.5) + 7 * PX, hy, "\u00b7 " + HATS, 10.5,
+    o.append(_t(_w("HATS", 10.5) + S(7), hy, "\u00b7 " + HATS, 10.5,
                 "rgba(255,255,255,0.4)"))
-    return "".join(o), hy + 4 * PX
+    return "".join(o), hy + S(4)
 
 
 def hero_figure() -> None:
     art = (ICONS / "_hero_chaos.svg").read_text(encoding="utf-8")
     label = (ICONS / "_hero_chaos.txt").read_text(encoding="utf-8").strip()
-    body, block_h = _hero_block(art)
-    hero_h = round(block_h * ART_SCALE + PAD * 2)
+    cw = HERO_W - PAD * 2
+    body, block_h = _hero_block(art, cw)
+    hero_h = round(block_h + PAD * 2)
     variables = "".join("%s:%s;" % kv for kv in HERO_VARS.items())
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" '
@@ -1030,17 +1045,14 @@ def hero_figure() -> None:
         + HERO_STILL
         + "</style>"
         + '<rect width="%d" height="%d" fill="var(--bg)"/>' % (HERO_W, hero_h)
-        + '<g transform="translate(%d %d) scale(%.6f)">' % (PAD, PAD, ART_SCALE)
+        + '<g transform="translate(%d %d)">' % (PAD, PAD)
         + body
         + "</g></svg>"
     )
     write("chaos-to-order.svg", svg)
 
 
-
 hero_figure()
-
-
 # ---------------------------------------------------------------------------
 # README: cache-busters, and a guard on the tags
 # ---------------------------------------------------------------------------
