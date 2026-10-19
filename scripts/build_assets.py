@@ -346,7 +346,7 @@ def toolbox() -> None:
                 cx = label_w + c * step + step / 2
                 d = 0.2 + r * 0.08 + c * 0.04
                 if icon == "servicenow":  # long wordmark
-                    size = 72
+                    size = 64
                 elif icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
                     size = 44
                 else:
