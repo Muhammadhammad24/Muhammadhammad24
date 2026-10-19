@@ -19,7 +19,7 @@
 <img src="assets/headings/environment.svg?v=c2b42d1e" alt="The environment I run" width="100%" />
 
 <p align="center">
-  <img src="assets/chaos-to-order.svg?v=f1654375" alt="One figure in three parts. At the top, an estate as found: people, logins, tickets, network, servers, cloud, laptops and monitoring, cross-wired by eleven runs that nobody planned, with monitoring crossed out because there is none. Every one of those runs is drawn down into a single band in the middle marked Muhammad Hammad. Out of the bottom of that band comes one backbone, and the same eight things hang off it in order with nothing crossing, plus a loop from monitoring to tickets that closes them before anyone raises one." width="100%" />
+  <img src="assets/chaos-to-order.svg?v=3974f930" alt="One figure in three parts. At the top, an estate as found: people, logins, tickets, network, servers, cloud, laptops and monitoring, cross-wired by eleven runs that nobody planned, with monitoring crossed out because there is none. Every one of those runs is drawn down into a single band in the middle marked Muhammad Hammad. Out of the bottom of that band comes one backbone, and the same eight things hang off it in order with nothing crossing, plus a loop from monitoring to tickets that closes them before anyone raises one." width="100%" />
 </p>
 
 <img src="assets/headings/projects.svg?v=af679259" alt="Projects" width="100%" />
@@ -38,9 +38,9 @@
 <img src="assets/headings/toolbox.svg?v=fcc8fb8e" alt="Toolbox" width="100%" />
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=369400bc"/>
-  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=77b62eae"/>
-  <img src="assets/brands-dark.svg?v=369400bc" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=b092aa75"/>
+  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=4e1d9264"/>
+  <img src="assets/brands-dark.svg?v=b092aa75" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
 </picture>
 
 <img src="assets/headings/career.svg?v=bce4fbb6" alt="Career" width="100%" />

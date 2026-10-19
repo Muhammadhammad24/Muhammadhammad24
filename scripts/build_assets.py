@@ -325,7 +325,7 @@ def toolbox() -> None:
         dark = mode == "dark"
         # One card per domain, the way the portfolio sets them out, rather
         # than seven bands ruled off inside a single panel.
-        w, top, row_h, label_w, step, gap = 900, 56, 90, 196, 81, 10
+        w, top, row_h, label_w, step, gap = 900, 56, 92, 226, 80, 10
         card_h = row_h - gap
         h = top + row_h * len(TOOLBOX)
         total = sum(len(items) for _, items in TOOLBOX)
@@ -353,8 +353,8 @@ def toolbox() -> None:
                     size = 32
                 logo = _logo(icon, cx - size / 2, y + 28 - size / 2, size, f"{mode[0]}{r}{c}", dark)
                 labels = "".join(
-                    f'<text x="{cx:.1f}" y="{y + 58 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
-                    for k, part in enumerate(_wrap_chars(label, 12))
+                    f'<text x="{cx:.1f}" y="{y + 59 + k * 12}" text-anchor="middle" class="lb">{escape(part)}</text>'
+                    for k, part in enumerate(_wrap_chars(label, 11))
                 )
                 rows.append(f'<g class="logo">{logo}{labels}</g>')
         svg = f"""
@@ -367,7 +367,7 @@ def toolbox() -> None:
     .meta {{ font-size: 11px; fill: {t["muted"]}; }}
     .cat {{ font-size: 13.5px; font-weight: 600; fill: {t["text"]}; }}
     .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
-    .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
+    .lb {{ font-size: 11px; fill: {t["text"]}; fill-opacity: 0.78; }}
   </style>
   <text x="{w - 26}" y="30" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
   {"".join(rows)}
@@ -758,6 +758,7 @@ HERO_KEYFRAMES = (
     "@keyframes sys-drop{0%,100%{opacity:0}8%{opacity:0.85}24%{opacity:0}}"
     "@keyframes bus-glow{0%,100%{opacity:0.75}50%{opacity:1}}"
     "@keyframes loop-flow{to{stroke-dashoffset:-16}}"
+    "@keyframes fade-in{from{opacity:0}to{opacity:1}}"
 )
 
 HERO_RULES = (
@@ -778,16 +779,21 @@ HERO_RULES = (
     ".sys-drop{opacity:0;animation:sys-drop 5.2s ease-out infinite}"
     ".bus-glow{animation:bus-glow 5.2s ease-in-out infinite}"
     ".loop-flow{animation:loop-flow 1.1s linear infinite}"
+    # The comb and the bus sweep carry their own SMIL, so they need no
+    # keyframes here — only the fade the page gives them, so they do not
+    # appear before the lines they travel along are drawn.
+    ".comb{animation:fade-in 0.6s ease-out 0.9s both}"
+    ".sys-sweep{animation:fade-in 0.5s ease-out 1.6s both}"
 )
 
 # The figure is readable without motion, so honour the reader's setting.
 HERO_STILL = (
     "@media (prefers-reduced-motion:reduce){"
     ".tangle-in,.order-in,.seethe,.seethe-hot,.queue-bar,.method-step,"
-    ".method-pass,.sys-drop,.bus-glow,.loop-flow{animation:none}"
+    ".method-pass,.sys-drop,.bus-glow,.loop-flow,.comb,.sys-sweep{animation:none}"
     ".tangle-in,.order-in,.method-pass{stroke-dashoffset:0}"
     ".sys-drop{opacity:0}.method-step{fill:rgba(255,255,255,0.72)}"
-    ".queue-bar{opacity:1}.sys-sweep{display:none}}"
+    ".queue-bar{opacity:1}.comb,.sys-sweep{display:none}}"
 )
 
 # ── The block around the drawing ──
