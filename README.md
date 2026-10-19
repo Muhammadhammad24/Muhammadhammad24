@@ -20,7 +20,7 @@ I build infrastructure that runs quietly in the background, scales without drama
 <img src="assets/headings/environment.svg?v=47" alt="The environment I run" width="100%" />
 
 <p align="center">
-  <img src="assets/chaos-to-order.svg?v=51" alt="One figure in three parts. At the top, an estate as found: people, logins, tickets, network, servers, cloud, laptops and monitoring, cross-wired by eleven runs that nobody planned, with monitoring crossed out because there is none. Every one of those runs is drawn down into a single band in the middle marked Muhammad Hammad. Out of the bottom of that band comes one backbone, and the same eight things hang off it in order with nothing crossing, plus a loop from monitoring to tickets that closes them before anyone raises one." width="100%" />
+  <img src="assets/chaos-to-order.svg?v=52" alt="One figure in three parts. At the top, an estate as found: people, logins, tickets, network, servers, cloud, laptops and monitoring, cross-wired by eleven runs that nobody planned, with monitoring crossed out because there is none. Every one of those runs is drawn down into a single band in the middle marked Muhammad Hammad. Out of the bottom of that band comes one backbone, and the same eight things hang off it in order with nothing crossing, plus a loop from monitoring to tickets that closes them before anyone raises one." width="100%" />
 </p>
 
 <img src="assets/headings/projects.svg?v=44" alt="Projects" width="100%" />

@@ -902,31 +902,124 @@ HERO_STILL = (
     ".queue-bar{opacity:1}.sys-sweep{display:none}}"
 )
 
-# The figure stands where the environment diagram did, so it is drawn into a
-# block the same 900 wide as every other asset here. It is NOT scaled to fill
-# that box: the artwork is drawn at the scale that makes its body text match
-# this profile's, 10.5 against the portfolio's 9.5. Filling the box instead
-# meant scaling it 1.73x, which left its type half again larger than the type
-# in every block around it — the one thing that made it look pasted in.
+# ── The block around the drawing ──
+# The portfolio's figure is not the <svg> alone: it carries a heading, the
+# two columns that put each failure on the row of the thing that replaced
+# it, the one forward-looking band, and the hats line. Those are HTML on the
+# page, so they are drawn here as text at the same sizes, colours and
+# spacing their stylesheet gives them, around the drawing itself.
+
+FOUND = [
+    "shared Domain Admin, kept in a spreadsheet",
+    "patched by hand, when someone remembers",
+    "no monitoring \u2014 users are the alarm",
+    "one flat VLAN, rules typed at the firewall",
+]
+LEFT_BEHIND = [
+    "Entra ID and AD tiering, RBAC, MFA",
+    "Intune, Jamf and Autopilot rings",
+    "Grafana and Datadog page me first",
+    "Fortinet segmented, rules in Terraform",
+]
+HATS = ("Help desk \u00b7 Service desk \u00b7 L1\u2013L3 \u00b7 SysAdmin \u00b7 Network "
+        "\u00b7 Security \u00b7 SRE \u00b7 Cloud \u00b7 DevOps")
+
 ART_W, ART_H = 470, 394
-ART_SCALE = 10.5 / 9.5
+ART_SCALE = 10.5 / 9.5          # puts the drawing's 9.5 body type on this profile's 10.5
+HEAD_H = 18                      # the eyebrow row above the drawing
+COL_GAP = 20
 HERO_W = 900
-HERO_H = round(ART_H * ART_SCALE)
 
 
-def _fit() -> tuple:
-    """Centre the artwork in the block at the profile's own type scale."""
-    s = ART_SCALE
-    return ((HERO_W - ART_W * s) / 2, (HERO_H - ART_H * s) / 2, s)
+# On the portfolio the drawing's 470-unit viewBox renders 693 CSS px wide, so
+# one CSS pixel is 0.678 of a unit. Everything around the drawing is styled in
+# CSS pixels, and is converted here rather than being read as units — which is
+# what makes the type come out the size the page sets it, and the two columns
+# fit the width they fit there.
+PX = 470 / 693.0
+
+
+def _t(x, y, text, px, fill, weight=400, mono=False, anchor="start", track_em=0.0):
+    size = px * PX
+    cls = ' class="mono"' if mono else ""
+    w = ' font-weight="%d"' % weight if weight != 400 else ""
+    a = ' text-anchor="%s"' % anchor if anchor != "start" else ""
+    ls = ' letter-spacing="%.3f"' % (size * track_em) if track_em else ""
+    return ('<text x="%.2f" y="%.2f"%s font-size="%.2f"%s%s%s fill="%s">%s</text>'
+            % (x, y, cls, size, w, a, ls, fill, escape(text)))
+
+
+def _w(text, px, weight=400):
+    return text_width(text, px * PX, weight)
+
+
+def _hero_block(art: str) -> tuple:
+    """The whole figure: heading, drawing, the two columns, the band, the hats."""
+    T, MUT, DANGER = HERO_VARS["--text"], HERO_VARS["--text-muted"], HERO_VARS["--danger"]
+    o = []
+
+    # ── the heading row, mb-2 above the drawing ──
+    o.append(_t(0, 9.0 * PX, "BRING ME THE CHAOS", 12, MUT, 500, track_em=0.14))
+    o.append(_t(ART_W, 9.0 * PX, "IN AT THE TOP \u00b7 OUT AT THE BOTTOM", 10,
+                "rgba(255,255,255,0.3)", mono=True, anchor="end"))
+    head_h = (12 + 8) * PX
+
+    o.append('<g transform="translate(0 %.2f)">%s</g>' % (head_h, art))
+    y = head_h + ART_H + 7 * PX
+
+    # ── each failure on the row of the thing that replaced it ──
+    col = (ART_W - 20 * PX) / 2
+    cols = (0.0, col + 20 * PX)
+    o.append(_t(cols[0], y + 8 * PX, "WHAT I WALK INTO", 10.5, DANGER, 500, track_em=0.1))
+    o.append(_t(cols[1], y + 8 * PX, "WHAT I HAND BACK", 10.5, T, 500, track_em=0.1))
+    rows_y = y + (8 + 10.5 + 5) * PX
+    pitch = (12 * 1.4 + 3) * PX
+    for i, (bad, good) in enumerate(zip(FOUND, LEFT_BEHIND)):
+        ry = rows_y + i * pitch
+        for cx, mark, mcol, text, tcol in (
+            (cols[0], "\u00d7", DANGER, bad, "rgba(255,255,255,0.46)"),
+            (cols[1], "\u2713", T, good, "rgba(255,255,255,0.6)"),
+        ):
+            o.append(_t(cx, ry, mark, 12, mcol))
+            o.append(_t(cx + _w(mark, 12) + 7 * PX, ry, text, 12, tcol))
+    y = rows_y + 3 * pitch + 4 * PX
+
+    # ── the one forward-looking claim, in its own band ──
+    by = y + 6 * PX
+    pad_x, pad_y = 11 * PX, 8 * PX
+    bh = pad_y * 2 + 13.5 * 1.3 * PX + 3 * PX + 11 * 1.45 * PX
+    o.append('<rect x="0.4" y="%.2f" width="%.2f" height="%.2f" rx="%.2f" '
+             'fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)" '
+             'stroke-width="0.8"/>' % (by + 0.4, ART_W - 0.8, bh, 10 * PX))
+    o.append('<path d="M0.7 %.2f V%.2f" stroke="%s" stroke-width="1.4"/>'
+             % (by + 4 * PX, by + bh - 4 * PX, T))
+    o.append(_t(pad_x, by + pad_y + 9 * PX, "NEXT", 10, MUT, mono=True, track_em=0.14))
+    tx = pad_x + _w("NEXT", 10) + 10 * PX * 0.14 * 4 + 9 * PX
+    o.append(_t(tx, by + pad_y + 10.5 * PX, "Answer it before it becomes a ticket",
+                13.5, T, 500))
+    o.append(_t(tx, by + pad_y + (13.5 * 1.3 + 3 + 9) * PX,
+                "Infotech-Wizard \u2014 FAISS retrieval over 3,531 resolved tickets, "
+                "local LLM, on-prem", 11, "rgba(255,255,255,0.48)"))
+    y = by + bh
+
+    # ── the hats, one line ──
+    hy = y + (5 + 8) * PX
+    o.append(_t(0, hy, "HATS \u00b7", 10.5, MUT, mono=True))
+    o.append(_t(_w("HATS \u00b7", 10.5) + 4 * PX, hy, HATS, 10.5,
+                "rgba(255,255,255,0.4)"))
+    return "".join(o), hy + 4 * PX
 
 
 def hero_figure() -> None:
     art = (ICONS / "_hero_chaos.svg").read_text(encoding="utf-8")
     label = (ICONS / "_hero_chaos.txt").read_text(encoding="utf-8").strip()
+    body, block_h = _hero_block(art)
+    hero_h = round(block_h * ART_SCALE)
+    dx = (HERO_W - ART_W * ART_SCALE) / 2
     variables = "".join("%s:%s;" % kv for kv in HERO_VARS.items())
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" '
-        'role="img" aria-label="%s">' % (HERO_W, HERO_H, HERO_W, HERO_H, escape(label))
+        'role="img" aria-label="%s">' % (HERO_W, hero_h, HERO_W, hero_h, escape(label))
         + "<style>"
         + font_faces(("IBM Plex Sans", "IBM Plex Mono"))
         + "svg{%s font-family:%s;}" % (variables, SANS)
@@ -935,12 +1028,13 @@ def hero_figure() -> None:
         + HERO_RULES
         + HERO_STILL
         + "</style>"
-        + '<rect width="%d" height="%d" fill="var(--bg)"/>' % (HERO_W, HERO_H)
-        + '<g transform="translate(%.3f %.3f) scale(%.6f)">' % _fit()
-        + art
+        + '<rect width="%d" height="%d" fill="var(--bg)"/>' % (HERO_W, hero_h)
+        + '<g transform="translate(%.3f 0) scale(%.6f)">' % (dx, ART_SCALE)
+        + body
         + "</g></svg>"
     )
     write("chaos-to-order.svg", svg)
+
 
 
 hero_figure()
