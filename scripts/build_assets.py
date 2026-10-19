@@ -902,15 +902,21 @@ HERO_STILL = (
     ".queue-bar{opacity:1}.sys-sweep{display:none}}"
 )
 
-# The figure stands where the environment diagram did, so it is drawn
-# into that block's box and the artwork is scaled to fit it, centred.
-HERO_W, HERO_H = 900, 682
+# The figure stands where the environment diagram did, so it is drawn into a
+# block the same 900 wide as every other asset here. It is NOT scaled to fill
+# that box: the artwork is drawn at the scale that makes its body text match
+# this profile's, 10.5 against the portfolio's 9.5. Filling the box instead
+# meant scaling it 1.73x, which left its type half again larger than the type
+# in every block around it — the one thing that made it look pasted in.
 ART_W, ART_H = 470, 394
+ART_SCALE = 10.5 / 9.5
+HERO_W = 900
+HERO_H = round(ART_H * ART_SCALE)
 
 
 def _fit() -> tuple:
-    """Centre the artwork in the box without distorting it."""
-    s = min(HERO_W / ART_W, HERO_H / ART_H)
+    """Centre the artwork in the block at the profile's own type scale."""
+    s = ART_SCALE
     return ((HERO_W - ART_W * s) / 2, (HERO_H - ART_H * s) / 2, s)
 
 
