@@ -885,10 +885,10 @@ HERO_RULES = (
     "animation-timing-function:cubic-bezier(0.35,0,0.5,1),ease-in-out,ease-in-out;"
     "animation-iteration-count:1,infinite,infinite;animation-fill-mode:both,none,none}"
     ".queue-bar{transform-box:fill-box;animation:queue-grow 5.6s ease-out infinite}"
-    ".method-step{fill:rgba(255,255,255,0.3);animation:method-step 3.4s linear infinite}"
-    ".method-pass{stroke-dasharray:1;animation:method-pass 3.4s linear infinite}"
-    ".sys-drop{opacity:0;animation:sys-drop 3.4s ease-out infinite}"
-    ".bus-glow{animation:bus-glow 3.4s ease-in-out infinite}"
+    ".method-step{fill:rgba(255,255,255,0.3);animation:method-step 5.2s linear infinite}"
+    ".method-pass{stroke-dasharray:1;animation:method-pass 5.2s linear infinite}"
+    ".sys-drop{opacity:0;animation:sys-drop 5.2s ease-out infinite}"
+    ".bus-glow{animation:bus-glow 5.2s ease-in-out infinite}"
     ".loop-flow{animation:loop-flow 1.1s linear infinite}"
 )
 
