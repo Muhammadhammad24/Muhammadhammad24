@@ -7,9 +7,9 @@
 </p>
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/mhammad24/"><img src="assets/badges/linkedin.svg?v=47" alt="LinkedIn" height="34" /></a>
-  <a href="https://muhammadhammad.vercel.app"><img src="assets/badges/portfolio.svg?v=47" alt="Portfolio" height="34" /></a>
-  <a href="mailto:muhammad24997@gmail.com"><img src="assets/badges/gmail.svg?v=47" alt="Gmail" height="34" /></a>
+  <a href="https://www.linkedin.com/in/mhammad24/"><img src="assets/badges/linkedin.svg?v=48" alt="LinkedIn" height="34" /></a>
+  <a href="https://muhammadhammad.vercel.app"><img src="assets/badges/portfolio.svg?v=48" alt="Portfolio" height="34" /></a>
+  <a href="mailto:muhammad24997@gmail.com"><img src="assets/badges/gmail.svg?v=48" alt="Gmail" height="34" /></a>
 </p>
 
 <img src="assets/headings/what-i-do.svg?v=44" alt="What I do" width="100%" />
