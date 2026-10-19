@@ -13,7 +13,6 @@ external font loading.
 
 from __future__ import annotations
 
-import json
 import hashlib
 from datetime import date
 from html import escape
@@ -254,16 +253,16 @@ TOOLBOX = [
 # Every mark is fitted to the same box, whatever shape it was drawn in: a
 # square one fills the height, a wordmark runs out to the width, and both sit
 # on the same centre line. One box means no per-logo sizing to keep in step.
-#
-# The box is fitted to the ink, not to the viewBox. A Simple Icons wordmark is
-# published on the same 24x24 square as every other mark in the set, with the
-# lettering a thin band across the middle of it — SonicWall's is 24 wide and
-# 4 high. Fit that square to the box and the square is the right size while the
-# lettering inside it comes out a fifth of the height of its neighbours, which
-# is what "same size" fails to mean here. _ink.json holds each mark's measured
-# bounding box, taken with scripts/measure_ink.py, and that is what is fitted.
-LOGO_BOX = (64, 32)
-INK = json.loads((ICONS / "_ink.json").read_text(encoding="utf-8"))
+# Each mark is fitted as published, by its own viewBox: a square one comes out
+# at 36 on a side like every other square one, and a wordmark runs out to the
+# width it needs. Fitting the ink instead was tried and is worse — it sizes
+# each mark by how much of its square the drawing happens to fill, so marks
+# that are drawn small in their box blow up past their neighbours.
+LOGO_BOX = (64, 36)
+
+# The ServiceNow wordmark is supplied in its light-on-dark form, so on the
+# light panel its white has to come back the other way.
+LIGHT_ON_DARK = {"servicenow"}
 KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark backgrounds
 
 # Official brand colours for the single-colour Simple Icons marks.
@@ -301,11 +300,12 @@ def _logo(icon: str, cx: float, cy: float, uid: str, dark: bool) -> str:
     inner = re.sub(r"url\(#([^)]+)\)", lambda m: f"url(#{uid}-{m.group(1)})", inner)
     inner = re.sub(r'href="#([^"]+)"', lambda m: f'href="#{uid}-{m.group(1)}"', inner)
     colour = SI_COLOURS.get(icon[3:], "#000000") if icon.startswith("si-") else "#000000"
+    if not dark and icon in LIGHT_ON_DARK:
+        inner = re.sub(r'(?i)#fff(?:fff)?\b|\bwhite\b', THEMES["light"]["text"], inner)
     if dark and icon not in KEEP_COLOURS:
         inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
         colour = _on_dark(colour)
-    ink = INK.get(icon)
-    vb = ("%g %g %g %g" % tuple(ink)) if ink else (view.group(1) if view else "0 0 24 24")
+    vb = view.group(1) if view else "0 0 24 24"
     bw, bh = LOGO_BOX
     # The default xMidYMid meet both fits and centres the mark in the box.
     return (f'<svg x="{cx - bw / 2:.1f}" y="{cy - bh / 2:.1f}" width="{bw}" '
