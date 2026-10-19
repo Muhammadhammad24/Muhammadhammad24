@@ -925,10 +925,11 @@ HATS = ("Help desk \u00b7 Service desk \u00b7 L1\u2013L3 \u00b7 SysAdmin \u00b7 
         "\u00b7 Security \u00b7 SRE \u00b7 Cloud \u00b7 DevOps")
 
 ART_W, ART_H = 470, 394
-ART_SCALE = 10.5 / 9.5          # puts the drawing's 9.5 body type on this profile's 10.5
-HEAD_H = 18                      # the eyebrow row above the drawing
-COL_GAP = 20
 HERO_W = 900
+# The block fills the column. Centring it at the profile's own type scale left
+# a wide margin either side and squeezed the two columns of text into half of
+# what was available, which is the harder thing to read of the two.
+ART_SCALE = HERO_W / ART_W
 
 
 # On the portfolio the drawing's 470-unit viewBox renders 693 CSS px wide, so
@@ -1015,7 +1016,7 @@ def hero_figure() -> None:
     label = (ICONS / "_hero_chaos.txt").read_text(encoding="utf-8").strip()
     body, block_h = _hero_block(art)
     hero_h = round(block_h * ART_SCALE)
-    dx = (HERO_W - ART_W * ART_SCALE) / 2
+    dx = (HERO_W - ART_W * ART_SCALE) / 2  # zero while the art fills the width
     variables = "".join("%s:%s;" % kv for kv in HERO_VARS.items())
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" '
