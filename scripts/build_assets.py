@@ -926,10 +926,11 @@ HATS = ("Help desk \u00b7 Service desk \u00b7 L1\u2013L3 \u00b7 SysAdmin \u00b7 
 
 ART_W, ART_H = 470, 394
 HERO_W = 900
-# The block fills the column. Centring it at the profile's own type scale left
-# a wide margin either side and squeezed the two columns of text into half of
-# what was available, which is the harder thing to read of the two.
-ART_SCALE = HERO_W / ART_W
+# The block fills the column, less a gutter. Scaling it edge to edge put the
+# heading's ascenders above the top of the box and ran the left-hand text into
+# the left edge; a drawing needs the same margin a paragraph does.
+PAD = 26
+ART_SCALE = (HERO_W - PAD * 2) / ART_W
 
 
 # On the portfolio the drawing's 470-unit viewBox renders 693 CSS px wide, so
@@ -1005,8 +1006,8 @@ def _hero_block(art: str) -> tuple:
 
     # ── the hats, one line ──
     hy = y + (5 + 8) * PX
-    o.append(_t(0, hy, "HATS \u00b7", 10.5, MUT, mono=True))
-    o.append(_t(_w("HATS \u00b7", 10.5) + 4 * PX, hy, HATS, 10.5,
+    o.append(_t(0, hy, "HATS", 10.5, MUT, mono=True))
+    o.append(_t(_w("HATS", 10.5) + 7 * PX, hy, "\u00b7 " + HATS, 10.5,
                 "rgba(255,255,255,0.4)"))
     return "".join(o), hy + 4 * PX
 
@@ -1015,8 +1016,7 @@ def hero_figure() -> None:
     art = (ICONS / "_hero_chaos.svg").read_text(encoding="utf-8")
     label = (ICONS / "_hero_chaos.txt").read_text(encoding="utf-8").strip()
     body, block_h = _hero_block(art)
-    hero_h = round(block_h * ART_SCALE)
-    dx = (HERO_W - ART_W * ART_SCALE) / 2  # zero while the art fills the width
+    hero_h = round(block_h * ART_SCALE + PAD * 2)
     variables = "".join("%s:%s;" % kv for kv in HERO_VARS.items())
     svg = (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" '
@@ -1030,7 +1030,7 @@ def hero_figure() -> None:
         + HERO_STILL
         + "</style>"
         + '<rect width="%d" height="%d" fill="var(--bg)"/>' % (HERO_W, hero_h)
-        + '<g transform="translate(%.3f 0) scale(%.6f)">' % (dx, ART_SCALE)
+        + '<g transform="translate(%d %d) scale(%.6f)">' % (PAD, PAD, ART_SCALE)
         + body
         + "</g></svg>"
     )
