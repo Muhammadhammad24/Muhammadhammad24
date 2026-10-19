@@ -829,3 +829,102 @@ def contact_badges() -> None:
 
 
 contact_badges()
+
+
+# ---------------------------------------------------------------------------
+# Hero figure
+# ---------------------------------------------------------------------------
+# The same drawing the portfolio opens with, carried over whole: the estate as
+# found at the top, pulled through one waist, and handed back in order along a
+# backbone. The markup in scripts/icons/_hero_chaos.svg is the portfolio's own
+# render; nothing here redraws it. What this adds is everything the figure got
+# from the page it used to live on and cannot get inside a README: the fonts,
+# the custom properties its fills refer to, and the keyframes its classes
+# name. GitHub serves the file to an <img>, where declarative CSS animation
+# runs and script does not — so the motion survives the trip and the figure is
+# still correct and complete in its first frame, with animation off.
+
+HERO_VARS = {
+    "--bg": "#000000",
+    "--bg-card": "#0B0B0D",
+    "--text": "#F7F8FA",
+    "--text-muted": "#777982",
+    "--danger": "#E5484D",
+    "--danger-line": "rgba(229,72,77,0.58)",
+}
+
+HERO_KEYFRAMES = (
+    "@keyframes tangle-in{from{stroke-dashoffset:1;opacity:0}to{stroke-dashoffset:0;opacity:1}}"
+    "@keyframes order-in{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}"
+    "@keyframes seethe{0%,100%{transform:translate(0,0) rotate(0deg)}"
+    "25%{transform:translate(0.7px,-0.5px) rotate(0.4deg)}"
+    "50%{transform:translate(-0.4px,0.6px) rotate(-0.3deg)}"
+    "75%{transform:translate(0.5px,0.4px) rotate(0.25deg)}}"
+    "@keyframes seethe-hot{0%,100%{opacity:0.55}50%{opacity:1}}"
+    "@keyframes queue-grow{0%,12%{opacity:0;transform:translateX(3px)}"
+    "26%,88%{opacity:1;transform:none}100%{opacity:1;transform:none}}"
+    "@keyframes method-step{0%{fill:rgba(255,255,255,0.3)}4%{fill:#ffffff}"
+    "15%{fill:#ffffff}26%,100%{fill:rgba(255,255,255,0.3)}}"
+    "@keyframes method-pass{0%{stroke-dashoffset:1}88%{stroke-dashoffset:0}"
+    "100%{stroke-dashoffset:0;opacity:0}}"
+    "@keyframes sys-drop{0%,100%{opacity:0}8%{opacity:0.85}24%{opacity:0}}"
+    "@keyframes bus-glow{0%,100%{opacity:0.75}50%{opacity:1}}"
+    "@keyframes loop-flow{to{stroke-dashoffset:-16}}"
+)
+
+HERO_RULES = (
+    ".tangle-in{stroke-dasharray:1;animation:tangle-in 0.9s cubic-bezier(0.35,0,0.5,1) both}"
+    ".order-in{stroke-dasharray:1;animation:order-in 0.45s cubic-bezier(0.2,0.9,0.3,1) both}"
+    ".seethe{transform-box:fill-box;transform-origin:center;"
+    "animation-name:tangle-in,seethe;"
+    "animation-duration:0.9s,3.1s;"
+    "animation-timing-function:cubic-bezier(0.35,0,0.5,1),ease-in-out;"
+    "animation-iteration-count:1,infinite;animation-fill-mode:both,none}"
+    ".seethe-hot{animation-name:tangle-in,seethe,seethe-hot;"
+    "animation-duration:0.9s,3.1s,2.2s;"
+    "animation-timing-function:cubic-bezier(0.35,0,0.5,1),ease-in-out,ease-in-out;"
+    "animation-iteration-count:1,infinite,infinite;animation-fill-mode:both,none,none}"
+    ".queue-bar{transform-box:fill-box;animation:queue-grow 5.6s ease-out infinite}"
+    ".method-step{fill:rgba(255,255,255,0.3);animation:method-step 3.4s linear infinite}"
+    ".method-pass{stroke-dasharray:1;animation:method-pass 3.4s linear infinite}"
+    ".sys-drop{opacity:0;animation:sys-drop 3.4s ease-out infinite}"
+    ".bus-glow{animation:bus-glow 3.4s ease-in-out infinite}"
+    ".loop-flow{animation:loop-flow 1.1s linear infinite}"
+)
+
+# The figure is readable without motion, so honour the reader's setting.
+HERO_STILL = (
+    "@media (prefers-reduced-motion:reduce){"
+    ".tangle-in,.order-in,.seethe,.seethe-hot,.queue-bar,.method-step,"
+    ".method-pass,.sys-drop,.bus-glow,.loop-flow{animation:none}"
+    ".tangle-in,.order-in,.method-pass{stroke-dashoffset:0}"
+    ".sys-drop{opacity:0}.method-step{fill:rgba(255,255,255,0.72)}"
+    ".queue-bar{opacity:1}.sys-sweep{display:none}}"
+)
+
+HERO_W, HERO_H = 470, 394
+
+
+def hero_figure() -> None:
+    art = (ICONS / "_hero_chaos.svg").read_text(encoding="utf-8")
+    label = (ICONS / "_hero_chaos.txt").read_text(encoding="utf-8").strip()
+    variables = "".join("%s:%s;" % kv for kv in HERO_VARS.items())
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" '
+        'role="img" aria-label="%s">' % (HERO_W, HERO_H, HERO_W, HERO_H, escape(label))
+        + "<style>"
+        + font_faces(("IBM Plex Sans", "IBM Plex Mono"))
+        + "svg{%s font-family:%s;}" % (variables, SANS)
+        + ".mono{font-family:%s;}" % MONO
+        + HERO_KEYFRAMES
+        + HERO_RULES
+        + HERO_STILL
+        + "</style>"
+        + '<rect width="%d" height="%d" fill="var(--bg)"/>' % (HERO_W, HERO_H)
+        + art
+        + "</svg>"
+    )
+    write("chaos-to-order.svg", svg)
+
+
+hero_figure()
