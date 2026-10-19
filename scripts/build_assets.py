@@ -1039,3 +1039,60 @@ def hero_figure() -> None:
 
 
 hero_figure()
+
+
+# ---------------------------------------------------------------------------
+# README: cache-busters, and a guard on the tags
+# ---------------------------------------------------------------------------
+# Two things kept going wrong by hand, and both are mechanical.
+#
+# The first is staleness. GitHub's image proxy caches hard, so a changed asset
+# needs a changed URL or readers keep the old one. A number bumped by hand is
+# forgotten exactly when it matters, so the buster is the first eight hex of
+# the file's own SHA-256: it changes when, and only when, the bytes change.
+#
+# The second is worse, because it is silent. An <img> whose alt ran across a
+# line break left the tag open, Markdown closed the HTML block at the newline,
+# and the image vanished while its alt text printed onto the page as body
+# copy. Nothing warns you; it just looks like prose. So the build refuses to
+# finish if any tag is split across lines or has an odd number of quotes.
+
+README = Path(__file__).resolve().parents[1] / "README.md"
+
+
+def check_readme(text: str) -> None:
+    for n, line in enumerate(text.split("\n"), 1):
+        if not any(t in line for t in ("<img", "<a ", "<source")):
+            continue
+        if line.count('"') % 2:
+            raise SystemExit("README line %d: unbalanced quotes — a tag is "
+                             "split across lines and will not render:\n  %s"
+                             % (n, line[:120]))
+        for tag in ("<img", "<source"):
+            if tag in line and not line.split(tag, 1)[1].lstrip().endswith("/>") \
+                    and ">" not in line.split(tag, 1)[1]:
+                raise SystemExit("README line %d: %s is not closed on its own "
+                                 "line:\n  %s" % (n, tag, line[:120]))
+
+
+def stamp_readme() -> None:
+    text = README.read_text(encoding="utf-8")
+    check_readme(text)
+
+    def bust(m):
+        rel = m.group(2)
+        f = README.parent / rel
+        if not f.exists():
+            raise SystemExit("README references a missing asset: %s" % rel)
+        digest = hashlib.sha256(f.read_bytes()).hexdigest()[:8]
+        return '%s="%s?v=%s"' % (m.group(1), rel, digest)
+
+    out = _re.sub(r'(src|srcset)="(assets/[^"?]+)(?:\?v=[^"]*)?"', bust, text)
+    if out != text:
+        README.write_text(out, encoding="utf-8", newline="\n")
+        print("stamped README cache-busters from content hashes")
+    else:
+        print("README cache-busters already current")
+
+
+stamp_readme()
