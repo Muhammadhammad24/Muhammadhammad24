@@ -38,9 +38,9 @@
 <img src="assets/headings/toolbox.svg?v=fcc8fb8e" alt="Toolbox" width="100%" />
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=b092aa75"/>
-  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=4e1d9264"/>
-  <img src="assets/brands-dark.svg?v=b092aa75" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=276b22ac"/>
+  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=8963f0af"/>
+  <img src="assets/brands-dark.svg?v=276b22ac" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
 </picture>
 
 <img src="assets/headings/career.svg?v=bce4fbb6" alt="Career" width="100%" />
