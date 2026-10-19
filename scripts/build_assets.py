@@ -902,7 +902,16 @@ HERO_STILL = (
     ".queue-bar{opacity:1}.sys-sweep{display:none}}"
 )
 
-HERO_W, HERO_H = 470, 394
+# The figure stands where the environment diagram did, so it is drawn
+# into that block's box and the artwork is scaled to fit it, centred.
+HERO_W, HERO_H = 900, 682
+ART_W, ART_H = 470, 394
+
+
+def _fit() -> tuple:
+    """Centre the artwork in the box without distorting it."""
+    s = min(HERO_W / ART_W, HERO_H / ART_H)
+    return ((HERO_W - ART_W * s) / 2, (HERO_H - ART_H * s) / 2, s)
 
 
 def hero_figure() -> None:
@@ -921,8 +930,9 @@ def hero_figure() -> None:
         + HERO_STILL
         + "</style>"
         + '<rect width="%d" height="%d" fill="var(--bg)"/>' % (HERO_W, HERO_H)
+        + '<g transform="translate(%.3f %.3f) scale(%.6f)">' % _fit()
         + art
-        + "</svg>"
+        + "</g></svg>"
     )
     write("chaos-to-order.svg", svg)
 

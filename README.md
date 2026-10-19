@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/chaos-to-order.svg?v=49" alt="One figure in three parts. At the top, an estate as found: people, logins, tickets, network, servers, cloud, laptops and monitoring, cross-wired by eleven runs that nobody planned, with monitoring crossed out because there is none. Every one of those runs is drawn down into a single band in the middle marked Muhammad Hammad. Out of the bottom of that band comes one backbone, and the same eight things hang off it in order with nothing crossing, plus a loop from monitoring to tickets that closes them before anyone raises one." width="100%" />
+  <img src="assets/banner.png" alt="Automating IT operations with AI-driven precision" width="100%" />
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@ I build infrastructure that runs quietly in the background, scales without drama
 <img src="assets/headings/environment.svg?v=47" alt="The environment I run" width="100%" />
 
 <p align="center">
-  <img src="assets/environment.svg?v=47" alt="The environment I run, in order: monitoring and alerts, service desk triage from L1 to L3, change management, automation and infrastructure as code, identity and access, incident response when it comes, and endpoint management — over an estate of monitoring, network, systems and cloud that never stops." width="100%" />
+  <img src="assets/chaos-to-order.svg?v=50" alt="One figure in three parts. At the top, an estate as found: people, logins, tickets, network, servers, cloud, laptops and monitoring, cross-wired by eleven runs that nobody planned, with monitoring crossed out because there is none. Every one of those runs is drawn down into a single band in the middle marked Muhammad Hammad. Out of the bottom of that band comes one backbone, and the same eight things hang off it in order with nothing crossing, plus a loop from monitoring to tickets that closes them before anyone raises one." width="100%" />
 </p>
 
 <img src="assets/headings/projects.svg?v=44" alt="Projects" width="100%" />
