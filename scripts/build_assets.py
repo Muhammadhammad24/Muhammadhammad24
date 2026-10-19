@@ -299,8 +299,8 @@ def _logo(icon: str, x: float, y: float, size: float, uid: str, dark: bool) -> s
 
 # Panel colours per GitHub theme; the logos themselves stay as published.
 THEMES = {
-    "dark": {"bg": BG, "line": LINE, "text": TEXT, "muted": MUTED, "accent": ACCENT, "prompt": ACCENT},
-    "light": {"bg": "#ffffff", "line": "#d0d7de", "text": "#1f2328", "muted": "#59636e", "accent": ACCENT, "prompt": "#4d7c0f"},
+    "dark": {"bg": BG, "card": "#0B0B0D", "line": LINE, "text": TEXT, "muted": MUTED, "accent": ACCENT, "prompt": ACCENT},
+    "light": {"bg": "#ffffff", "card": "#ffffff", "line": "#d0d7de", "text": "#1f2328", "muted": "#59636e", "accent": ACCENT, "prompt": "#4d7c0f"},
 }
 
 
@@ -323,19 +323,24 @@ def toolbox() -> None:
     """Two builds of the same panel; the README picks one with prefers-color-scheme."""
     for mode, t in THEMES.items():
         dark = mode == "dark"
-        w, top, row_h, label_w, step = 900, 72, 84, 196, 81
-        h = top + row_h * len(TOOLBOX) + 10
+        # One card per domain, the way the portfolio sets them out, rather
+        # than seven bands ruled off inside a single panel.
+        w, top, row_h, label_w, step, gap = 900, 56, 90, 196, 81, 10
+        card_h = row_h - gap
+        h = top + row_h * len(TOOLBOX)
         total = sum(len(items) for _, items in TOOLBOX)
         rows = []
         for r, (cat, items) in enumerate(TOOLBOX):
             y = top + r * row_h
-            if r:
-                rows.append(f'<line x1="26" y1="{y - 10}" x2="{w - 26}" y2="{y - 10}" stroke="{t["line"]}" stroke-dasharray="2 5"/>')
+            rows.append(
+                f'<rect x="1" y="{y}" width="{w - 2}" height="{card_h}" rx="14" '
+                f'fill="{t["card"]}" stroke="{t["line"]}"/>'
+            )
             rows.append(
                 f'<g class="in">'
-                f'<circle cx="32" cy="{y + 22}" r="3" fill="{t["accent"]}" class="led"/>'
-                f'<text x="44" y="{y + 26}" class="cat">{escape(cat)}</text>'
-                f'<text x="44" y="{y + 44}" class="cnt">{len(items):02d} tools</text></g>'
+                f'<circle cx="32" cy="{y + 30}" r="3" fill="{t["accent"]}" class="led"/>'
+                f'<text x="44" y="{y + 34}" class="cat">{escape(cat)}</text>'
+                f'<text x="44" y="{y + 52}" class="cnt">{len(items):02d} tools</text></g>'
             )
             for c, (label, icon) in enumerate(items):
                 cx = label_w + c * step + step / 2
@@ -346,9 +351,9 @@ def toolbox() -> None:
                     size = 44
                 else:
                     size = 32
-                logo = _logo(icon, cx - size / 2, y + 20 - size / 2, size, f"{mode[0]}{r}{c}", dark)
+                logo = _logo(icon, cx - size / 2, y + 28 - size / 2, size, f"{mode[0]}{r}{c}", dark)
                 labels = "".join(
-                    f'<text x="{cx:.1f}" y="{y + 50 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
+                    f'<text x="{cx:.1f}" y="{y + 58 + k * 11}" text-anchor="middle" class="lb">{escape(part)}</text>'
                     for k, part in enumerate(_wrap_chars(label, 12))
                 )
                 rows.append(f'<g class="logo">{logo}{labels}</g>')
@@ -364,9 +369,7 @@ def toolbox() -> None:
     .cnt {{ font-size: 10.5px; fill: {t["muted"]}; }}
     .lb {{ font-size: 9.5px; fill: {t["muted"]}; }}
   </style>
-  <rect x="1" y="1" width="{w - 2}" height="{h - 2}" rx="14" fill="{t["bg"]}" stroke="{t["line"]}"/>
-  <text x="{w - 26}" y="38" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
-  <line x1="26" y1="54" x2="{w - 26}" y2="54" stroke="{t["line"]}"/>
+  <text x="{w - 26}" y="30" text-anchor="end" class="meta">{total} tools · {len(TOOLBOX)} domains · hands-on</text>
   {"".join(rows)}
 </svg>"""
         write(f"brands-{mode}.svg", svg)
@@ -589,121 +592,6 @@ GLYPH = {
         "M18.4 9h3.1a1.4 1.4 0 0 1 1.4 1.4v8.2a1.4 1.4 0 0 1-1.4 1.4h-3.1a1.4 1.4 0 0 1-1.4-1.4v-8.2A1.4 1.4 0 0 1 18.4 9Z",
     ],
 }
-
-
-def _glyph(name: str, x: float, y: float, size: float, colour: str) -> str:
-    """The block's mark, scaled off its own 24-unit grid."""
-    paths = "".join('<path d="%s"/>' % d for d in GLYPH[name])
-    return ('<g transform="translate(%.1f %.1f) scale(%.4f)" fill="none" stroke="%s" '
-            'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">%s</g>'
-            % (x, y, size / 24.0, colour, paths))
-
-
-ALWAYS = [
-    ("Monitor", "Grafana · Datadog"),
-    ("Network", "Fortinet · Cisco"),
-    ("Systems", "Windows · Linux"),
-    ("Cloud", "Azure · AWS"),
-]
-
-
-def day() -> None:
-    w, pad = 900, 26
-    nx, nw, nh, gap, top = 300, 574, 68, 12, 84
-    cx, cw, ch = pad, 196, 54
-    rows = []
-
-    cspan = (len(DAY) * (nh + gap) - gap)
-    cgap = (cspan - len(ALWAYS) * ch) / (len(ALWAYS) - 1)
-    rows.append(
-        '<rect x="%d" y="%d" width="%d" height="%d" rx="10" fill="none" stroke="%s" stroke-width="1" stroke-dasharray="4 4"/>'
-        % (cx - 8, top - 38, cw + 16, cspan + 46, LINE)
-    )
-    rows.append('<text x="%d" y="%d" class="z">ALWAYS RUNNING</text>' % (cx, top - 24))
-    rows.append('<text x="%d" y="%d" class="cs">underneath every hour</text>' % (cx, top - 11))
-
-    for i, (name, sub) in enumerate(ALWAYS):
-        y = top + i * (ch + cgap)
-        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="7" fill="%s" stroke="%s"/>' % (cx, y, cw, ch, PANEL, LINE))
-        rows.append('<text x="%d" y="%.0f" class="cn">%s</text>' % (cx + 12, y + 23, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="cs">%s</text>' % (cx + 12, y + 40, escape(sub)))
-        # Dashed: it happens on its own, underneath the day.
-        rows.append('<path d="M%d %.0f H%d" stroke="%s" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eh)"/>'
-                    % (cx + cw, y + ch / 2, nx - 14, LINE))
-
-    n = len(DAY)
-    step, hold = 1.1, 0.9
-    cycle = n * step + hold
-    rail_x = nx - 26
-    rows.append('<path d="M%d %d V%d" stroke="%s" stroke-width="1"/>'
-                % (rail_x, top + nh // 2, top + (n - 1) * (nh + gap) + nh // 2, LINE))
-
-    frames = []
-    for i in range(n):
-        a, b = i * step / cycle * 100, (i + 1) * step / cycle * 100
-        frames.append(".s%d{animation:lit%d %.2fs step-end infinite;}" % (i, i, cycle))
-        frames.append("@keyframes lit%d{0%%,%.3f%%{opacity:0}%.3f%%,%.3f%%{opacity:1}%.3f%%,100%%{opacity:0}}"
-                      % (i, max(0.001, a - 0.001), a, b, min(99.999, b + 0.001)))
-    dy = nh + gap
-    stops = "".join("%.3f%%{transform:translateY(%dpx)}" % (i * step / cycle * 100, i * dy) for i in range(n))
-    frames.append(".dot{animation:ride %.2fs step-end infinite;}" % cycle)
-    frames.append("@keyframes ride{%s100%%{transform:translateY(%dpx)}}" % (stops, (n - 1) * dy))
-    frames.append("@media (prefers-reduced-motion:reduce){.dot,%s{animation:none;opacity:0}}"
-                  % ",".join(".s%d" % i for i in range(n)))
-    anim_css = "".join(frames)
-
-    for i, (name, tag, sub, sub2, does) in enumerate(DAY):
-        y = top + i * (nh + gap)
-        if i:
-            # The incident is the one hour nobody schedules, so it arrives dashed.
-            dash = ' stroke-dasharray="3 3"' if name == "Incident response" else ""
-            rows.append('<path d="M%d %d V%.0f" stroke="%s" stroke-width="1"%s marker-end="url(#eh)"/>'
-                        % (nx + nw // 2, int(y - gap), y - 3, LINE, dash))
-        dash_box = ' stroke-dasharray="6 5"' if name == "Incident response" else ""
-        rows.append('<rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="%s" stroke="%s"%s/>' % (nx, y, nw, nh, PANEL, LINE, dash_box))
-        rows.append('<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>' % (nx, y, nh, LINE))
-        rows.append(_glyph(name, nx + 16, y + (nh - 24) / 2, 24, LINE))
-        rows.append('<text x="%d" y="%.0f" class="rn">%s</text>' % (nx + 50, y + 25, escape(name)))
-        rows.append('<text x="%d" y="%.0f" class="rs">%s</text>' % (nx + 50, y + 43, escape(sub)))
-        rows.append('<text x="%d" y="%.0f" class="rs2">%s</text>' % (nx + 50, y + 58, escape(sub2)))
-        # The hat worn for this block, the way the portfolio labels them.
-        rows.append('<text x="%d" y="%.0f" text-anchor="end" class="ix">%s</text>' % (nx + nw - 14, y + 25, escape(tag)))
-        # Lit overlay: the hour the day is in, and what it leaves behind. The
-        # patch of panel under it hides the clock while the result is showing.
-        rows.append('<g class="s%d"><rect x="%d" y="%.0f" width="%d" height="%d" rx="8" fill="none" stroke="%s"/>'
-                    '<rect x="%d" y="%.0f" width="3" height="%d" rx="1.5" fill="%s"/>'
-                    '%s'
-                    '<rect x="%d" y="%.0f" width="%d" height="16" fill="%s"/>'
-                    '<text x="%d" y="%.0f" text-anchor="end" class="dz">%s</text></g>'
-                    % (i, nx, y, nw, nh, ACCENT, nx, y, nh, ACCENT,
-                       _glyph(name, nx + 16, y + (nh - 24) / 2, 24, ACCENT),
-                       nx + nw - 204, y + 13, 190, PANEL,
-                       nx + nw - 14, y + 25, escape(does)))
-
-    rows.append('<circle class="dot" cx="%d" cy="%d" r="3.4" fill="%s"/>' % (rail_x, top + nh // 2, ACCENT))
-    h = top + cspan + 50
-    alt = ("A day in production, in order: " + " then ".join(d[0] for d in DAY) +
-           ". Underneath all of it, always running: " + ", ".join(a for a, _ in ALWAYS) + ".")
-    svg = (
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">' % (w, h, w, h, escape(alt))
-        + '<defs><marker id="eh" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="%s"/></marker></defs>' % LINE
-        + "<style>text{font-family:%s;}.z{font-size:9px;letter-spacing:1px;fill:%s;}.cn{font-size:12px;font-weight:600;fill:%s;}"
-          ".cs{font-size:9.5px;fill:%s;}.rn{font-size:14px;font-weight:600;fill:%s;}.rs{font-size:10.5px;fill:%s;}"
-          ".rs2{font-size:10.5px;fill:%s;}.ix{font-family:%s;font-size:10px;fill:%s;}.ft{font-size:10.5px;fill:%s;}"
-          ".dz{font-size:10px;fill:%s;}%s</style>"
-          % (SANS, MUTED, TEXT, MUTED, TEXT, MUTED, LINE, MONO, LINE, MUTED, TEXT, anim_css)
-        + '<rect x="1" y="1" width="%d" height="%d" rx="14" fill="%s" stroke="%s"/>' % (w - 2, h - 2, BG, LINE)
-        + '<text x="%d" y="34" text-anchor="end" class="ft">the order the work actually happens in</text>' % (w - pad)
-        + "".join(rows)
-        + '<text x="%d" y="%d" class="ft">Dashed lines run on their own; solid lines are the day moving forward. This is the job, step by step.</text>' % (pad, h - 16)
-        + "</svg>"
-    )
-    write("environment.svg", svg)
-
-
-day()
-
-
 # ---------------------------------------------------------------------------
 # Portfolio cards
 # ---------------------------------------------------------------------------

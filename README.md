@@ -38,15 +38,15 @@
 <img src="assets/headings/toolbox.svg?v=fcc8fb8e" alt="Toolbox" width="100%" />
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=d82e754e"/>
-  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=f0849ee2"/>
-  <img src="assets/brands-dark.svg?v=d82e754e" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/brands-dark.svg?v=369400bc"/>
+  <source media="(prefers-color-scheme: light)" srcset="assets/brands-light.svg?v=77b62eae"/>
+  <img src="assets/brands-dark.svg?v=369400bc" alt="Toolbox. Cloud and virtualisation: Azure, AWS, Google Cloud, VMware, Azure Virtual Desktop, Docker, Kubernetes, Terraform. Operating systems: Windows, Linux, Ubuntu, Red Hat, CentOS, macOS, iOS, Android. Identity and endpoints: Microsoft Entra ID, Active Directory, Intune, Defender, Jamf Pro, Okta, TeamViewer. Network and security: Cisco, Juniper, Fortinet, pfSense, SonicWall, Palo Alto, CrowdStrike. Automation and delivery: PowerShell, Python, Bash, Ansible, Chocolatey, YAML, GitHub Actions, Git. Monitoring and backup: Splunk, Datadog, New Relic, Grafana, Prometheus, Wireshark, Veeam. Service and collaboration: ServiceNow, Jira, Confluence, Zendesk, Microsoft 365, Google Workspace, Slack, Zoom." width="100%"/>
 </picture>
 
 <img src="assets/headings/career.svg?v=bce4fbb6" alt="Career" width="100%" />
 
 <p align="center">
-  <img src="assets/career-record.svg?v=0376e0de" alt="Career, newest first, all roles full-time except the TestSolutions contract and the internship: IT Engineer at Kontinental Establishment since 2025; M.Sc. Data Science, University of Göttingen 2023–2025; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevOps internship, University of Göttingen 2024; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
+  <img src="assets/career-record.svg?v=0376e0de" alt="Career, newest first, all roles full-time except the TestSolutions contract and the internship: IT Engineer at Kontinental Establishment since 2025; M.Sc. Data Science, University of Göttingen 2023–2026; IT Engineer (contract) at TestSolutions GmbH 2023–2024; DevOps internship, University of Göttingen 2024; IT Specialist at Liberty Books 2022, KTDMC 2021–2022 and Target Logistics International 2020–2021; IT Engineer at The Active Solutions 2019–2020." width="100%"/>
 </p>
 
 <img src="assets/headings/certifications.svg?v=e1772006" alt="Certifications" width="100%" />
