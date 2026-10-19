@@ -13,6 +13,7 @@ external font loading.
 
 from __future__ import annotations
 
+import json
 import hashlib
 from datetime import date
 from html import escape
@@ -253,7 +254,16 @@ TOOLBOX = [
 # Every mark is fitted to the same box, whatever shape it was drawn in: a
 # square one fills the height, a wordmark runs out to the width, and both sit
 # on the same centre line. One box means no per-logo sizing to keep in step.
+#
+# The box is fitted to the ink, not to the viewBox. A Simple Icons wordmark is
+# published on the same 24x24 square as every other mark in the set, with the
+# lettering a thin band across the middle of it — SonicWall's is 24 wide and
+# 4 high. Fit that square to the box and the square is the right size while the
+# lettering inside it comes out a fifth of the height of its neighbours, which
+# is what "same size" fails to mean here. _ink.json holds each mark's measured
+# bounding box, taken with scripts/measure_ink.py, and that is what is fitted.
 LOGO_BOX = (64, 32)
+INK = json.loads((ICONS / "_ink.json").read_text(encoding="utf-8"))
 KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark backgrounds
 
 # Official brand colours for the single-colour Simple Icons marks.
@@ -294,7 +304,8 @@ def _logo(icon: str, cx: float, cy: float, uid: str, dark: bool) -> str:
     if dark and icon not in KEEP_COLOURS:
         inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
         colour = _on_dark(colour)
-    vb = view.group(1) if view else "0 0 24 24"
+    ink = INK.get(icon)
+    vb = ("%g %g %g %g" % tuple(ink)) if ink else (view.group(1) if view else "0 0 24 24")
     bw, bh = LOGO_BOX
     # The default xMidYMid meet both fits and centres the mark in the box.
     return (f'<svg x="{cx - bw / 2:.1f}" y="{cy - bh / 2:.1f}" width="{bw}" '
