@@ -250,9 +250,10 @@ TOOLBOX = [
     ]),
 ]
 
-# Simple Icons wordmarks sit small in their square; draw them larger.
-WORDMARKS = {"vmware", "junipernetworks", "sonicwall", "splunk", "veeam", "zoom"}
-WIDE = {"cisco", "crowdstrike", "okta"}  # supplied logos that are wider than tall
+# Every mark is fitted to the same box, whatever shape it was drawn in: a
+# square one fills the height, a wordmark runs out to the width, and both sit
+# on the same centre line. One box means no per-logo sizing to keep in step.
+LOGO_BOX = (64, 32)
 KEEP_COLOURS = {"dev-powershell-original", "bash"}  # already designed for dark backgrounds
 
 # Official brand colours for the single-colour Simple Icons marks.
@@ -273,8 +274,8 @@ def _on_dark(hex_colour: str) -> str:
     return TEXT if max(r, g, b) < 0.35 else hex_colour
 
 
-def _logo(icon: str, x: float, y: float, size: float, uid: str, dark: bool) -> str:
-    """Inline one brand logo inside a size x size box at (x, y).
+def _logo(icon: str, cx: float, cy: float, uid: str, dark: bool) -> str:
+    """Inline one brand logo in the standard box, centred on (cx, cy).
 
     Light mode draws every logo exactly as published. Dark mode swaps only
     near-black parts for their light, dark-mode form.
@@ -294,7 +295,10 @@ def _logo(icon: str, x: float, y: float, size: float, uid: str, dark: bool) -> s
         inner = re.sub(r"#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}", lambda m: _on_dark(m.group(0)), inner)
         colour = _on_dark(colour)
     vb = view.group(1) if view else "0 0 24 24"
-    return f'<svg x="{x:.1f}" y="{y:.1f}" width="{size}" height="{size}" viewBox="{vb}" fill="{colour}">{inner}</svg>'
+    bw, bh = LOGO_BOX
+    # The default xMidYMid meet both fits and centres the mark in the box.
+    return (f'<svg x="{cx - bw / 2:.1f}" y="{cy - bh / 2:.1f}" width="{bw}" '
+            f'height="{bh}" viewBox="{vb}" fill="{colour}">{inner}</svg>')
 
 
 # Panel colours per GitHub theme; the logos themselves stay as published.
@@ -345,13 +349,7 @@ def toolbox() -> None:
             for c, (label, icon) in enumerate(items):
                 cx = label_w + c * step + step / 2
                 d = 0.2 + r * 0.08 + c * 0.04
-                if icon == "servicenow":  # long wordmark
-                    size = 64
-                elif icon[3:] in WORDMARKS or icon in WIDE or icon.endswith("wordmark"):
-                    size = 44
-                else:
-                    size = 32
-                logo = _logo(icon, cx - size / 2, y + 28 - size / 2, size, f"{mode[0]}{r}{c}", dark)
+                logo = _logo(icon, cx, y + 28, f"{mode[0]}{r}{c}", dark)
                 labels = "".join(
                     f'<text x="{cx:.1f}" y="{y + 59 + k * 12}" text-anchor="middle" class="lb">{escape(part)}</text>'
                     for k, part in enumerate(_wrap_chars(label, 11))
